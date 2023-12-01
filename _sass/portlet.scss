@@ -1,0 +1,70 @@
+$p-padding: rem-calc(26);
+.inner-box {
+    padding: $p-padding;
+}
+.portlet {
+    width: 100%;
+    .p-header,
+    .p-body,
+    .p-footer {
+        padding: $p-padding;
+    }
+    .p-header,
+    .p-footer {
+        padding-top: rem-calc(22);
+        padding-bottom: rem-calc(22);
+    }
+    .p-header {
+        border-bottom: 1px solid $border;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        .title {
+            flex-grow: 1;
+            line-height: 1.5;
+            margin-top: rem-calc(2);
+            margin-bottom: rem-calc(2);
+            .subtitle {
+                font-size: rem-calc(17);
+            }
+        }
+        .actions {
+            @include mobile {
+                margin-top: rem-calc(6);
+            }
+            .button {
+                min-width: 2.5rem;
+                height: unset;
+            }
+            .tabs {
+                a {
+                    min-width: 6.5rem;
+                }
+            }
+        }
+    }
+    .p-body {
+        hr {
+            background-color: darken($light-gray, 3%);
+        }
+        .data-wrapper {
+            .data-label {
+            }
+        }
+    }
+    .p-footer {
+        border-top: 1px solid $border;
+        display: flex;
+        flex-direction: column;
+        @include touch {
+            .left > *,
+            .left > ::slotted(*) {
+                margin-bottom: 0.5rem;
+            }
+        }
+        @include from($desktop) {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}

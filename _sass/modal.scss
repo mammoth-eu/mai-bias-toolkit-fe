@@ -1,0 +1,19 @@
+// Modal
+.modal {
+  &.is-large {
+    @include from($desktop) {
+      .modal-card,
+      .modal-content {
+        width: 980px;
+      }
+    }
+  }
+  .modal-card {
+    .modal-card-head {
+      @include from($tablet) {
+        padding-top: 28px;
+        padding-bottom: 28px;
+      }
+    }
+  }
+}

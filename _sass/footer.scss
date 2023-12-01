@@ -1,0 +1,77 @@
+.footer {
+  nav {
+    .heading {
+      color: lighten($gray-blue, 18%);
+      &:after {
+        content: "";
+        display: block;
+        width: 60%;
+        margin-top: 0.5rem;
+        margin-bottom: 1.25rem;
+        height: 1px;
+        background-color: $gray-blue;
+      }
+    }
+    ul {
+      li {
+        margin-bottom: 0.5rem;
+        a {
+          color: white;
+          line-height: 1;
+          font-size: 0.9375rem;
+          font-weight: 600;
+          &:hover {
+            color: $primary;
+          }
+        }
+      }
+    }
+    .vcard {
+      .footer-logo {
+        margin-bottom: 0.625rem;
+        display: inline-block;
+        .logo {
+          width: 170px;
+          height: auto;
+        }
+      }
+      p {
+        color: lighten($gray-blue, 18%);
+        font-size: 0.8125rem;
+        letter-spacing: 1px;
+      }
+      ul li .icon {
+        color: lighten($gray-blue, 10%);
+      }
+    }
+  }
+  .content {
+    hr {
+      background-color: lighten($gray-blue, 5%);
+    }
+    .copy {
+      color: lighten($gray-blue, 18%);
+    }
+  }
+}
+
+// Main Footer always on bottom
+@include from($desktop) {
+  html {
+    height: 100%;
+  }
+  body {
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    // padding-bottom: rem-calc(426);
+  }
+  footer.g-footer {
+    width: 100%;
+    // position: absolute;
+    // height: rem-calc(426);
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}

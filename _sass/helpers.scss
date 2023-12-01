@@ -1,0 +1,121 @@
+// No outline
+a:active,
+a:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
+// Global Form Styles
+hr {
+  height: 1px;
+  background-color: darken($light-gray, 2%);
+}
+
+$global-font-size: 100% !default;
+
+@function rem-calc($values, $base: null) {
+  $rem-values: ();
+  $count: length($values);
+  @if $base == null {
+    $base: $global-font-size;
+  }
+  @if unit($base) == "%" {
+    $base: ($base / 100%) * 16px;
+  }
+  /* Using rem as base allows correct scaling */
+  @if unit($base) == "rem" {
+    $base: strip-unit($base) * 16px;
+  }
+  @if $count == 1 {
+    @return -to-rem($values, $base);
+  }
+  @for $i from 1 through $count {
+    $rem-values: append($rem-values, -to-rem(nth($values, $i), $base));
+  }
+  @return $rem-values;
+}
+
+@function -to-rem($value, $base: null) {
+  /* Check if the value is a number */
+  @if type-of($value) != "number" {
+    @warn inspect($value) + ' was passed to rem-calc(), which is not a number.';
+    @return $value;
+  }
+  /* Transform em into rem if someone hands over 'em's */
+  @if unit($value) == "em" {
+    $value: strip-unit($value) * 1rem;
+  }
+  /* Calculate rem if units for $value is not rem or em */
+  @if unit($value) != "rem" {
+    $value: strip-unit($value) / strip-unit($base) * 1rem;
+  }
+  /* Turn 0rem into 0 */
+  @if $value == 0rem {
+    $value: 0;
+  }
+  @return $value;
+}
+
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+// Radius
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
+
+.has-shadow-normal {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+}
+.has-radius {
+  @include border-radius(4px);
+}
+
+// A simple Panel
+.panel {
+  display: block;
+  padding: 1.25rem;
+  &.with-smaller-padding {
+    padding: rem-calc(12);
+  }
+  &.with-inner-box-padding {
+    padding: rem-calc(26);
+  }
+  &.has-smaller-padding {
+    padding: rem-calc(12);
+  }
+  &.has-border {
+    border: 1px solid $border;
+    &.is-danger {
+      border-color: $red;
+    }
+    &.is-primary {
+      border-color: $primary;
+    }
+  }
+}
+
+// Transitions
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+// Global Form Styles
+hr {
+  height: 1px;
+  background-color: darken($light-gray, 2%);
+}
+.label {
+  font-weight: 600;
+  color: darken($my-body-color, 25%);
+  &:not(:last-child) {
+    margin-bottom: rem-calc(2);
+  }
+}

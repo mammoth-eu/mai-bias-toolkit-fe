@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+@import "node_modules/bulma/sass/utilities/initial-variables";
+@import "node_modules/bulma/sass/utilities/functions";
+
+$light-gray: #f2f2f2;
+$medium-gray: #bdbdbd;
+$gray-blue: #546e7a;
+
+$dark-jungle-green: #1C2321;
+$brunswick-green: #1D4F44;
+$morning-blue: #98B0A9;
+
+$dark-mammoth-blue: #0B3046;
+$mammoth-blue: #0E455E;
+
+$black-coral: #5E6572;
+$gunmetal: #253237;
+$cadet: #5C6B73;
+$black-chocolate: #0C120C;
+
+$venetian-red: #C20114;
+
+$my-body-color: #787878;
+
+// custom colors
+$sidebar: $white;
+$sidebar-invert: findColorInvert($sidebar);
+
+// https://coolors.co/
+$primary: $mammoth-blue;
+$primary-light: $morning-blue;
+$primary-dark: $dark-mammoth-blue;
+$danger: $venetian-red;
+
+$secondary: $grey-lighter;
+$secondary-invert: findColorInvert($secondary);
+$secondary-complement: hsl(180, 0%, 86%);
+$secondary-saturated: hsl(0, 23%, 82%);
+$secondary-desaturated: hsl(180, 44%, 80%);
+
+
+// Add new color variables to the color map.
+@import "node_modules/bulma/sass/utilities/derived-variables";
+$addColors: (
+        "secondary":($secondary, $secondary-invert, $secondary-complement, $secondary-saturated, $secondary-desaturated),
+        "sidebar":($sidebar, $sidebar-invert),
+);
+$colors: map-merge($colors, $addColors);
+
+
+@import "node_modules/bulma/bulma";
+
+@import 'node_modules/bulma-extensions/bulma-steps/src/sass/index';
+
+// third party
+$accordion-header-background-color: $white;
+$accordion-header-color: $primary-dark;
+$accordion-content-color: $primary-dark;
+//$accordion-content-pre-background-color: $warning;
+//$accordion-content-pre-code-background-color: $danger;
+
+@import 'node_modules/bulma-extensions/bulma-accordion/src/sass/index';
+@import 'node_modules/@creativebulma/bulma-tooltip/src/sass/index';
+
+// custom
+//@import "custom";
+@import "helpers";
+@import "placeholder";
+@import "footer";
+@import "modal";
+@import "portlet";
+
