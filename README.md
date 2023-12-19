@@ -1,3 +1,13 @@
+# Environment File Template
+The following environment parameters are expected:
+```
+VITE_KEYCLOAK_URL=<keycloak-url>
+VITE_KEYCLOAK_CLIENT_ID=<keycloak-client-id>
+VITE_KEYCLOAK_REALM=<keycloak-realm>
+VITE_LOGOUT_REDIRECT_URI=<app-url-for-logout-redirect>
+VITE_BACKEND_URL=<backend-url>
+```
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
