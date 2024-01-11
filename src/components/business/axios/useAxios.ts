@@ -3,15 +3,26 @@ import AuthService from "../../../services/AuthService";
 
 const URL = import.meta.env.VITE_BACKEND_URL
 
-export function useAxios<T>() {
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${AuthService.accessToken()}`,
-            "Content-Type": "application/json",
-        },
-    };
+async function getAuthHeaders() {
+    try {
+        const accessToken = await AuthService.accessToken();
+        return {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+        };
+    } catch (e) {
+        console.log(e)
+        return {};
+    }
 
-    const post = (uri: string, data: any): Promise<T> => {
+}
+
+export function useAxios<T>() {
+
+    const post = async (uri: string, data: any): Promise<T> => {
+        const config = await getAuthHeaders();
         return axios
             .post<T>(
                 URL + uri,
@@ -22,7 +33,8 @@ export function useAxios<T>() {
             })
     };
 
-    const get = (uri: string) => {
+    const get = async (uri: string) => {
+        const config = await getAuthHeaders();
         return axios
             .get<T>(
                 URL + uri,
@@ -32,7 +44,8 @@ export function useAxios<T>() {
             })
     };
 
-    const put = (uri: string, data: any): Promise<T> => {
+    const put = async (uri: string, data: any): Promise<T> => {
+        const config = await getAuthHeaders();
         return axios
             .put<T>(
                 URL + uri,
@@ -43,7 +56,8 @@ export function useAxios<T>() {
             })
     };
 
-    const del = (uri: string) => {
+    const del = async (uri: string) => {
+        const config = await getAuthHeaders();
         return axios
             .delete<T>(
                 URL + uri,

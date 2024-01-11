@@ -17,21 +17,22 @@ class AuthService {
     }
 
     async accessToken() {
-        await keycloak.updateToken(70).then((refreshed) => {
+        try {
+            const refreshed = await keycloak.updateToken(70);
             if (refreshed) {
                 console.warn('Token refreshed ' + refreshed);
-                return (keycloak.token);
+                return keycloak.token;
             } else {
                 console.warn('Token not refreshed, valid for '+
                     Math.round(keycloak.tokenParsed.exp +
                         keycloak.timeSkew - new Date().getTime() / 1000) +
                     ' seconds');
-                return (keycloak.token);
+                return keycloak.token;
             }
-        }).catch((e) => {
+        } catch (e) {
             console.error('Failed to refresh token: '+ e);
-            return ('');
-        });
+            return '';
+        }
     }
 }
 
