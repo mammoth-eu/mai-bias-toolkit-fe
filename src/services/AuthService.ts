@@ -1,4 +1,4 @@
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode, JwtPayload} from 'jwt-decode';
 import {keycloak} from '../main';
 
 class AuthService {
@@ -10,7 +10,7 @@ class AuthService {
     getCurrentUser() {
         const accessToken = keycloak.token;
         if (accessToken) {
-            return jwtDecode(accessToken).preferred_username;
+            return (jwtDecode(accessToken) as JwtPayload & { preferred_username: string }).preferred_username;
         } else {
             return '';
         }
@@ -24,8 +24,8 @@ class AuthService {
                 return keycloak.token;
             } else {
                 console.warn('Token not refreshed, valid for '+
-                    Math.round(keycloak.tokenParsed.exp +
-                        keycloak.timeSkew - new Date().getTime() / 1000) +
+                    Math.round((keycloak.tokenParsed?.exp ?? 70) +
+                        (keycloak.timeSkew ?? 0) - new Date().getTime() / 1000) +
                     ' seconds');
                 return keycloak.token;
             }

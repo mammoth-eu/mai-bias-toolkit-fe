@@ -1,0 +1,16 @@
+---
+version: '3.9'
+networks:
+  mammoth:
+    driver: bridge
+
+services:
+  mammoth-fe:
+    build:
+      context: ./
+#    restart: unless-stopped
+    ports:
+      - "5173:80"
+    networks:
+      - mammoth
+

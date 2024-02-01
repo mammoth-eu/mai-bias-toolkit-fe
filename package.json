@@ -13,6 +13,7 @@
   "dependencies": {
     "@creativebulma/bulma-tooltip": "^1.2.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.2.2",
@@ -24,6 +25,7 @@
     "node-sass": "^8.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.39.4",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.4.3",
     "react-select": "^5.7.4",
