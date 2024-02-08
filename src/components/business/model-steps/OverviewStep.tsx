@@ -1,11 +1,8 @@
-import React from "react";
+import React from 'react';
 
-interface Props {
+interface Props {}
 
-}
-
-const OverviewStep: React.FC<Props> = ({}) => {
-    return (<>
-    </>);
+const OverviewStep: React.FC<Props> = () => {
+   return <></>;
 };
 export default OverviewStep;

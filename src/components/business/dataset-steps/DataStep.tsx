@@ -1,11 +1,8 @@
-import React from "react";
+import React from 'react';
 
-interface Props {
+interface Props {}
 
-}
-
-const DataStep: React.FC<Props> = ({}) => {
-    return (<>
-    </>);
+const DataStep: React.FC<Props> = () => {
+   return <></>;
 };
 export default DataStep;

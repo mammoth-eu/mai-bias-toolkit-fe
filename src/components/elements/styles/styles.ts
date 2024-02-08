@@ -1,1 +1,1 @@
-export const noBorderBottom = {borderBottom: "none"}
+export const noBorderBottom = { borderBottom: 'none' };

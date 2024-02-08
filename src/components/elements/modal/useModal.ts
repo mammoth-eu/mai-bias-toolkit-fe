@@ -1,28 +1,27 @@
-import {useState} from "react";
+import { useState } from 'react';
 
 export interface ModalControls {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
+   isOpen: boolean;
+   open: () => void;
+   close: () => void;
 }
 
 const useModal = () => {
+   const [isOpen, setIsOpen] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(false)
+   const open = () => {
+      setIsOpen(true);
+   };
 
-  const open = () => {
-    setIsOpen(true);
-  };
+   const close = () => {
+      setIsOpen(false);
+   };
 
-  const close = () => {
-    setIsOpen(false);
-  };
-
-  return {
-    isOpen: isOpen,
-    open: open,
-    close: close,
-  };
+   return {
+      isOpen: isOpen,
+      open: open,
+      close: close
+   };
 };
 
 export default useModal;

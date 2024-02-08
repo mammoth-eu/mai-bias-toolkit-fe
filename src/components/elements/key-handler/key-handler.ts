@@ -1,21 +1,25 @@
-import {useEffect} from "react";
+import { useEffect } from 'react';
 
-const useKeyHandler = (element:Node, keyCode: string, event: 'keydown' | 'keyup' | 'keyPressed', method: () => any) => {
+const useKeyHandler = (
+   element: Node,
+   keyCode: string,
+   event: 'keydown' | 'keyup' | 'keyPressed',
+   method: () => any
+) => {
+   const onEvent = (event: any) => {
+      if (event.code === keyCode && !!method) method();
+   };
 
-    const onEvent = (event: any) => {
-        if (event.code === keyCode && !!method) method();
-    };
+   useEffect(() => {
+      element.addEventListener(event, onEvent, false);
 
-    useEffect(() => {
-        element.addEventListener(event, onEvent, false);
+      return () => {
+         element.removeEventListener(event, onEvent, false);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
 
-        return () => {
-            element.removeEventListener(event, onEvent, false);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return {}
-}
+   return {};
+};
 
 export default useKeyHandler;
