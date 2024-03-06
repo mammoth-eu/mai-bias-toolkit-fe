@@ -10205,9 +10205,13 @@ hr {
 
 .label {
   font-weight: 600;
-  color: #383838; }
+  color: #383838;
+  display: inline-flex; }
   .label:not(:last-child) {
     margin-bottom: 0.125rem; }
+  .label p {
+    color: red;
+    margin-left: 4px; }
 
 .content-placeholder {
   display: inline-block;

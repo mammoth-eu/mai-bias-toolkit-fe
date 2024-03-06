@@ -1,4 +1,4 @@
-import { ReactFCWithChildren } from '../../../react';
+import { ReactFCWithChildren } from './helper';
 
 const Accordion: ReactFCWithChildren = ({ children }) => {
    return (

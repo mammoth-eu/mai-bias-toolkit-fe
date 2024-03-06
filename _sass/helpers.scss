@@ -115,7 +115,12 @@ hr {
 .label {
   font-weight: 600;
   color: darken($my-body-color, 25%);
+  display: inline-flex;
   &:not(:last-child) {
     margin-bottom: rem-calc(2);
+  }
+  & p {
+    color: red;
+    margin-left: 4px;
   }
 }

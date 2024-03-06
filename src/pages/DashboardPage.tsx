@@ -3,16 +3,8 @@ import { Link } from 'react-router-dom';
 import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons/faDiagramProject';
 import { faList } from '@fortawesome/free-solid-svg-icons/faList';
-import { useAxios } from '../components/business/axios/useAxios';
 
 const DashboardPage = () => {
-
-   // this is a dummy test endpoint
-   const { get } = useAxios();
-   get('/keycloak-protected')
-      .then((r) => console.log(r))
-      .catch((e) => console.log(e));
-
    return (
       <>
          <div className="columns mx-6 my-6">

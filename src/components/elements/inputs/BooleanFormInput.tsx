@@ -22,9 +22,6 @@ const BooleanFormInput: React.FC<Props> = ({
 }) => {
    return (
       <div className="field">
-         <label className="label">
-            {label} {isRequired && <p>*</p>}
-         </label>
          <div className="control">
             <input
                name={name}
@@ -33,7 +30,10 @@ const BooleanFormInput: React.FC<Props> = ({
                type="checkbox"
                disabled={disabled}
                checked={checked}
-            />
+            />{' '}
+            <label className="label">
+               {label} {isRequired && <p>*</p>}
+            </label>
          </div>
          {hasError(errors, name) && <p className="help is-danger">{renderFieldError(errors, name)}</p>}
       </div>
