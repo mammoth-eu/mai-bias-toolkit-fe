@@ -14,11 +14,11 @@ const result: WizardResponse = {
       url_data: 'https://www.sampleurl.com',
       url_model: 'https://www.samplemodelurl.com',
       attributes: ['age', 'gender'],
-      data_loader: {
+      loader_data: {
          id: 'csv',
          parameters_value: '{"on_bad_lines" : "skip", "delimiter" : ";"}'
       },
-      model_loader: {
+      loader_model: {
          id: 'onnx',
          parameters_value: ''
       },
@@ -89,7 +89,7 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="model_loader_id"
                         label="Model Loader"
-                        value={response.selections.model_loader!.id}
+                        value={response.selections.loader_model!.id}
                         disabled
                      />
                   </div>
@@ -97,7 +97,7 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="model_loader_parameters_value"
                         label="Model Loader Parameters Value"
-                        value={response.selections.model_loader!.parameters_value}
+                        value={response.selections.loader_model!.parameters_value}
                         disabled
                      />
                   </div>
@@ -105,7 +105,7 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="data_loader_id"
                         label="Data Loader"
-                        value={response.selections.data_loader!.id}
+                        value={response.selections.loader_data!.id}
                         disabled
                      />
                   </div>
@@ -113,7 +113,7 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="data_loader_parameters_value"
                         label="Data Loader Parameters Value"
-                        value={response.selections.data_loader!.parameters_value}
+                        value={response.selections.loader_data!.parameters_value}
                         disabled
                      />
                   </div>

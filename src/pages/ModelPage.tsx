@@ -20,6 +20,8 @@ import { getErrorFields } from '../components/elements/inputs/helper';
 import { useToaster } from '../components/elements/toast/useToaster';
 import { isAtLeastOneSelected } from '../components/business/helper';
 import BiasMetricStep from '../components/business/model-steps/BiasMetricStep';
+import { useAxios } from '../components/business/axios/useAxios';
+import { AxiosError } from 'axios';
 
 const ModelPage = () => {
    const [uuid, setUuid] = useState<string>('');
@@ -31,6 +33,8 @@ const ModelPage = () => {
    const navigate = useNavigate();
 
    const toaster = useToaster();
+
+   const { post } = useAxios();
 
    const stepMarkers = () => {
       const markers = [];
@@ -62,7 +66,6 @@ const ModelPage = () => {
 
    const handleSubmitModelStep = (event: any) => {
       event.preventDefault();
-      console.log('form', modelStepFormSubmit.form);
       modelStepFormSubmit.setErrors(modelStepErrorFields);
       const hasErrors = Object.values(modelStepErrorFields).flat().length > 0;
       if (hasErrors) return Promise.reject();
@@ -71,16 +74,21 @@ const ModelPage = () => {
          name: modelStepFormSubmit.form.name,
          group: modelStepFormSubmit.form.group,
          url_model: modelStepFormSubmit.form.url_model,
-         model_loader: {
+         loader_model: {
             id: modelStepFormSubmit.form.model_loader_id,
             parameters_value: modelStepFormSubmit.form.model_loader_parameters_value
+               ? JSON.parse(modelStepFormSubmit.form.model_loader_parameters_value)
+               : {}
          }
       };
-      console.log('submitForm', submitForm);
-      // ToDo post form, backend integration
-      return Promise.resolve(() => {
-         return true;
-      });
+      return post(`/wizard/store/${submitForm.uuid}`, submitForm)
+         .then(() => {
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
    const dataStepFormSubmit = useFormSubmit<SelectionsForm>(DATA_STEP_INITIAL_STATE, DATA_STEP_VALIDATION);

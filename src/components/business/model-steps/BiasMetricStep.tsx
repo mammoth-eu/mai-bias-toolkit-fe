@@ -25,7 +25,11 @@ const result: WizardResponse = {
             name: 'Simple Metric',
             description: 'A metric that does simple bias analysis',
             parameter_info: 'No parameters',
-            parameter_default: '{}'
+            parameter_default: {},
+            component_type: '',
+            file_name: '',
+            input_types: [],
+            output_types: []
          }
       ]
    }
@@ -107,7 +111,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit }) => {
                            <label className="label">Parameters info:</label>
                            <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_info}</p>
                            <label className="label">Parameters default values:</label>
-                           <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_default}</p>
+                           <p style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(metric.parameter_default)}</p>
                         </div>
                      </React.Fragment>
                   );

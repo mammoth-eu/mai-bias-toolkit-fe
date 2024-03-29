@@ -28,6 +28,7 @@ export interface ModelStepFormErrors {
    group: Validation[];
    url_model: Validation[];
    model_loader_id: Validation[];
+   model_loader_parameters_value: Validation[];
 }
 
 export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
@@ -53,6 +54,23 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
       {
          isValid: (value: string) => !!value,
          message: 'Is required'
+      }
+   ],
+   model_loader_parameters_value: [
+      {
+         isValid: (value: string) => {
+            if (value) {
+               return false;
+            } else {
+               try {
+                  JSON.parse(value);
+                  return false;
+               } catch (e) {
+                  return true;
+               }
+            }
+         },
+         message: 'Is not a valid JSON'
       }
    ]
 };
@@ -109,8 +127,8 @@ interface Selections {
    url_data?: string;
    url_model?: string;
    attributes?: string[];
-   data_loader?: ComponentSelection;
-   model_loader?: ComponentSelection;
+   loader_data?: ComponentSelection;
+   loader_model?: ComponentSelection;
    domain?: string;
    metrics?: ComponentSelection[];
 }
@@ -127,7 +145,11 @@ export interface Component {
    name: string;
    description: string;
    parameter_info: string;
-   parameter_default: string;
+   parameter_default: { [key: string]: any };
+   component_type: string;
+   file_name: string;
+   input_types: string[];
+   output_types: string[];
 }
 
 export interface Domain {

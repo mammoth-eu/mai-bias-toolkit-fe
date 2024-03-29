@@ -23,7 +23,11 @@ const result: WizardResponse = {
             description: 'Loads a CSV dataset',
             parameter_info:
                'on_bad_lines, supported values {‘error’, ‘warn’, ‘skip’} default \'skip\'\n delimiter, default \',\'.\n Please note that the options should be provided in the following form: {"on_bad_lines" : "skip", "delimiter" : ";"}',
-            parameter_default: '{"on_bad_lines" : "skip", "delimiter" : ";"}'
+            parameter_default: { on_bad_lines: 'skip', delimiter: ';' },
+            component_type: '',
+            file_name: '',
+            input_types: [],
+            output_types: []
          }
       ],
       domains: [
@@ -38,7 +42,11 @@ const result: WizardResponse = {
             name: 'Simple Metric',
             description: 'A metric that does simple bias analysis',
             parameter_info: 'No parameters',
-            parameter_default: '{}'
+            parameter_default: {},
+            component_type: '',
+            file_name: '',
+            input_types: [],
+            output_types: []
          }
       ]
    }
@@ -68,8 +76,8 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit }) => {
          formSubmit.setForm({
             uuid: result.selections.uuid,
             url_data: result.selections.url_data,
-            data_loader_id: result.selections.data_loader!.id,
-            data_loader_parameters_value: result.selections.data_loader!.parameters_value,
+            data_loader_id: result.selections.loader_data!.id,
+            data_loader_parameters_value: result.selections.loader_data!.parameters_value,
             domain: result.selections.domain
          });
       }
@@ -142,7 +150,9 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit }) => {
                   </p>
                   <label className="label">Parameters default values:</label>
                   <p style={{ whiteSpace: 'pre-line' }}>
-                     {data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.parameter_default}
+                     {JSON.stringify(
+                        data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.parameter_default
+                     )}
                   </p>
                </div>
             )}
