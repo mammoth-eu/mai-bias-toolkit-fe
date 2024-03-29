@@ -24,3 +24,8 @@ export const isAtLeastOneSelected = (form: SelectionsForm): boolean => {
    }
    return isAtLeastOneSelected;
 };
+
+export const printIsoDate = (date: string): string => {
+   const d: Date = new Date(date);
+   return d.toDateString()+" "+d.toLocaleTimeString();
+};
