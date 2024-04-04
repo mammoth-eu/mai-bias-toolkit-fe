@@ -10,9 +10,10 @@ import { useToaster } from '../../elements/toast/useToaster';
 interface Props {
    uuid: string;
    formSubmit: any;
+   step: number;
 }
 
-const ModelStep: React.FC<Props> = ({ uuid, formSubmit }) => {
+const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
    const [data, setData] = useState<Data>({});
 
    const { get } = useAxios<WizardResponse>();
@@ -28,7 +29,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit }) => {
    const load = () => {
       get(`/wizard/databias/model/${uuid}`)
          .then((result) => {
-            if (Object.keys(result.selections).length === 0) {
+            if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
                formSubmit.setForm(f);
@@ -42,7 +43,8 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit }) => {
                   model_loader_parameters_value:
                      JSON.stringify(result.selections.loader_model!.parameters_value) === '{}'
                         ? ''
-                        : JSON.stringify(result.selections.loader_model!.parameters_value)
+                        : JSON.stringify(result.selections.loader_model!.parameters_value),
+                  step: result.selections.step
                });
             }
             setData(result.data);

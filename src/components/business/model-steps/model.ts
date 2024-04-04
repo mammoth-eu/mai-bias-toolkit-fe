@@ -11,7 +11,8 @@ export interface SelectionsForm {
    model_loader_id?: string;
    model_loader_parameters_value?: string;
    domain?: string;
-   [key: string]: boolean | string | undefined; // for attributes and metrics
+   step: number;
+   [key: string]: boolean | string | number | undefined; // for attributes and metrics
 }
 
 export const MODEL_STEP_INITIAL_STATE = {
@@ -20,7 +21,8 @@ export const MODEL_STEP_INITIAL_STATE = {
    group: '',
    url_model: '',
    model_loader_id: '',
-   model_loader_parameters_value: ''
+   model_loader_parameters_value: '',
+   step: 1
 };
 
 export interface ModelStepFormErrors {
@@ -59,14 +61,14 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
    model_loader_parameters_value: [
       {
          isValid: (value: string) => {
-            if (value) {
-               return false;
+            if (!value) {
+               return true;
             } else {
                try {
                   JSON.parse(value);
-                  return false;
-               } catch (e) {
                   return true;
+               } catch (e) {
+                  return false;
                }
             }
          },
@@ -80,13 +82,15 @@ export const DATA_STEP_INITIAL_STATE = {
    url_data: '',
    data_loader_id: '',
    data_loader_parameters_value: '',
-   domain: ''
+   domain: '',
+   step: 2
 };
 
 export interface DataStepFormErrors {
    url_data: Validation[];
    data_loader_id: Validation[];
    domain: Validation[];
+   data_loader_parameters_value: Validation[];
 }
 
 export const DATA_STEP_VALIDATION: DataStepFormErrors = {
@@ -107,8 +111,29 @@ export const DATA_STEP_VALIDATION: DataStepFormErrors = {
          isValid: (value: string) => !!value,
          message: 'Is required'
       }
+   ],
+   data_loader_parameters_value: [
+      {
+         isValid: (value: string) => {
+            if (!value) {
+               return true;
+            } else {
+               try {
+                  JSON.parse(value);
+                  return true;
+               } catch (e) {
+                  return false;
+               }
+            }
+         },
+         message: 'Is not a valid JSON'
+      }
    ]
 };
+
+export interface BiasStepFormErrors {
+   [key: string]: Validation[];
+}
 
 export interface ComponentSelection {
    id: string;
@@ -131,6 +156,8 @@ interface Selections {
    loader_model?: ComponentSelection;
    domain?: string;
    metrics?: ComponentSelection[];
+   run_type: string;
+   step: number;
 }
 
 export interface Data {

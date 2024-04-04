@@ -1,40 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { WizardResponse } from './model';
 import TextFormInput from '../../elements/inputs/TextFormInput';
+import { useAxios } from '../axios/useAxios';
+import { useToaster } from '../../elements/toast/useToaster';
+import { AxiosError } from 'axios';
 
 interface Props {
    uuid: string;
 }
 
-const result: WizardResponse = {
-   selections: {
-      uuid: '61a3bbc0-8d52-4f05-8246-5c9f600e7ba7',
-      name: 'Fairness Analysis',
-      group: 'Group A',
-      url_data: 'https://www.sampleurl.com',
-      url_model: 'https://www.samplemodelurl.com',
-      attributes: ['age', 'gender'],
-      loader_data: {
-         id: 'csv',
-         parameters_value: '{"on_bad_lines" : "skip", "delimiter" : ";"}'
-      },
-      loader_model: {
-         id: 'onnx',
-         parameters_value: ''
-      },
-      domain: 'finance',
-      metrics: [
-         {
-            id: 'simple',
-            parameters_value: ''
-         }
-      ]
-   },
-   data: {}
-};
-
 const OverviewStep: React.FC<Props> = ({ uuid }) => {
    const [response, setResponse] = useState<WizardResponse>();
+
+   const { get } = useAxios<WizardResponse>();
+
+   const toaster = useToaster();
 
    useEffect(() => {
       if (uuid) {
@@ -43,8 +23,13 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
    }, [uuid]);
 
    const load = () => {
-      // ToDo integrate with backend for getting the result
-      setResponse(result);
+      get(`/wizard/databias/overview/${uuid}`)
+         .then((result) => {
+            setResponse(result);
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+         });
    };
 
    const createAttributesValue = (attributes: string[]) => {
@@ -97,7 +82,11 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="model_loader_parameters_value"
                         label="Model Loader Parameters Value"
-                        value={response.selections.loader_model!.parameters_value}
+                        value={
+                           JSON.stringify(response.selections.loader_model!.parameters_value) === '{}'
+                              ? ''
+                              : JSON.stringify(response.selections.loader_model!.parameters_value)
+                        }
                         disabled
                      />
                   </div>
@@ -113,7 +102,11 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                      <TextFormInput
                         name="data_loader_parameters_value"
                         label="Data Loader Parameters Value"
-                        value={response.selections.loader_data!.parameters_value}
+                        value={
+                           JSON.stringify(response.selections.loader_data!.parameters_value) === '{}'
+                              ? ''
+                              : JSON.stringify(response.selections.loader_data!.parameters_value)
+                        }
                         disabled
                      />
                   </div>
@@ -138,7 +131,11 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
                               <TextFormInput
                                  name="metric_parameters_value"
                                  label={`Metric ${i + 1} Parameters Value`}
-                                 value={m.parameters_value}
+                                 value={
+                                    JSON.stringify(m.parameters_value) === '{}'
+                                       ? ''
+                                       : JSON.stringify(m.parameters_value)
+                                 }
                                  disabled
                               />
                            </div>

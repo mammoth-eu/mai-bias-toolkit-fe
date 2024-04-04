@@ -14,18 +14,14 @@ export const getSelectListValue = (res: SelectOption[], value: number | string):
 };
 
 export const isAtLeastOneSelected = (form: SelectionsForm): boolean => {
-   let isAtLeastOneSelected = false;
-   const keys = Object.keys(form);
-   for (let i = 0; i < keys.length; i++) {
-      if (keys[i] !== 'uuid' && !keys[i].endsWith('_parameters_value') && form[keys[i]]) {
-         isAtLeastOneSelected = true;
-         break;
-      }
-   }
-   return isAtLeastOneSelected;
+   return (
+      Object.keys(form).find((key) => {
+         return key !== 'uuid' && key !== 'step' && !key.endsWith('_parameters_value') && form[key];
+      }) !== undefined
+   );
 };
 
 export const printIsoDate = (date: string): string => {
    const d: Date = new Date(date);
-   return d.toDateString()+" "+d.toLocaleTimeString();
+   return d.toDateString() + ' ' + d.toLocaleTimeString();
 };

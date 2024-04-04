@@ -34,7 +34,7 @@ const ModelPage = () => {
 
    const toaster = useToaster();
 
-   const { post } = useAxios();
+   const { get, post } = useAxios();
 
    const stepMarkers = () => {
       const markers = [];
@@ -50,12 +50,17 @@ const ModelPage = () => {
    const multiSteps = () => {
       const steps = [];
       let index = 1;
-      steps.push(<ModelStep key={index++} uuid={uuid} formSubmit={modelStepFormSubmit} />);
-      steps.push(<DataStep key={index++} uuid={uuid} formSubmit={dataStepFormSubmit} />);
+      steps.push(<ModelStep key={index++} uuid={uuid} formSubmit={modelStepFormSubmit} step={1} />);
+      steps.push(<DataStep key={index++} uuid={uuid} formSubmit={dataStepFormSubmit} step={2} />);
       steps.push(
-         <FeaturesAndProtectedCharacteristicsStep key={index++} uuid={uuid} formSubmit={featureStepFormSubmit} />
+         <FeaturesAndProtectedCharacteristicsStep
+            key={index++}
+            uuid={uuid}
+            formSubmit={featureStepFormSubmit}
+            step={3}
+         />
       );
-      steps.push(<BiasMetricStep key={index++} uuid={uuid} formSubmit={biasStepFormSubmit} />);
+      steps.push(<BiasMetricStep key={index++} uuid={uuid} formSubmit={biasStepFormSubmit} step={4} />);
       steps.push(<OverviewStep key={index++} uuid={uuid} />);
       return steps;
    };
@@ -79,7 +84,8 @@ const ModelPage = () => {
             parameters_value: modelStepFormSubmit.form.model_loader_parameters_value
                ? JSON.parse(modelStepFormSubmit.form.model_loader_parameters_value)
                : {}
-         }
+         },
+         step: modelStepFormSubmit.form.step
       };
       return post(`/wizard/store/${submitForm.uuid}`, submitForm)
          .then(() => {
@@ -97,31 +103,35 @@ const ModelPage = () => {
 
    const handleSubmitDataStep = (event: any) => {
       event.preventDefault();
-      console.log('form', dataStepFormSubmit.form);
       dataStepFormSubmit.setErrors(dataStepErrorFields);
       const hasErrors = Object.values(dataStepErrorFields).flat().length > 0;
       if (hasErrors) return Promise.reject();
       const submitForm = {
          uuid: dataStepFormSubmit.form.uuid,
          url_data: dataStepFormSubmit.form.url_data,
-         data_loader: {
+         loader_data: {
             id: dataStepFormSubmit.form.data_loader_id,
             parameters_value: dataStepFormSubmit.form.data_loader_parameters_value
+               ? JSON.parse(dataStepFormSubmit.form.data_loader_parameters_value)
+               : {}
          },
-         domain: dataStepFormSubmit.form.domain
+         domain: dataStepFormSubmit.form.domain,
+         step: dataStepFormSubmit.form.step
       };
-      console.log('submitForm', submitForm);
-      // ToDo post form, backend integration
-      return Promise.resolve(() => {
-         return true;
-      });
+      return post(`/wizard/store/${submitForm.uuid}`, submitForm)
+         .then(() => {
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
-   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '' }, {});
+   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 3 }, {});
 
    const handleSubmitFeatureStep = (event: any) => {
       event.preventDefault();
-      console.log('form', featureStepFormSubmit.form);
       const atLeastOneSelected = isAtLeastOneSelected(featureStepFormSubmit.form as SelectionsForm);
       if (!atLeastOneSelected) {
          toaster.error('Please select at least one feature!');
@@ -129,55 +139,74 @@ const ModelPage = () => {
       }
       const submitForm = {
          uuid: featureStepFormSubmit.form.uuid,
-         attributes: [] as string[]
+         attributes: [] as string[],
+         step: featureStepFormSubmit.form.step
       };
-      Object.keys(featureStepFormSubmit.form).map((key) => {
-         if (key !== 'uuid' && featureStepFormSubmit.form[key]) {
+      Object.keys(featureStepFormSubmit.form).forEach((key) => {
+         if (key !== 'uuid' && key !== 'step' && featureStepFormSubmit.form[key]) {
             submitForm.attributes.push(key);
          }
       });
-      console.log('submitForm', submitForm);
-      return Promise.resolve(() => {
-         return true;
-      });
+      return post(`/wizard/store/${submitForm.uuid}`, submitForm)
+         .then(() => {
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
-   const biasStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '' }, {});
+   const biasStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 4 }, {});
 
    const handleSubmitBiasStep = (event: any) => {
       event.preventDefault();
-      console.log('form', biasStepFormSubmit.form);
       const atLeastOneSelected = isAtLeastOneSelected(biasStepFormSubmit.form as SelectionsForm);
       if (!atLeastOneSelected) {
          toaster.error('Please select at least one bias metric!');
          return Promise.reject();
       }
+      const biasStepErrorFields = getErrorFields(biasStepFormSubmit.form, biasStepFormSubmit.validation);
+      biasStepFormSubmit.setErrors(biasStepErrorFields);
+      const hasErrors = Object.values(biasStepErrorFields).flat().length > 0;
+      if (hasErrors) return Promise.reject();
       const submitForm = {
          uuid: biasStepFormSubmit.form.uuid,
-         metrics: [] as ComponentSelection[]
+         metrics: [] as ComponentSelection[],
+         step: biasStepFormSubmit.form.step
       };
-      Object.keys(biasStepFormSubmit.form).map((key) => {
-         if (key !== 'uuid' && !key.endsWith('_parameters_value') && biasStepFormSubmit.form[key]) {
+      Object.keys(biasStepFormSubmit.form).forEach((key) => {
+         if (key !== 'uuid' && key !== 'step' && !key.endsWith('_parameters_value') && biasStepFormSubmit.form[key]) {
             const metric = {
                id: key,
                parameters_value: biasStepFormSubmit.form[key.concat('_parameters_value')]
+                  ? JSON.parse(biasStepFormSubmit.form[key.concat('_parameters_value')] as string)
+                  : {}
             };
             submitForm.metrics.push(metric as ComponentSelection);
          }
       });
-      console.log('submitForm', submitForm);
-      return Promise.resolve(() => {
-         return true;
-      });
+      return post(`/wizard/store/${submitForm.uuid}`, submitForm)
+         .then(() => {
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
    const handleSubmitOverviewStep = (event: any) => {
       event.preventDefault();
-      // todo call backend in order to initiate computation
-      navigate('/runs');
-      return Promise.resolve(() => {
-         return true;
-      });
+      return get(`/wizard/databias/submit/${uuid}`)
+         .then(() => {
+            navigate('/runs');
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
    const stepActions = () => {

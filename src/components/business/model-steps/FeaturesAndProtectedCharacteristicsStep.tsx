@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { SelectionsForm, WizardResponse } from './model';
 import BooleanFormInput from '../../elements/inputs/BooleanFormInput';
+import { useAxios } from '../axios/useAxios';
+import { useToaster } from '../../elements/toast/useToaster';
+import { AxiosError } from 'axios';
 
 interface Props {
    uuid: string;
    formSubmit: any;
+   step: number;
 }
 
-const result: WizardResponse = {
-   selections: {
-      // uuid: '61a3bbc0-8d52-4f05-8246-5c9f600e7ba7',
-      // attributes: ['age', 'gender']
-   },
-   data: {
-      attributes: ['age', 'gender', 'race', 'religion']
-   }
-};
+const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
+   const [formLength, setFormLength] = useState<number>(2);
 
-const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSubmit }) => {
-   const [formLength, setFormLength] = useState<number>(1);
+   const { get } = useAxios<WizardResponse>();
+
+   const toaster = useToaster();
 
    useEffect(() => {
       if (uuid) {
@@ -27,20 +25,26 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSu
    }, [uuid]);
 
    const load = () => {
-      // ToDo integrate with backend for getting the result
-      if (Object.keys(result.selections).length === 0) {
-         const f = formSubmit.form;
-         f.uuid = uuid;
-         createInitForm(result.data.attributes!, f);
-         formSubmit.setForm(f);
-         setFormLength(Object.keys(f).length);
-      } else {
-         const f = formSubmit.form;
-         f.uuid = result.selections.uuid;
-         createValuesForm(result.selections.attributes!, result.data.attributes!, f);
-         formSubmit.setForm(f);
-         setFormLength(Object.keys(f).length);
-      }
+      get(`/wizard/databias/attributes/${uuid}`)
+         .then((result) => {
+            if (result.selections.step < step) {
+               const f = formSubmit.form;
+               f.uuid = uuid;
+               createInitForm(result.data.attributes!, f);
+               formSubmit.setForm(f);
+               setFormLength(Object.keys(f).length);
+            } else {
+               const f = formSubmit.form;
+               f.uuid = result.selections.uuid;
+               createValuesForm(result.selections.attributes!, result.data.attributes!, f);
+               f.step = result.selections.step;
+               formSubmit.setForm(f);
+               setFormLength(Object.keys(f).length);
+            }
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+         });
    };
 
    const createInitForm = (attributes: string[], form: SelectionsForm) => {
@@ -58,10 +62,11 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSu
    return (
       <>
          <div className="columns is-multiline">
-            {formLength > 1 &&
+            {formLength > 2 &&
                Object.keys(formSubmit.form).map((key) => {
                   return (
-                     key !== 'uuid' && (
+                     key !== 'uuid' &&
+                     key !== 'step' && (
                         <div className="column is-half" key={key}>
                            <BooleanFormInput
                               name={key}

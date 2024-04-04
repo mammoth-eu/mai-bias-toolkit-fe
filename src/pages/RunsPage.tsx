@@ -1,12 +1,12 @@
 import Portlet from '../components/elements/portlet/Portlet';
 import NoDataFound from '../components/elements/NoDataFound';
 import { RunResponse } from '../components/business/model';
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
-import { faICursor } from "@fortawesome/free-solid-svg-icons/faICursor";
-import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
-import { printIsoDate } from "../components/business/helper";
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
+import { faICursor } from '@fortawesome/free-solid-svg-icons/faICursor';
+import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
+import { printIsoDate } from '../components/business/helper';
 
 const result: RunResponse[] = [
    {
@@ -52,27 +52,30 @@ const RunsPage = () => {
                                     <td>{printIsoDate(r.start_time)}</td>
                                     <td>{printIsoDate(r.end_time)}</td>
                                     <td>
-                                       <div className="buttons has-addons is-pulled-right" style={{ paddingRight: "5px" }}>
+                                       <div
+                                          className="buttons has-addons is-pulled-right"
+                                          style={{ paddingRight: '5px' }}
+                                       >
                                           <Link
-                                             to={"/runs/run/" + r.run_id}
+                                             to={'/runs/run/' + r.run_id}
                                              className="button is-primary is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="View"
                                           >
                                              <FontAwesomeIcon icon={faEye} />
                                           </Link>
                                           <button
-                                             type={"button"}
+                                             type={'button'}
                                              className="button is-dark is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="Rename"
-                                             onClick={() => console.log("rename")}
+                                             onClick={() => console.log('rename')}
                                           >
                                              <FontAwesomeIcon icon={faICursor} />
                                           </button>
                                           <button
-                                             type={"button"}
+                                             type={'button'}
                                              className="button is-danger is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="Cancel"
-                                             onClick={() => console.log("cancel")}
+                                             onClick={() => console.log('cancel')}
                                           >
                                              <FontAwesomeIcon icon={faXmark} />
                                           </button>

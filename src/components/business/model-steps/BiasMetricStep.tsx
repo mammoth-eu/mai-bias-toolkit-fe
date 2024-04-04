@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Component, ComponentSelection, Data, SelectionsForm, WizardResponse } from './model';
+import { BiasStepFormErrors, Component, ComponentSelection, Data, SelectionsForm, WizardResponse } from './model';
 import BooleanFormInput from '../../elements/inputs/BooleanFormInput';
 import TextFormInput from '../../elements/inputs/TextFormInput';
+import { useAxios } from '../axios/useAxios';
+import { useToaster } from '../../elements/toast/useToaster';
+import { AxiosError } from 'axios';
 
 interface Props {
    uuid: string;
    formSubmit: any;
+   step: number;
 }
 
-const result: WizardResponse = {
-   selections: {
-      // uuid: '61a3bbc0-8d52-4f05-8246-5c9f600e7ba7',
-      // metrics: [
-      //    {
-      //       id: 'simple',
-      //       parameters_value: ''
-      //    }
-      // ]
-   },
-   data: {
-      metrics: [
-         {
-            id: 'simple',
-            name: 'Simple Metric',
-            description: 'A metric that does simple bias analysis',
-            parameter_info: 'No parameters',
-            parameter_default: {},
-            component_type: '',
-            file_name: '',
-            input_types: [],
-            output_types: []
-         }
-      ]
-   }
-};
-
-const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit }) => {
+const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
    const [data, setData] = useState<Data>({});
-   const [formLength, setFormLength] = useState<number>(1);
+   const [formLength, setFormLength] = useState<number>(2);
+
+   const { get } = useAxios<WizardResponse>();
+
+   const toaster = useToaster();
 
    useEffect(() => {
       if (uuid) {
@@ -46,21 +27,30 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit }) => {
    }, [uuid]);
 
    const load = () => {
-      // ToDo integrate with backend for getting the result
-      if (Object.keys(result.selections).length === 0) {
-         const f = formSubmit.form;
-         f.uuid = uuid;
-         createInitForm(result.data.metrics!, f);
-         formSubmit.setForm(f);
-         setFormLength(Object.keys(f).length);
-      } else {
-         const f = formSubmit.form;
-         f.uuid = result.selections.uuid;
-         createValuesForm(result.selections.metrics!, result.data.metrics!, f);
-         formSubmit.setForm(f);
-         setFormLength(Object.keys(f).length);
-      }
-      setData(result.data);
+      get(`/wizard/databias/metric/${uuid}`)
+         .then((result) => {
+            const v = {};
+            createValidation(result.data.metrics!, v);
+            formSubmit.setValidation(v);
+            if (result.selections.step < step) {
+               const f = formSubmit.form;
+               f.uuid = uuid;
+               createInitForm(result.data.metrics!, f);
+               formSubmit.setForm(f);
+               setFormLength(Object.keys(f).length);
+            } else {
+               const f = formSubmit.form;
+               f.uuid = result.selections.uuid;
+               createValuesForm(result.selections.metrics!, result.data.metrics!, f);
+               f.step = result.selections.step;
+               formSubmit.setForm(f);
+               setFormLength(Object.keys(f).length);
+            }
+            setData(result.data);
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+         });
    };
 
    const createInitForm = (metrics: Component[], form: SelectionsForm) => {
@@ -78,15 +68,38 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit }) => {
       });
       selectionMetrics.map((sm) => {
          newForm[sm.id] = true;
-         newForm[sm.id.concat('_parameters_value')] = sm.parameters_value;
+         newForm[sm.id.concat('_parameters_value')] =
+            JSON.stringify(sm.parameters_value) === '{}' ? '' : JSON.stringify(sm.parameters_value);
       });
       form = newForm;
+   };
+
+   const createValidation = (metrics: Component[], validation: BiasStepFormErrors) => {
+      metrics.map((m: Component) => {
+         validation[m.id.concat('_parameters_value')] = [
+            {
+               isValid: (value: string) => {
+                  if (!value) {
+                     return true;
+                  } else {
+                     try {
+                        JSON.parse(value);
+                        return true;
+                     } catch (e) {
+                        return false;
+                     }
+                  }
+               },
+               message: 'Is not a valid JSON'
+            }
+         ];
+      });
    };
 
    return (
       <>
          <div className="columns is-multiline">
-            {formLength > 1 &&
+            {formLength > 2 &&
                data.metrics!.map((metric, i) => {
                   return (
                      <React.Fragment key={i}>
@@ -106,6 +119,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit }) => {
                               label={metric.name.concat(' Parameters')}
                               value={formSubmit.form[metric.id.concat('_parameters_value')]}
                               update={formSubmit.update}
+                              errors={formSubmit.errors}
                               placeholder={metric.name.concat(' Parameters')}
                            />
                            <label className="label">Parameters info:</label>

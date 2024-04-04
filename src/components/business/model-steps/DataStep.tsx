@@ -3,62 +3,22 @@ import { Data, WizardResponse } from './model';
 import { getSelectList, getSelectListValue } from '../helper';
 import TextFormInput from '../../elements/inputs/TextFormInput';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
-
-const result: WizardResponse = {
-   selections: {
-      // uuid: '61a3bbc0-8d52-4f05-8246-5c9f600e7ba7',
-      // url_data: '/src/test1',
-      // data_loader: {
-      //    id: 'csv',
-      //    parameters_value: '{"on_bad_lines" : "skip", "delimiter" : ";"}'
-      // },
-      // domain: 'financial'
-   },
-   data: {
-      attributes: ['age', 'gender', 'race', 'religion'],
-      loaders: [
-         {
-            id: 'csv',
-            name: 'CSV Loader',
-            description: 'Loads a CSV dataset',
-            parameter_info:
-               'on_bad_lines, supported values {‘error’, ‘warn’, ‘skip’} default \'skip\'\n delimiter, default \',\'.\n Please note that the options should be provided in the following form: {"on_bad_lines" : "skip", "delimiter" : ";"}',
-            parameter_default: { on_bad_lines: 'skip', delimiter: ';' },
-            component_type: '',
-            file_name: '',
-            input_types: [],
-            output_types: []
-         }
-      ],
-      domains: [
-         {
-            id: 'financial',
-            name: 'Financial'
-         }
-      ],
-      metrics: [
-         {
-            id: 'simple',
-            name: 'Simple Metric',
-            description: 'A metric that does simple bias analysis',
-            parameter_info: 'No parameters',
-            parameter_default: {},
-            component_type: '',
-            file_name: '',
-            input_types: [],
-            output_types: []
-         }
-      ]
-   }
-};
+import { useAxios } from '../axios/useAxios';
+import { useToaster } from '../../elements/toast/useToaster';
+import { AxiosError } from 'axios';
 
 interface Props {
    uuid: string;
    formSubmit: any;
+   step: number;
 }
 
-const DataStep: React.FC<Props> = ({ uuid, formSubmit }) => {
+const DataStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
    const [data, setData] = useState<Data>({});
+
+   const { get } = useAxios<WizardResponse>();
+
+   const toaster = useToaster();
 
    useEffect(() => {
       if (uuid) {
@@ -67,21 +27,30 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit }) => {
    }, [uuid]);
 
    const load = () => {
-      // ToDo integrate with backend for getting the result
-      if (Object.keys(result.selections).length === 0) {
-         const f = formSubmit.form;
-         f.uuid = uuid;
-         formSubmit.setForm(f);
-      } else {
-         formSubmit.setForm({
-            uuid: result.selections.uuid,
-            url_data: result.selections.url_data,
-            data_loader_id: result.selections.loader_data!.id,
-            data_loader_parameters_value: result.selections.loader_data!.parameters_value,
-            domain: result.selections.domain
+      get(`/wizard/databias/data/${uuid}`)
+         .then((result) => {
+            if (result.selections.step < step) {
+               const f = formSubmit.form;
+               f.uuid = uuid;
+               formSubmit.setForm(f);
+            } else {
+               formSubmit.setForm({
+                  uuid: result.selections.uuid,
+                  url_data: result.selections.url_data,
+                  data_loader_id: result.selections.loader_data!.id,
+                  data_loader_parameters_value:
+                     JSON.stringify(result.selections.loader_data!.parameters_value) === '{}'
+                        ? ''
+                        : JSON.stringify(result.selections.loader_data!.parameters_value),
+                  domain: result.selections.domain,
+                  step: result.selections.step
+               });
+            }
+            setData(result.data);
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
          });
-      }
-      setData(result.data);
    };
 
    const dataLoaderSelectList = Object.keys(data).length ? getSelectList(data.loaders!) : [];
