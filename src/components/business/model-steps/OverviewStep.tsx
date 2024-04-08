@@ -4,13 +4,15 @@ import TextFormInput from '../../elements/inputs/TextFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
+import { RunDetailsResponse } from '../model';
 
 interface Props {
    uuid: string;
+   result?: RunDetailsResponse;
 }
 
-const OverviewStep: React.FC<Props> = ({ uuid }) => {
-   const [response, setResponse] = useState<WizardResponse>();
+const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
+   const [response, setResponse] = useState<WizardResponse | RunDetailsResponse>();
 
    const { get } = useAxios<WizardResponse>();
 
@@ -18,7 +20,11 @@ const OverviewStep: React.FC<Props> = ({ uuid }) => {
 
    useEffect(() => {
       if (uuid) {
-         load();
+         if (result === undefined) {
+            load();
+         } else {
+            setResponse(result);
+         }
       }
    }, [uuid]);
 

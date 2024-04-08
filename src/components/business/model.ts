@@ -1,10 +1,20 @@
+import { Selections } from './model-steps/model';
+
 export interface RunResponse {
-   name: string;
+   runs: Run[];
+}
+
+export interface Run {
    group: string;
-   status: string;
-   type: string;
-   start_time: string;
-   end_time: string;
-   uuid: string;
+   name: string;
    run_id: string;
+   run_end_time: string;
+   run_start_time: string;
+   run_status: string;
+   run_type: string;
+   uuid: string;
+}
+
+export interface RunDetailsResponse {
+   selections: Selections;
 }

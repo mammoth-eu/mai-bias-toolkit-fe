@@ -48,7 +48,7 @@ const router = createBrowserRouter([
       )
    },
    {
-      path: '/runs/run/:runId',
+      path: '/runs/run/:uuid',
       element: (
          <UserControlPanel>
             <RunPage />

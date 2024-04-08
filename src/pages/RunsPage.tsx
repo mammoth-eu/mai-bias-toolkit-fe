@@ -1,27 +1,34 @@
 import Portlet from '../components/elements/portlet/Portlet';
 import NoDataFound from '../components/elements/NoDataFound';
-import { RunResponse } from '../components/business/model';
+import { Run, RunResponse } from '../components/business/model';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faICursor } from '@fortawesome/free-solid-svg-icons/faICursor';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { printIsoDate } from '../components/business/helper';
-
-const result: RunResponse[] = [
-   {
-      name: 'Fairness Analysis',
-      group: 'Group A',
-      status: 'Running',
-      type: 'ModelBias',
-      start_time: '2024-03-26T11:45:05.112233Z',
-      end_time: '2024-03-26T11:47:08.112233Z',
-      uuid: '50432-5342534-5235234-53425',
-      run_id: '9789879-5342534-76575678-53424'
-   }
-];
+import { useEffect, useState } from 'react';
+import { useAxios } from '../components/business/axios/useAxios';
+import { AxiosError } from 'axios';
+import { useToaster } from '../components/elements/toast/useToaster';
 
 const RunsPage = () => {
+   const [result, setResult] = useState<RunResponse>({ runs: [] });
+
+   const { get } = useAxios<RunResponse>();
+
+   const toaster = useToaster();
+
+   useEffect(() => {
+      get(`/wizard/databias/runs`)
+         .then((result: RunResponse) => {
+            setResult(result);
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+         });
+   }, []);
+
    return (
       <>
          <Portlet title="Runs">
@@ -40,24 +47,24 @@ const RunsPage = () => {
                         </tr>
                      </thead>
                      <tbody>
-                        <NoDataFound colspan={7} data={result} label="runs" />
+                        <NoDataFound colspan={7} data={result.runs} label="runs" />
                         {!!result &&
-                           result.map((r: RunResponse) => {
+                           result.runs.map((r: Run) => {
                               return (
                                  <tr key={r.run_id}>
                                     <td>{r.name}</td>
                                     <td>{r.group}</td>
-                                    <td>{r.status}</td>
-                                    <td>{r.type}</td>
-                                    <td>{printIsoDate(r.start_time)}</td>
-                                    <td>{printIsoDate(r.end_time)}</td>
+                                    <td>{r.run_status}</td>
+                                    <td>{r.run_type}</td>
+                                    <td>{printIsoDate(r.run_start_time)}</td>
+                                    <td>{printIsoDate(r.run_end_time)}</td>
                                     <td>
                                        <div
                                           className="buttons has-addons is-pulled-right"
                                           style={{ paddingRight: '5px' }}
                                        >
                                           <Link
-                                             to={'/runs/run/' + r.run_id}
+                                             to={'/runs/run/' + r.uuid}
                                              className="button is-primary is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="View"
                                           >
@@ -68,6 +75,7 @@ const RunsPage = () => {
                                              className="button is-dark is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="Rename"
                                              onClick={() => console.log('rename')}
+                                             disabled
                                           >
                                              <FontAwesomeIcon icon={faICursor} />
                                           </button>
@@ -76,6 +84,7 @@ const RunsPage = () => {
                                              className="button is-danger is-small is-outlined is-rounded has-tooltip-arrow has-tooltip"
                                              data-tooltip="Cancel"
                                              onClick={() => console.log('cancel')}
+                                             disabled
                                           >
                                              <FontAwesomeIcon icon={faXmark} />
                                           </button>

@@ -145,7 +145,7 @@ export interface WizardResponse {
    data: Data;
 }
 
-interface Selections {
+export interface Selections {
    uuid?: string;
    name?: string;
    group?: string;
@@ -158,6 +158,8 @@ interface Selections {
    metrics?: ComponentSelection[];
    run_type: string;
    step: number;
+   run_id?: string;
+   run_artifacts?: string[];
 }
 
 export interface Data {
