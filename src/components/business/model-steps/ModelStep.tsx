@@ -6,6 +6,7 @@ import { getSelectList, getSelectListValue } from '../helper';
 import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
+import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
 
 interface Props {
    uuid: string;
@@ -114,7 +115,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             <div className="column is-half"></div>
             {formSubmit.form.model_loader_id && data.loaders && (
                <div className="column is-half">
-                  <TextFormInput
+                  <TextAreaFormInput
                      name="model_loader_parameters_value"
                      label="Model Loader Parameters"
                      value={formSubmit.form.model_loader_parameters_value}

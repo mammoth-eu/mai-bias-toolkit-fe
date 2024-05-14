@@ -5,6 +5,7 @@ import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import { RunDetailsResponse } from '../model';
+import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
 
 interface Props {
    uuid: string;
@@ -85,7 +86,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                      />
                   </div>
                   <div className="column is-half">
-                     <TextFormInput
+                     <TextAreaFormInput
                         name="model_loader_parameters_value"
                         label="Model Loader Parameters Value"
                         value={
@@ -105,7 +106,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                      />
                   </div>
                   <div className="column is-half">
-                     <TextFormInput
+                     <TextAreaFormInput
                         name="data_loader_parameters_value"
                         label="Data Loader Parameters Value"
                         value={
@@ -134,7 +135,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                               <TextFormInput name="metric_id" label={`Metric ${i + 1}`} value={m.id} disabled />
                            </div>
                            <div className="column is-half">
-                              <TextFormInput
+                              <TextAreaFormInput
                                  name="metric_parameters_value"
                                  label={`Metric ${i + 1} Parameters Value`}
                                  value={

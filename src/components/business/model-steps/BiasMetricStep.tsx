@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BiasStepFormErrors, Component, ComponentSelection, Data, SelectionsForm, WizardResponse } from './model';
 import BooleanFormInput from '../../elements/inputs/BooleanFormInput';
-import TextFormInput from '../../elements/inputs/TextFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
+import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
 
 interface Props {
    uuid: string;
@@ -114,7 +114,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                            <p style={{ whiteSpace: 'pre-line' }}>{metric.description}</p>
                         </div>
                         <div className="column is-half">
-                           <TextFormInput
+                           <TextAreaFormInput
                               name={metric.id.concat('_parameters_value')}
                               label={metric.name.concat(' Parameters')}
                               value={formSubmit.form[metric.id.concat('_parameters_value')]}
