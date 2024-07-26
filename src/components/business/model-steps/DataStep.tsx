@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Data, WizardResponse } from './model';
 import { getSelectList, getSelectListValue } from '../helper';
-import TextFormInput from '../../elements/inputs/TextFormInput';
+// import TextFormInput from '../../elements/inputs/TextFormInput';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
-import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
+import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
 
 interface Props {
    uuid: string;
@@ -61,17 +61,17 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
    return (
       <>
          <div className="columns is-multiline">
-            <div className="column is-half">
-               <TextFormInput
-                  name="url_data"
-                  label="Data Source Path"
-                  value={formSubmit.form.url_data}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Data Source Path"
-                  isRequired
-               />
-            </div>
+            {/*<div className="column is-half">*/}
+            {/*   <TextFormInput*/}
+            {/*      name="url_data"*/}
+            {/*      label="Data Source Path"*/}
+            {/*      value={formSubmit.form.url_data}*/}
+            {/*      update={formSubmit.update}*/}
+            {/*      errors={formSubmit.errors}*/}
+            {/*      placeholder="Data Source Path"*/}
+            {/*      isRequired*/}
+            {/*   />*/}
+            {/*</div>*/}
             <div className="column is-half">
                <SelectFormInput
                   name="data_loader_id"

@@ -5,7 +5,7 @@ import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import { RunDetailsResponse } from '../model';
-import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
+import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
 
 interface Props {
    uuid: string;
@@ -56,27 +56,27 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
             <div className="columns is-multiline">
                <React.Fragment>
                   <div className="column is-half">
-                     <TextFormInput name="name" label="Name" value={response.selections.name!} disabled />
+                     <TextFormInput name="name" label="Run Name" value={response.selections.name!} disabled />
                   </div>
                   <div className="column is-half">
-                     <TextFormInput name="group" label="Group" value={response.selections.group!} disabled />
+                     <TextFormInput name="group" label="Run Group" value={response.selections.group!} disabled />
                   </div>
-                  <div className="column is-half">
-                     <TextFormInput
-                        name="url_model"
-                        label="Model Source Path"
-                        value={response.selections.url_model!}
-                        disabled
-                     />
-                  </div>
-                  <div className="column is-half">
-                     <TextFormInput
-                        name="url_data"
-                        label="Data Source Path"
-                        value={response.selections.url_data!}
-                        disabled
-                     />
-                  </div>
+                  {/*<div className="column is-half">*/}
+                  {/*   <TextFormInput*/}
+                  {/*      name="url_model"*/}
+                  {/*      label="Model Source Path"*/}
+                  {/*      value={response.selections.url_model!}*/}
+                  {/*      disabled*/}
+                  {/*   />*/}
+                  {/*</div>*/}
+                  {/*<div className="column is-half">*/}
+                  {/*   <TextFormInput*/}
+                  {/*      name="url_data"*/}
+                  {/*      label="Data Source Path"*/}
+                  {/*      value={response.selections.url_data!}*/}
+                  {/*      disabled*/}
+                  {/*   />*/}
+                  {/*</div>*/}
                   <div className="column is-half">
                      <TextFormInput
                         name="model_loader_id"

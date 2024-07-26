@@ -28,7 +28,7 @@ export const MODEL_STEP_INITIAL_STATE = {
 export interface ModelStepFormErrors {
    name: Validation[];
    group: Validation[];
-   url_model: Validation[];
+   // url_model: Validation[];
    model_loader_id: Validation[];
    model_loader_parameters_value: Validation[];
 }
@@ -46,12 +46,12 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
          message: 'Is required'
       }
    ],
-   url_model: [
-      {
-         isValid: (value: string) => !!value,
-         message: 'Is required'
-      }
-   ],
+   // url_model: [
+   //    {
+   //       isValid: (value: string) => !!value,
+   //       message: 'Is required'
+   //    }
+   // ],
    model_loader_id: [
       {
          isValid: (value: string) => !!value,
@@ -87,19 +87,19 @@ export const DATA_STEP_INITIAL_STATE = {
 };
 
 export interface DataStepFormErrors {
-   url_data: Validation[];
+   // url_data: Validation[];
    data_loader_id: Validation[];
    domain: Validation[];
    data_loader_parameters_value: Validation[];
 }
 
 export const DATA_STEP_VALIDATION: DataStepFormErrors = {
-   url_data: [
-      {
-         isValid: (value: string) => !!value,
-         message: 'Is required'
-      }
-   ],
+   // url_data: [
+   //    {
+   //       isValid: (value: string) => !!value,
+   //       message: 'Is required'
+   //    }
+   // ],
    data_loader_id: [
       {
          isValid: (value: string) => !!value,

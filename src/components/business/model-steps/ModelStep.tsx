@@ -6,7 +6,7 @@ import { getSelectList, getSelectListValue } from '../helper';
 import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
-import TextAreaFormInput from "../../elements/inputs/TextAreaFormInput";
+import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
 
 interface Props {
    uuid: string;
@@ -63,36 +63,36 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             <div className="column is-half">
                <TextFormInput
                   name="name"
-                  label="Name"
+                  label="Run Name"
                   value={formSubmit.form.name}
                   update={formSubmit.update}
                   errors={formSubmit.errors}
-                  placeholder="Name"
+                  placeholder="Run Name"
                   isRequired
                />
             </div>
             <div className="column is-half">
                <TextFormInput
                   name="group"
-                  label="Group"
+                  label="Run Group"
                   value={formSubmit.form.group}
                   update={formSubmit.update}
                   errors={formSubmit.errors}
-                  placeholder="Group"
+                  placeholder="Run Group"
                   isRequired
                />
             </div>
-            <div className="column is-half">
-               <TextFormInput
-                  name="url_model"
-                  label="Model Source Path"
-                  value={formSubmit.form.url_model}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Model Source Path"
-                  isRequired
-               />
-            </div>
+            {/*<div className="column is-half">*/}
+            {/*   <TextFormInput*/}
+            {/*      name="url_model"*/}
+            {/*      label="Model Source Path"*/}
+            {/*      value={formSubmit.form.url_model}*/}
+            {/*      update={formSubmit.update}*/}
+            {/*      errors={formSubmit.errors}*/}
+            {/*      placeholder="Model Source Path"*/}
+            {/*      isRequired*/}
+            {/*   />*/}
+            {/*</div>*/}
             <div className="column is-half">
                <SelectFormInput
                   name="model_loader_id"
