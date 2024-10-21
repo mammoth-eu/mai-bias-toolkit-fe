@@ -14,6 +14,8 @@ import {
    DATA_STEP_VALIDATION,
    MODEL_STEP_INITIAL_STATE,
    MODEL_STEP_VALIDATION,
+   RUN_STEP_INITIAL_STATE,
+   RUN_STEP_VALIDATION,
    SelectionsForm
 } from '../components/business/model-steps/model';
 import { getErrorFields } from '../components/elements/inputs/helper';
@@ -22,6 +24,7 @@ import { isAtLeastOneSelected } from '../components/business/helper';
 import BiasMetricStep from '../components/business/model-steps/BiasMetricStep';
 import { useAxios } from '../components/business/axios/useAxios';
 import { AxiosError } from 'axios';
+import RunStep from '../components/business/model-steps/RunStep.tsx';
 
 const ModelPage = () => {
    const [uuid, setUuid] = useState<string>('');
@@ -39,6 +42,7 @@ const ModelPage = () => {
    const stepMarkers = () => {
       const markers = [];
       let index = 1;
+      markers.push(<MultistepMarker step={index++} title="Run" />);
       markers.push(<MultistepMarker step={index++} title="Model" />);
       markers.push(<MultistepMarker step={index++} title="Data" />);
       markers.push(<MultistepMarker step={index++} title="Features & Protected Characteristics" />);
@@ -50,19 +54,45 @@ const ModelPage = () => {
    const multiSteps = () => {
       const steps = [];
       let index = 1;
-      steps.push(<ModelStep key={index++} uuid={uuid} formSubmit={modelStepFormSubmit} step={1} />);
-      steps.push(<DataStep key={index++} uuid={uuid} formSubmit={dataStepFormSubmit} step={2} />);
+      steps.push(<RunStep key={index++} uuid={uuid} formSubmit={runStepFormSubmit} step={1} />);
+      steps.push(<ModelStep key={index++} uuid={uuid} formSubmit={modelStepFormSubmit} step={2} />);
+      steps.push(<DataStep key={index++} uuid={uuid} formSubmit={dataStepFormSubmit} step={3} />);
       steps.push(
          <FeaturesAndProtectedCharacteristicsStep
             key={index++}
             uuid={uuid}
             formSubmit={featureStepFormSubmit}
-            step={3}
+            step={4}
          />
       );
-      steps.push(<BiasMetricStep key={index++} uuid={uuid} formSubmit={biasStepFormSubmit} step={4} />);
+      steps.push(<BiasMetricStep key={index++} uuid={uuid} formSubmit={biasStepFormSubmit} step={5} />);
       steps.push(<OverviewStep key={index++} uuid={uuid} />);
       return steps;
+   };
+
+   const runStepFormSubmit = useFormSubmit<SelectionsForm>(RUN_STEP_INITIAL_STATE, RUN_STEP_VALIDATION);
+
+   const runStepErrorFields = getErrorFields(runStepFormSubmit.form, runStepFormSubmit.validation);
+
+   const handleSubmitRunStep = (event: any) => {
+      event.preventDefault();
+      runStepFormSubmit.setErrors(runStepErrorFields);
+      const hasErrors = Object.values(runStepErrorFields).flat().length > 0;
+      if (hasErrors) return Promise.reject();
+      const submitForm = {
+         uuid: runStepFormSubmit.form.uuid,
+         name: runStepFormSubmit.form.name,
+         group: runStepFormSubmit.form.group,
+         step: runStepFormSubmit.form.step
+      };
+      return post(`/wizard/store/${submitForm.uuid}`, submitForm)
+         .then(() => {
+            return true;
+         })
+         .catch((e: AxiosError) => {
+            toaster.error(e.message);
+            return false;
+         });
    };
 
    const modelStepFormSubmit = useFormSubmit<SelectionsForm>(MODEL_STEP_INITIAL_STATE, MODEL_STEP_VALIDATION);
@@ -76,8 +106,6 @@ const ModelPage = () => {
       if (hasErrors) return Promise.reject();
       const submitForm = {
          uuid: modelStepFormSubmit.form.uuid,
-         name: modelStepFormSubmit.form.name,
-         group: modelStepFormSubmit.form.group,
          url_model: modelStepFormSubmit.form.url_model,
          loader_model: {
             id: modelStepFormSubmit.form.model_loader_id,
@@ -128,7 +156,7 @@ const ModelPage = () => {
          });
    };
 
-   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 3 }, {});
+   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 4 }, {});
 
    const handleSubmitFeatureStep = (event: any) => {
       event.preventDefault();
@@ -157,7 +185,7 @@ const ModelPage = () => {
          });
    };
 
-   const biasStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 4 }, {});
+   const biasStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 5 }, {});
 
    const handleSubmitBiasStep = (event: any) => {
       event.preventDefault();
@@ -211,6 +239,7 @@ const ModelPage = () => {
 
    const stepActions = () => {
       const actions = [];
+      actions.push(handleSubmitRunStep);
       actions.push(handleSubmitModelStep);
       actions.push(handleSubmitDataStep);
       actions.push(handleSubmitFeatureStep);

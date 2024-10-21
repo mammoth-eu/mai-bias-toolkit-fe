@@ -15,25 +15,19 @@ export interface SelectionsForm {
    [key: string]: boolean | string | number | undefined; // for attributes and metrics
 }
 
-export const MODEL_STEP_INITIAL_STATE = {
+export const RUN_STEP_INITIAL_STATE = {
    uuid: '',
    name: '',
    group: '',
-   url_model: '',
-   model_loader_id: '',
-   model_loader_parameters_value: '',
    step: 1
 };
 
-export interface ModelStepFormErrors {
+export interface RunStepFormErrors {
    name: Validation[];
    group: Validation[];
-   // url_model: Validation[];
-   model_loader_id: Validation[];
-   model_loader_parameters_value: Validation[];
 }
 
-export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
+export const RUN_STEP_VALIDATION: RunStepFormErrors = {
    name: [
       {
          isValid: (value: string) => !!value,
@@ -45,7 +39,24 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
          isValid: (value: string) => !!value,
          message: 'Is required'
       }
-   ],
+   ]
+};
+
+export const MODEL_STEP_INITIAL_STATE = {
+   uuid: '',
+   url_model: '',
+   model_loader_id: '',
+   model_loader_parameters_value: '',
+   step: 2
+};
+
+export interface ModelStepFormErrors {
+   // url_model: Validation[];
+   model_loader_id: Validation[];
+   model_loader_parameters_value: Validation[];
+}
+
+export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
    // url_model: [
    //    {
    //       isValid: (value: string) => !!value,
@@ -83,7 +94,7 @@ export const DATA_STEP_INITIAL_STATE = {
    data_loader_id: '',
    data_loader_parameters_value: '',
    domain: '',
-   step: 2
+   step: 3
 };
 
 export interface DataStepFormErrors {

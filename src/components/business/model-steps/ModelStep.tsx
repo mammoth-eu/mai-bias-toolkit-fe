@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import TextFormInput from '../../elements/inputs/TextFormInput';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { Data, WizardResponse } from './model';
 import { getSelectList, getSelectListValue } from '../helper';
@@ -37,8 +36,6 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             } else {
                formSubmit.setForm({
                   uuid: result.selections.uuid,
-                  name: result.selections.name,
-                  group: result.selections.group,
                   url_model: result.selections.url_model,
                   model_loader_id: result.selections.loader_model!.id,
                   model_loader_parameters_value:
@@ -60,28 +57,6 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
    return (
       <>
          <div className="columns is-multiline">
-            <div className="column is-half">
-               <TextFormInput
-                  name="name"
-                  label="Run Name"
-                  value={formSubmit.form.name}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Run Name"
-                  isRequired
-               />
-            </div>
-            <div className="column is-half">
-               <TextFormInput
-                  name="group"
-                  label="Run Group"
-                  value={formSubmit.form.group}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Run Group"
-                  isRequired
-               />
-            </div>
             {/*<div className="column is-half">*/}
             {/*   <TextFormInput*/}
             {/*      name="url_model"*/}
