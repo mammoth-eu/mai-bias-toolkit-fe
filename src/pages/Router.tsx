@@ -5,6 +5,7 @@ import DatasetPage from './DatasetPage';
 import ModelPage from './ModelPage';
 import RunsPage from './RunsPage';
 import RunPage from './RunPage';
+import ComponentPage from './ComponentPage';
 
 const router = createBrowserRouter([
    {
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
       element: (
          <UserControlPanel>
             <RunPage />
+         </UserControlPanel>
+      )
+   },
+   {
+      path: '/component',
+      element: (
+         <UserControlPanel>
+            <ComponentPage />
          </UserControlPanel>
       )
    }

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 export function useToaster(duration: number = 1500) {
    const conf: object = {
       position: 'top-right',
-      autoClose: duration,
+      autoClose: duration > 0 ? duration : false,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

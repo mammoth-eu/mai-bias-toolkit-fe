@@ -6,6 +6,7 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
 import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons/faDiagramProject';
 import { faList } from '@fortawesome/free-solid-svg-icons/faList';
+import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
 
 interface Props {
    children: ReactElement;
@@ -61,6 +62,15 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                            path={pathname}
                            icon={faList}
                            tooltip="Runs"
+                           showFull={isTablet()}
+                        />
+                     </li>
+                     <li>
+                        <SideNavigationItem
+                           to="/component"
+                           path={pathname}
+                           icon={faPuzzlePiece}
+                           tooltip="Import Component"
                            showFull={isTablet()}
                         />
                      </li>
