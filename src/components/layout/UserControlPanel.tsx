@@ -3,11 +3,12 @@ import { useLocation } from 'react-router-dom';
 import SideNavigationItem from '../elements/menu/SideNavigationItem';
 import useWindowDimensions from '../elements/window-dimensions/useWindowDimensions';
 import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
-import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
+// import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons/faDiagramProject';
 import { faList } from '@fortawesome/free-solid-svg-icons/faList';
 import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
 
 interface Props {
    children: ReactElement;
@@ -39,15 +40,15 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                            showFull={isTablet()}
                         />
                      </li>
-                     <li>
-                        <SideNavigationItem
-                           to="/dataset"
-                           path={pathname}
-                           icon={faFile}
-                           tooltip="Dataset Bias Detection"
-                           showFull={isTablet()}
-                        />
-                     </li>
+                     {/*<li>*/}
+                     {/*   <SideNavigationItem*/}
+                     {/*      to="/dataset"*/}
+                     {/*      path={pathname}*/}
+                     {/*      icon={faFile}*/}
+                     {/*      tooltip="Dataset Bias Detection"*/}
+                     {/*      showFull={isTablet()}*/}
+                     {/*   />*/}
+                     {/*</li>*/}
                      <li>
                         <SideNavigationItem
                            to="/model"
@@ -81,6 +82,15 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                            path={pathname}
                            icon={faUsers}
                            tooltip="Users"
+                           showFull={isTablet()}
+                        />
+                     </li>
+                     <li>
+                        <SideNavigationItem
+                           to="/about"
+                           path={pathname}
+                           icon={faCircleInfo}
+                           tooltip="About"
                            showFull={isTablet()}
                         />
                      </li>

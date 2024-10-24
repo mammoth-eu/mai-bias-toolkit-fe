@@ -7,6 +7,7 @@ import RunsPage from './RunsPage';
 import RunPage from './RunPage';
 import ComponentPage from './ComponentPage';
 import UsersPage from './UsersPage.tsx';
+import AboutPage from './AboutPage.tsx';
 
 const router = createBrowserRouter([
    {
@@ -70,6 +71,14 @@ const router = createBrowserRouter([
       element: (
          <UserControlPanel>
             <UsersPage />
+         </UserControlPanel>
+      )
+   },
+   {
+      path: '/about',
+      element: (
+         <UserControlPanel>
+            <AboutPage />
          </UserControlPanel>
       )
    }
