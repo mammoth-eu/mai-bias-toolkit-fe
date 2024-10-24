@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 export interface Validation {
-   isValid: (value: any) => boolean;
+   isValid: (value: any, newValue?: any) => boolean;
+   dependencyField?: any;
    message: string;
 }
 

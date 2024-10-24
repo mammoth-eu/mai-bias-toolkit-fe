@@ -1,24 +1,25 @@
-import { useState } from 'react';
+import React, { useRef } from 'react';
+import { ModalHandler } from './Modal';
 
 export interface ModalControls {
-   isOpen: boolean;
+   ref: React.MutableRefObject<ModalHandler | undefined>;
    open: () => void;
    close: () => void;
 }
 
 const useModal = () => {
-   const [isOpen, setIsOpen] = useState(false);
+   const modal = useRef<ModalHandler>();
 
    const open = () => {
-      setIsOpen(true);
+      modal.current!.open();
    };
 
    const close = () => {
-      setIsOpen(false);
+      modal.current!.close();
    };
 
    return {
-      isOpen: isOpen,
+      ref: modal,
       open: open,
       close: close
    };

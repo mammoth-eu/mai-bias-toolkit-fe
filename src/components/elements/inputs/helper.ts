@@ -33,13 +33,27 @@ const getErrorFields = (form: any, VALIDATION: any) =>
       const errorsPerField = VALIDATION[key as keyof typeof VALIDATION]
          // get a list of potential errors for each field
          // by running through all the checks
-         .map((validation: any) => ({
-            isValid: validation.isValid(form[key]),
-            message: validation.message
-         }))
+         .map((validation: any) => getValidation(form, key, validation))
          // only keep the errors
          .filter((errorPerField: any) => !errorPerField.isValid);
       return { ...acc, [key]: errorsPerField };
    }, {});
+
+const getValidation = (form: any, key: any, validation: any) => {
+   if (validation.dependencyField) {
+      return {
+         isValid: validation.isValid(
+            form[key],
+            validation.dependencyField.map((v: any) => form[v])
+         ),
+         message: validation.message
+      };
+   } else {
+      return {
+         isValid: validation.isValid(form[key]),
+         message: validation.message
+      };
+   }
+};
 
 export { hasError, renderFieldError, renderFieldErrorClass, getErrorFields };
