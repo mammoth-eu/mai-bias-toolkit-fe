@@ -8,6 +8,8 @@ import { RunDetailsResponse } from '../components/business/model';
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useToaster } from '../components/elements/toast/useToaster';
+import RunResultsModal from '../components/business/run/RunResultsModal.tsx';
+import useModal from '../components/elements/modal/useModal.ts';
 
 const RunPage = () => {
    const [result, setResult] = useState<RunDetailsResponse>();
@@ -17,6 +19,8 @@ const RunPage = () => {
    const { get } = useAxios<RunDetailsResponse>();
 
    const toaster = useToaster();
+
+   const runResultModal = useModal();
 
    useEffect(() => {
       get(`/wizard/databias/results/${uuid}`)
@@ -31,12 +35,7 @@ const RunPage = () => {
    const renderActions = () => {
       return (
          <div className="buttons">
-            <button
-               className="button is-primary is-outlined"
-               onClick={() => {
-                  window.open(result!.selections!.run_artifacts![0]);
-               }}
-            >
+            <button className="button is-primary is-outlined" onClick={runResultModal.open} disabled={!result}>
                <span>
                   <FontAwesomeIcon icon={faFileLines} />
                   &nbsp;Results
@@ -53,6 +52,7 @@ const RunPage = () => {
                <OverviewStep uuid={uuid} result={result} />
             </Portlet>
          )}
+         {result && <RunResultsModal modal={runResultModal} results={result.selections.run_artifacts!} />}
       </>
    );
 };
