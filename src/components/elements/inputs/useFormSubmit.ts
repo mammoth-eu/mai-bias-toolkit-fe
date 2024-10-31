@@ -20,10 +20,30 @@ export function useFormSubmit<T>(INITIAL_STATE: T, VALIDATION: any, UPDATED_STAT
       });
    };
 
+   const updateField = (field: string, event: any) => {
+      setForm({
+         ...form,
+         [field]: {
+            ...form[field],
+            [event.target.name]: event.target.value
+         }
+      });
+   };
+
    const updateNumber = (event: any) => {
       setForm({
          ...form,
          [event.target.name]: Number(event.target.value)
+      });
+   };
+
+   const updateNumberField = (field: string, event: any) => {
+      setForm({
+         ...form,
+         [field]: {
+            ...form[field],
+            [event.target.name]: Number(event.target.value)
+         }
       });
    };
 
@@ -50,6 +70,16 @@ export function useFormSubmit<T>(INITIAL_STATE: T, VALIDATION: any, UPDATED_STAT
       });
    };
 
+   const updateCheckField = (field: string, event: any) => {
+      setForm({
+         ...form,
+         [field]: {
+            ...form[field],
+            [event.target.name]: event.target.checked
+         }
+      });
+   };
+
    const bulkUpdate = (m: NonNullable<T>) => {
       setForm({
          ...form,
@@ -70,9 +100,12 @@ export function useFormSubmit<T>(INITIAL_STATE: T, VALIDATION: any, UPDATED_STAT
       errors,
       setErrors,
       update,
+      updateField,
       updateNumber,
+      updateNumberField,
       updateSelect,
       updateCheck,
+      updateCheckField,
       bulkUpdate,
       updateSimple,
       reset

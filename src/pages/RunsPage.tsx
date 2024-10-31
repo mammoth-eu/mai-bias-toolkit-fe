@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faICursor } from '@fortawesome/free-solid-svg-icons/faICursor';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
-import { printIsoDate } from '../components/business/helper';
+import { printIsoDate } from '../components/business/helper.tsx';
 import { useEffect, useState } from 'react';
 import { useAxios } from '../components/business/axios/useAxios';
 import { AxiosError } from 'axios';

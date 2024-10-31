@@ -20,7 +20,7 @@ import {
 } from '../components/business/model-steps/model';
 import { getErrorFields } from '../components/elements/inputs/helper';
 import { useToaster } from '../components/elements/toast/useToaster';
-import { isAtLeastOneSelected } from '../components/business/helper';
+import { isAtLeastOneSelected } from '../components/business/helper.tsx';
 import BiasMetricStep from '../components/business/model-steps/BiasMetricStep';
 import { useAxios } from '../components/business/axios/useAxios';
 import { AxiosError } from 'axios';
@@ -110,8 +110,6 @@ const ModelPage = () => {
          loader_model: {
             id: modelStepFormSubmit.form.model_loader_id,
             parameters_value: modelStepFormSubmit.form.model_loader_parameters_value
-               ? JSON.parse(modelStepFormSubmit.form.model_loader_parameters_value)
-               : {}
          },
          step: modelStepFormSubmit.form.step
       };
@@ -140,8 +138,6 @@ const ModelPage = () => {
          loader_data: {
             id: dataStepFormSubmit.form.data_loader_id,
             parameters_value: dataStepFormSubmit.form.data_loader_parameters_value
-               ? JSON.parse(dataStepFormSubmit.form.data_loader_parameters_value)
-               : {}
          },
          domain: dataStepFormSubmit.form.domain,
          step: dataStepFormSubmit.form.step
@@ -208,8 +204,6 @@ const ModelPage = () => {
             const metric = {
                id: key,
                parameters_value: biasStepFormSubmit.form[key.concat('_parameters_value')]
-                  ? JSON.parse(biasStepFormSubmit.form[key.concat('_parameters_value')] as string)
-                  : {}
             };
             submitForm.metrics.push(metric as ComponentSelection);
          }

@@ -7,12 +7,12 @@ export interface SelectionsForm {
    url_data?: string;
    url_model?: string;
    data_loader_id?: string;
-   data_loader_parameters_value?: string;
+   data_loader_parameters_value?: object;
    model_loader_id?: string;
-   model_loader_parameters_value?: string;
+   model_loader_parameters_value?: object;
    domain?: string;
    step: number;
-   [key: string]: boolean | string | number | undefined; // for attributes and metrics
+   [key: string]: boolean | string | number | object | undefined; // for attributes and metrics (object not applied)
 }
 
 export const RUN_STEP_INITIAL_STATE = {
@@ -46,14 +46,13 @@ export const MODEL_STEP_INITIAL_STATE = {
    uuid: '',
    url_model: '',
    model_loader_id: '',
-   model_loader_parameters_value: '',
+   model_loader_parameters_value: {},
    step: 2
 };
 
 export interface ModelStepFormErrors {
    // url_model: Validation[];
    model_loader_id: Validation[];
-   model_loader_parameters_value: Validation[];
 }
 
 export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
@@ -68,23 +67,6 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
          isValid: (value: string) => !!value,
          message: 'Is required'
       }
-   ],
-   model_loader_parameters_value: [
-      {
-         isValid: (value: string) => {
-            if (!value) {
-               return true;
-            } else {
-               try {
-                  JSON.parse(value);
-                  return true;
-               } catch (e) {
-                  return false;
-               }
-            }
-         },
-         message: 'Is not a valid JSON'
-      }
    ]
 };
 
@@ -92,7 +74,7 @@ export const DATA_STEP_INITIAL_STATE = {
    uuid: '',
    url_data: '',
    data_loader_id: '',
-   data_loader_parameters_value: '',
+   data_loader_parameters_value: {},
    domain: '',
    step: 3
 };
@@ -101,7 +83,6 @@ export interface DataStepFormErrors {
    // url_data: Validation[];
    data_loader_id: Validation[];
    domain: Validation[];
-   data_loader_parameters_value: Validation[];
 }
 
 export const DATA_STEP_VALIDATION: DataStepFormErrors = {
@@ -122,23 +103,6 @@ export const DATA_STEP_VALIDATION: DataStepFormErrors = {
          isValid: (value: string) => !!value,
          message: 'Is required'
       }
-   ],
-   data_loader_parameters_value: [
-      {
-         isValid: (value: string) => {
-            if (!value) {
-               return true;
-            } else {
-               try {
-                  JSON.parse(value);
-                  return true;
-               } catch (e) {
-                  return false;
-               }
-            }
-         },
-         message: 'Is not a valid JSON'
-      }
    ]
 };
 
@@ -148,7 +112,7 @@ export interface BiasStepFormErrors {
 
 export interface ComponentSelection {
    id: string;
-   parameters_value: string;
+   parameters_value: object;
 }
 
 export interface WizardResponse {
