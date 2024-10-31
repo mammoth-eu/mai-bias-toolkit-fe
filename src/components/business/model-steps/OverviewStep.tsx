@@ -92,7 +92,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                         value={
                            JSON.stringify(response.selections.loader_model!.parameters_value) === '{}'
                               ? ''
-                              : JSON.stringify(response.selections.loader_model!.parameters_value)
+                              : JSON.stringify(response.selections.loader_model!.parameters_value, null, 2)
                         }
                         disabled
                      />
@@ -112,7 +112,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                         value={
                            JSON.stringify(response.selections.loader_data!.parameters_value) === '{}'
                               ? ''
-                              : JSON.stringify(response.selections.loader_data!.parameters_value)
+                              : JSON.stringify(response.selections.loader_data!.parameters_value, null, 2)
                         }
                         disabled
                      />
@@ -141,7 +141,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
                                  value={
                                     JSON.stringify(m.parameters_value) === '{}'
                                        ? ''
-                                       : JSON.stringify(m.parameters_value)
+                                       : JSON.stringify(m.parameters_value, null, 2)
                                  }
                                  disabled
                               />

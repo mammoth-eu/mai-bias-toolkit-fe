@@ -99,7 +99,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                            <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_info}</p>
                            <br />
                            <label>Parameters default values:</label>
-                           <p style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(metric.parameter_default)}</p>
+                           <p style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(metric.parameter_default, null, 2)}</p>
                         </div>
                         <div className="column is-half">
                            {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {

@@ -105,7 +105,9 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                      <label>Parameters default values:</label>
                      <p style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
                         {JSON.stringify(
-                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_default
+                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_default,
+                           null,
+                           2
                         )}
                      </p>
                   </div>
