@@ -33,6 +33,9 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
+               f.url_model = '';
+               f.model_loader_id = '';
+               f.model_loader_parameters_value = {};
                formSubmit.setForm(f);
             } else {
                formSubmit.setForm({

@@ -34,6 +34,10 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
+               f.url_data = '';
+               f.data_loader_id = '';
+               f.data_loader_parameters_value = {};
+               f.domain = '';
                formSubmit.setForm(f);
             } else {
                formSubmit.setForm({
@@ -133,7 +137,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
             </div>
             <div className="column is-half">
                {formSubmit.form.data_loader_id &&
-                  data.loaders &&
+                  formSubmit.form.data_loader_parameters_value &&
                   Object.keys(formSubmit.form.data_loader_parameters_value).map((key) => {
                      return renderSwitchInputForm(
                         typeof formSubmit.form.data_loader_parameters_value[key],

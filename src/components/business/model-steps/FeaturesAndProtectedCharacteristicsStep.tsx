@@ -48,14 +48,20 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSu
    };
 
    const createInitForm = (attributes: string[], form: SelectionsForm) => {
+      Object.keys(form).map((key) => {
+         key !== 'uuid' && key !== 'step' && delete form[key];
+      });
       attributes.map((a) => {
          form[a] = false;
       });
    };
 
    const createValuesForm = (selectionAttributes: string[], attributes: string[], form: SelectionsForm) => {
+      Object.keys(form).map((key) => {
+         key !== 'uuid' && key !== 'step' && delete form[key];
+      });
       attributes.map((a) => {
-         form[a] = selectionAttributes.indexOf(a) > -1 ? true : false;
+         form[a] = selectionAttributes.indexOf(a) > -1;
       });
    };
 
