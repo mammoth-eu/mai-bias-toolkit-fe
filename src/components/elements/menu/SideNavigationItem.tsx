@@ -1,5 +1,5 @@
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
-import { getIsActive } from '../../helper';
+import { getIsActive } from '../../helper.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import React from 'react';

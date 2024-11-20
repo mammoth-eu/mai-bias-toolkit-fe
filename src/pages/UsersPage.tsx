@@ -8,6 +8,7 @@ import useModal from '../components/elements/modal/useModal.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import CreateUserModal from '../components/business/user/CreateUserModal.tsx';
+import Loader from '../components/elements/loader/Loader.tsx';
 
 interface UsersResponse {
    is_error: boolean;
@@ -23,6 +24,8 @@ interface User {
 }
 
 const UsersPage = () => {
+   const [isLoading, setIsLoading] = useState<boolean>(true);
+
    const [users, setUsers] = useState<User[]>([]);
 
    const { get } = useAxios<UsersResponse>();
@@ -48,6 +51,7 @@ const UsersPage = () => {
       get(`/wizard/users/get`)
          .then((result: UsersResponse) => {
             setUsers(result.users);
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -61,32 +65,35 @@ const UsersPage = () => {
    return (
       <>
          <Portlet title="Users" actions={renderActions()}>
-            <div className="table-wrapper">
-               <div className="table-container">
-                  <table className="table is-fullwidth is-hoverable mb-0 is-mobile">
-                     <thead>
-                        <tr>
-                           <th style={{ width: '30px' }}>#</th>
-                           <th style={{ width: '200px' }}>Username</th>
-                           <th style={{ width: '200px' }}>e-mail</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <NoDataFound colspan={3} data={users} label="users" />
-                        {!!users &&
-                           users.map((u: User, index) => {
-                              return (
-                                 <tr key={u.user_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{u.username}</td>
-                                    <td>{u.email}</td>
-                                 </tr>
-                              );
-                           })}
-                     </tbody>
-                  </table>
+            {isLoading && <Loader />}
+            {!isLoading && (
+               <div className="table-wrapper">
+                  <div className="table-container">
+                     <table className="table is-fullwidth is-hoverable mb-0 is-mobile">
+                        <thead>
+                           <tr>
+                              <th style={{ width: '30px' }}>#</th>
+                              <th style={{ width: '200px' }}>Username</th>
+                              <th style={{ width: '200px' }}>e-mail</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <NoDataFound colspan={3} data={users} label="users" />
+                           {!!users &&
+                              users.map((u: User, index) => {
+                                 return (
+                                    <tr key={u.user_id}>
+                                       <td>{index + 1}</td>
+                                       <td>{u.username}</td>
+                                       <td>{u.email}</td>
+                                    </tr>
+                                 );
+                              })}
+                        </tbody>
+                     </table>
+                  </div>
                </div>
-            </div>
+            )}
          </Portlet>
          <CreateUserModal modal={newUserModal} onSubmit={() => getUsers()} />
       </>

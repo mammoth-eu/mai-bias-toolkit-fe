@@ -5,14 +5,17 @@ import { getSelectList, getSelectListValue, renderSwitchInputForm } from '../hel
 import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
+import Loader from '../../elements/loader/Loader.tsx';
 
 interface Props {
    uuid: string;
    formSubmit: any;
    step: number;
+   isLoading: boolean;
+   setIsLoading: (isLoading: boolean) => void;
 }
 
-const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
+const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoading }) => {
    const [data, setData] = useState<Data>({});
 
    const [modelLoaderId, setModelLoaderId] = useState<string | undefined>(formSubmit.form.model_loader_id);
@@ -48,6 +51,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                setModelLoaderId(result.selections.loader_model!.id);
             }
             setData(result.data);
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -67,69 +71,72 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
 
    return (
       <>
-         <div className="columns is-multiline">
-            {/*<div className="column is-half">*/}
-            {/*   <TextFormInput*/}
-            {/*      name="url_model"*/}
-            {/*      label="Model Source Path"*/}
-            {/*      value={formSubmit.form.url_model}*/}
-            {/*      update={formSubmit.update}*/}
-            {/*      errors={formSubmit.errors}*/}
-            {/*      placeholder="Model Source Path"*/}
-            {/*      isRequired*/}
-            {/*   />*/}
-            {/*</div>*/}
-            <div className="column is-half">
-               <SelectFormInput
-                  name="model_loader_id"
-                  label="Model Loader"
-                  hasEmpty
-                  selectOptions={modelLoaderSelectList}
-                  value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
-                  errors={formSubmit.errors}
-                  placeholder="Model Loader"
-                  updateSelect={formSubmit.updateSimple}
-                  isRequired
-               />
-               {formSubmit.form.model_loader_id && data.loaders && (
-                  // <label className="label">Description:</label>
-                  <p style={{ whiteSpace: 'pre-line' }}>
-                     {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.description}
-                  </p>
-               )}
-               <br />
-               {formSubmit.form.model_loader_id && data.loaders && (
-                  <div>
-                     <label>Parameters info:</label>
+         {isLoading && <Loader />}
+         {!isLoading && (
+            <div className="columns is-multiline">
+               {/*<div className="column is-half">*/}
+               {/*   <TextFormInput*/}
+               {/*      name="url_model"*/}
+               {/*      label="Model Source Path"*/}
+               {/*      value={formSubmit.form.url_model}*/}
+               {/*      update={formSubmit.update}*/}
+               {/*      errors={formSubmit.errors}*/}
+               {/*      placeholder="Model Source Path"*/}
+               {/*      isRequired*/}
+               {/*   />*/}
+               {/*</div>*/}
+               <div className="column is-half">
+                  <SelectFormInput
+                     name="model_loader_id"
+                     label="Model Loader"
+                     hasEmpty
+                     selectOptions={modelLoaderSelectList}
+                     value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
+                     errors={formSubmit.errors}
+                     placeholder="Model Loader"
+                     updateSelect={formSubmit.updateSimple}
+                     isRequired
+                  />
+                  {formSubmit.form.model_loader_id && data.loaders && (
+                     // <label className="label">Description:</label>
                      <p style={{ whiteSpace: 'pre-line' }}>
-                        {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_info}
+                        {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.description}
                      </p>
-                     <br />
-                     <label>Parameters default values:</label>
-                     <p style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
-                        {JSON.stringify(
-                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_default,
-                           null,
-                           2
-                        )}
-                     </p>
-                  </div>
-               )}
+                  )}
+                  <br />
+                  {formSubmit.form.model_loader_id && data.loaders && (
+                     <div>
+                        <label>Parameters info:</label>
+                        <p style={{ whiteSpace: 'pre-line' }}>
+                           {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_info}
+                        </p>
+                        <br />
+                        <label>Parameters default values:</label>
+                        <p style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
+                           {JSON.stringify(
+                              data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_default,
+                              null,
+                              2
+                           )}
+                        </p>
+                     </div>
+                  )}
+               </div>
+               <div className="column is-half">
+                  {formSubmit.form.model_loader_parameters_value &&
+                     Object.keys(formSubmit.form.model_loader_parameters_value).map((key) => {
+                        return renderSwitchInputForm(
+                           typeof formSubmit.form.model_loader_parameters_value[key],
+                           key,
+                           'model_loader_parameters_value',
+                           formSubmit,
+                           typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
+                              !Number.isInteger(formSubmit.form.model_loader_parameters_value[key])
+                        );
+                     })}
+               </div>
             </div>
-            <div className="column is-half">
-               {formSubmit.form.model_loader_parameters_value &&
-                  Object.keys(formSubmit.form.model_loader_parameters_value).map((key) => {
-                     return renderSwitchInputForm(
-                        typeof formSubmit.form.model_loader_parameters_value[key],
-                        key,
-                        'model_loader_parameters_value',
-                        formSubmit,
-                        typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
-                           !Number.isInteger(formSubmit.form.model_loader_parameters_value[key])
-                     );
-                  })}
-            </div>
-         </div>
+         )}
       </>
    );
 };

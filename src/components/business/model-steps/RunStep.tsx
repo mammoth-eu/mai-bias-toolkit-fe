@@ -4,15 +4,17 @@ import { WizardResponse } from './model';
 import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
+import Loader from '../../elements/loader/Loader.tsx';
 
 interface Props {
    uuid: string;
    formSubmit: any;
    step: number;
+   isLoading: boolean;
+   setIsLoading: (isLoading: boolean) => void;
 }
 
-const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
-
+const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoading }) => {
    const { get } = useAxios<WizardResponse>();
 
    const toaster = useToaster();
@@ -38,6 +40,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                   step: result.selections.step
                });
             }
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -46,31 +49,34 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
 
    return (
       <>
-         <div className="columns is-multiline">
-            <div className="column is-half">
-               <TextFormInput
-                  name="name"
-                  label="Run Name"
-                  value={formSubmit.form.name}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Run Name"
-                  isRequired
-               />
+         {isLoading && <Loader />}
+         {!isLoading && (
+            <div className="columns is-multiline">
+               <div className="column is-half">
+                  <TextFormInput
+                     name="name"
+                     label="Run Name"
+                     value={formSubmit.form.name}
+                     update={formSubmit.update}
+                     errors={formSubmit.errors}
+                     placeholder="Run Name"
+                     isRequired
+                  />
+               </div>
+               <div className="column is-half">
+                  <TextFormInput
+                     name="group"
+                     label="Run Group"
+                     value={formSubmit.form.group}
+                     update={formSubmit.update}
+                     errors={formSubmit.errors}
+                     placeholder="Run Group"
+                     isRequired
+                  />
+               </div>
             </div>
-            <div className="column is-half">
-               <TextFormInput
-                  name="group"
-                  label="Run Group"
-                  value={formSubmit.form.group}
-                  update={formSubmit.update}
-                  errors={formSubmit.errors}
-                  placeholder="Run Group"
-                  isRequired
-               />
-            </div>
-         </div>
+         )}
       </>
    );
 };
-export default ModelStep;
+export default RunStep;

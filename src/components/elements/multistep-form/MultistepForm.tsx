@@ -7,10 +7,11 @@ interface Props {
    steps: ReactElement[];
    markerSteps: ReactElement[];
    stepActions: action[];
+   stepLoadings?: [boolean, (isLoading: boolean) => void][];
 }
 
 // todo: make it to submit data
-const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions }) => {
+const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions, stepLoadings }) => {
    const [isProcessing, setIsProcessing] = useState<boolean>(false);
    const { step, currentStepIndex, isFirstStep, isLastStep, next, back } = useMultistepForm(steps);
 
@@ -25,10 +26,12 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions }) => 
       // setIsProcessing(false)
 
       // if (!isLastStep) return next()
-      // console.log(stepActions[currentStepIndex](e))
       stepActions[currentStepIndex](e)
          .then((res) => {
-            if (!isLastStep && res) return next();
+            if (!isLastStep && res) {
+               stepLoadings && stepLoadings[currentStepIndex][1](true);
+               return next();
+            }
          })
          .finally(() => setIsProcessing(false));
    };
@@ -55,24 +58,29 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions }) => 
                <div className="steps-content">
                   <div className="step-content is-active">{step}</div>
                </div>
-               <div className="steps-actions">
-                  <div className="steps-action">
-                     {!isFirstStep && (
-                        <button
-                           type="button"
-                           onClick={back}
-                           className={'button is-secondary ' + (isProcessing ? 'is-loading' : '')}
-                        >
-                           Back
+               {stepLoadings && !stepLoadings[currentStepIndex][0] && (
+                  <div className="steps-actions">
+                     <div className="steps-action">
+                        {!isFirstStep && (
+                           <button
+                              type="button"
+                              onClick={() => {
+                                 back();
+                                 stepLoadings[currentStepIndex][1](true);
+                              }}
+                              className={'button is-secondary ' + (isProcessing ? 'is-loading' : '')}
+                           >
+                              Back
+                           </button>
+                        )}
+                     </div>
+                     <div className="steps-action">
+                        <button type="submit" className={'button is-primary ' + (isProcessing ? 'is-loading' : '')}>
+                           {isLastStep ? 'Start' : 'Save & Next'}
                         </button>
-                     )}
+                     </div>
                   </div>
-                  <div className="steps-action">
-                     <button type="submit" className={'button is-primary ' + (isProcessing ? 'is-loading' : '')}>
-                        {isLastStep ? 'Start' : 'Save & Next'}
-                     </button>
-                  </div>
-               </div>
+               )}
             </div>
          </form>
       </>

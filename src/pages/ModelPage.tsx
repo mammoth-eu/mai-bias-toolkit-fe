@@ -39,6 +39,13 @@ const ModelPage = () => {
 
    const { get, post } = useAxios();
 
+   const [isLoadingRunStep, setIsLoadingRunStep] = useState<boolean>(true);
+   const [isLoadingModelStep, setIsLoadingModelStep] = useState<boolean>(true);
+   const [isLoadingDataStep, setIsLoadingDataStep] = useState<boolean>(true);
+   const [isLoadingFeatureStep, setIsLoadingFeatureStep] = useState<boolean>(true);
+   const [isLoadingBiasMetricStep, setIsLoadingBiasMetricStep] = useState<boolean>(true);
+   const [isLoadingOverviewStep, setIsLoadingOverviewStep] = useState<boolean>(true);
+
    const stepMarkers = () => {
       const markers = [];
       let index = 1;
@@ -54,19 +61,64 @@ const ModelPage = () => {
    const multiSteps = () => {
       const steps = [];
       let index = 1;
-      steps.push(<RunStep key={index++} uuid={uuid} formSubmit={runStepFormSubmit} step={1} />);
-      steps.push(<ModelStep key={index++} uuid={uuid} formSubmit={modelStepFormSubmit} step={2} />);
-      steps.push(<DataStep key={index++} uuid={uuid} formSubmit={dataStepFormSubmit} step={3} />);
+      steps.push(
+         <RunStep
+            key={index++}
+            uuid={uuid}
+            formSubmit={runStepFormSubmit}
+            step={1}
+            isLoading={isLoadingRunStep}
+            setIsLoading={setIsLoadingRunStep}
+         />
+      );
+      steps.push(
+         <ModelStep
+            key={index++}
+            uuid={uuid}
+            formSubmit={modelStepFormSubmit}
+            step={2}
+            isLoading={isLoadingModelStep}
+            setIsLoading={setIsLoadingModelStep}
+         />
+      );
+      steps.push(
+         <DataStep
+            key={index++}
+            uuid={uuid}
+            formSubmit={dataStepFormSubmit}
+            step={3}
+            isLoading={isLoadingDataStep}
+            setIsLoading={setIsLoadingDataStep}
+         />
+      );
       steps.push(
          <FeaturesAndProtectedCharacteristicsStep
             key={index++}
             uuid={uuid}
             formSubmit={featureStepFormSubmit}
             step={4}
+            isLoading={isLoadingFeatureStep}
+            setIsLoading={setIsLoadingFeatureStep}
          />
       );
-      steps.push(<BiasMetricStep key={index++} uuid={uuid} formSubmit={biasStepFormSubmit} step={5} />);
-      steps.push(<OverviewStep key={index++} uuid={uuid} />);
+      steps.push(
+         <BiasMetricStep
+            key={index++}
+            uuid={uuid}
+            formSubmit={biasStepFormSubmit}
+            step={5}
+            isLoading={isLoadingBiasMetricStep}
+            setIsLoading={setIsLoadingBiasMetricStep}
+         />
+      );
+      steps.push(
+         <OverviewStep
+            key={index++}
+            uuid={uuid}
+            isLoading={isLoadingOverviewStep}
+            setIsLoading={setIsLoadingOverviewStep}
+         />
+      );
       return steps;
    };
 
@@ -242,11 +294,27 @@ const ModelPage = () => {
       return actions;
    };
 
+   const stepLoadings = () => {
+      const loadings: [boolean, (isLoading: boolean) => void][] = [];
+      loadings.push([isLoadingRunStep, setIsLoadingRunStep]);
+      loadings.push([isLoadingModelStep, setIsLoadingModelStep]);
+      loadings.push([isLoadingDataStep, setIsLoadingDataStep]);
+      loadings.push([isLoadingFeatureStep, setIsLoadingFeatureStep]);
+      loadings.push([isLoadingBiasMetricStep, setIsLoadingBiasMetricStep]);
+      loadings.push([isLoadingOverviewStep, setIsLoadingOverviewStep]);
+      return loadings;
+   };
+
    return (
       <>
          <div>
             <Portlet>
-               <MultistepForm markerSteps={stepMarkers()} steps={multiSteps()} stepActions={stepActions()} />
+               <MultistepForm
+                  markerSteps={stepMarkers()}
+                  steps={multiSteps()}
+                  stepActions={stepActions()}
+                  stepLoadings={stepLoadings()}
+               />
             </Portlet>
          </div>
       </>

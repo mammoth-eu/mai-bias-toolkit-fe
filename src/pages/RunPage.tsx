@@ -10,8 +10,11 @@ import { AxiosError } from 'axios';
 import { useToaster } from '../components/elements/toast/useToaster';
 import RunResultsModal from '../components/business/run/RunResultsModal.tsx';
 import useModal from '../components/elements/modal/useModal.ts';
+import Loader from '../components/elements/loader/Loader.tsx';
 
 const RunPage = () => {
+   const [isLoading, setIsLoading] = useState<boolean>(true);
+
    const [result, setResult] = useState<RunDetailsResponse>();
 
    const { uuid } = useParams<{ uuid: string }>();
@@ -26,6 +29,7 @@ const RunPage = () => {
       get(`/wizard/databias/results/${uuid}`)
          .then((result: RunDetailsResponse) => {
             setResult(result);
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -35,7 +39,11 @@ const RunPage = () => {
    const renderActions = () => {
       return (
          <div className="buttons">
-            <button className="button is-primary is-outlined" onClick={runResultModal.open} disabled={!result}>
+            <button
+               className="button is-primary is-outlined"
+               onClick={runResultModal.open}
+               disabled={!result || isLoading}
+            >
                <span>
                   <FontAwesomeIcon icon={faFileLines} />
                   &nbsp;Results
@@ -47,12 +55,13 @@ const RunPage = () => {
 
    return (
       <>
-         {uuid && result && (
-            <Portlet title="Run Overview" actions={renderActions()}>
-               <OverviewStep uuid={uuid} result={result} />
-            </Portlet>
-         )}
-         {result && <RunResultsModal modal={runResultModal} results={result.selections.run_artifacts!} />}
+         <Portlet title="Run Overview" actions={renderActions()}>
+            {isLoading && <Loader />}
+            {!isLoading && uuid && result && (
+               <OverviewStep uuid={uuid} result={result} isLoading={isLoading} setIsLoading={setIsLoading} />
+            )}
+         </Portlet>
+         {!isLoading && result && <RunResultsModal modal={runResultModal} results={result.selections.run_artifacts!} />}
       </>
    );
 };

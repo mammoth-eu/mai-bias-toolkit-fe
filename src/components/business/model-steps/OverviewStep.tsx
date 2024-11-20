@@ -6,13 +6,16 @@ import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import { RunDetailsResponse } from '../model';
 import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
+import Loader from '../../elements/loader/Loader.tsx';
 
 interface Props {
    uuid: string;
    result?: RunDetailsResponse;
+   isLoading: boolean;
+   setIsLoading: (isLoading: boolean) => void;
 }
 
-const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
+const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }) => {
    const [response, setResponse] = useState<WizardResponse | RunDetailsResponse>();
 
    const { get } = useAxios<WizardResponse>();
@@ -33,6 +36,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
       get(`/wizard/databias/overview/${uuid}`)
          .then((result) => {
             setResponse(result);
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -52,7 +56,8 @@ const OverviewStep: React.FC<Props> = ({ uuid, result }) => {
 
    return (
       <>
-         {response && (
+         {isLoading && !response && <Loader />}
+         {!isLoading && response && (
             <div className="columns is-multiline">
                <React.Fragment>
                   <div className="column is-half">

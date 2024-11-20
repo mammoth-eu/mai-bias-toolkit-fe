@@ -5,14 +5,17 @@ import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import { renderSwitchInputForm } from '../helper.tsx';
+import Loader from '../../elements/loader/Loader.tsx';
 
 interface Props {
    uuid: string;
    formSubmit: any;
    step: number;
+   isLoading: boolean;
+   setIsLoading: (isLoading: boolean) => void;
 }
 
-const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
+const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoading }) => {
    const [data, setData] = useState<Data>({});
    const [formLength, setFormLength] = useState<number>(0);
 
@@ -44,6 +47,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
                setFormLength(Object.keys(f).length);
             }
             setData(result.data);
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -72,51 +76,59 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
 
    return (
       <>
-         {formLength == 2 && (
-            <div>
-               <p style={{ fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' }}>
-                  No metrics available. Please review the selected options.
-               </p>
-               <br />
-            </div>
-         )}
-         {formLength > 2 && (
-            <div className="columns is-multiline">
-               {data.metrics!.map((metric, i) => {
-                  return (
-                     <React.Fragment key={i}>
-                        <div className="column is-half">
-                           <BooleanFormInput
-                              name={metric.id}
-                              label={metric.name}
-                              checked={formSubmit.form[metric.id]}
-                              update={formSubmit.updateCheck}
-                           />
-                           {/*<label className="label">Description:</label>*/}
-                           <p style={{ whiteSpace: 'pre-line' }}>{metric.description}</p>
-                           <br />
-                           <label>Parameters info:</label>
-                           <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_info}</p>
-                           <br />
-                           <label>Parameters default values:</label>
-                           <p style={{ whiteSpace: 'pre-line' }}>{JSON.stringify(metric.parameter_default, null, 2)}</p>
-                        </div>
-                        <div className="column is-half">
-                           {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
-                              return renderSwitchInputForm(
-                                 typeof formSubmit.form[metric.id.concat('_parameters_value')][key],
-                                 key,
-                                 metric.id.concat('_parameters_value'),
-                                 formSubmit,
-                                 typeof formSubmit.form[metric.id.concat('_parameters_value')][key] === 'number' &&
-                                    !Number.isInteger(formSubmit.form[metric.id.concat('_parameters_value')][key])
-                              );
-                           })}
-                        </div>
-                     </React.Fragment>
-                  );
-               })}
-            </div>
+         {isLoading && <Loader />}
+         {!isLoading && (
+            <>
+               {formLength == 2 && (
+                  <div>
+                     <p style={{ fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' }}>
+                        No metrics available. Please review the selected options.
+                     </p>
+                     <br />
+                  </div>
+               )}
+               {formLength > 2 && (
+                  <div className="columns is-multiline">
+                     {data.metrics!.map((metric, i) => {
+                        return (
+                           <React.Fragment key={i}>
+                              <div className="column is-half">
+                                 <BooleanFormInput
+                                    name={metric.id}
+                                    label={metric.name}
+                                    checked={formSubmit.form[metric.id]}
+                                    update={formSubmit.updateCheck}
+                                 />
+                                 {/*<label className="label">Description:</label>*/}
+                                 <p style={{ whiteSpace: 'pre-line' }}>{metric.description}</p>
+                                 <br />
+                                 <label>Parameters info:</label>
+                                 <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_info}</p>
+                                 <br />
+                                 <label>Parameters default values:</label>
+                                 <p style={{ whiteSpace: 'pre-line' }}>
+                                    {JSON.stringify(metric.parameter_default, null, 2)}
+                                 </p>
+                              </div>
+                              <div className="column is-half">
+                                 {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
+                                    return renderSwitchInputForm(
+                                       typeof formSubmit.form[metric.id.concat('_parameters_value')][key],
+                                       key,
+                                       metric.id.concat('_parameters_value'),
+                                       formSubmit,
+                                       typeof formSubmit.form[metric.id.concat('_parameters_value')][key] ===
+                                          'number' &&
+                                          !Number.isInteger(formSubmit.form[metric.id.concat('_parameters_value')][key])
+                                    );
+                                 })}
+                              </div>
+                           </React.Fragment>
+                        );
+                     })}
+                  </div>
+               )}
+            </>
          )}
       </>
    );

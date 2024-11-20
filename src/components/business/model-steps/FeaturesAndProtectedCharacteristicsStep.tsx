@@ -4,14 +4,23 @@ import BooleanFormInput from '../../elements/inputs/BooleanFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
+import Loader from '../../elements/loader/Loader.tsx';
 
 interface Props {
    uuid: string;
    formSubmit: any;
    step: number;
+   isLoading: boolean;
+   setIsLoading: (isLoading: boolean) => void;
 }
 
-const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSubmit, step }) => {
+const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
+   uuid,
+   formSubmit,
+   step,
+   isLoading,
+   setIsLoading
+}) => {
    const [formLength, setFormLength] = useState<number>(2);
 
    const { get } = useAxios<WizardResponse>();
@@ -41,6 +50,7 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSu
                formSubmit.setForm(f);
                setFormLength(Object.keys(f).length);
             }
+            setIsLoading(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
@@ -67,24 +77,27 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({ uuid, formSu
 
    return (
       <>
-         <div className="columns is-multiline">
-            {formLength > 2 &&
-               Object.keys(formSubmit.form).map((key) => {
-                  return (
-                     key !== 'uuid' &&
-                     key !== 'step' && (
-                        <div className="column is-half" key={key}>
-                           <BooleanFormInput
-                              name={key}
-                              label={key}
-                              checked={formSubmit.form[key]}
-                              update={formSubmit.updateCheck}
-                           />
-                        </div>
-                     )
-                  );
-               })}
-         </div>
+         {isLoading && <Loader />}
+         {!isLoading && (
+            <div className="columns is-multiline">
+               {formLength > 2 &&
+                  Object.keys(formSubmit.form).map((key) => {
+                     return (
+                        key !== 'uuid' &&
+                        key !== 'step' && (
+                           <div className="column is-half" key={key}>
+                              <BooleanFormInput
+                                 name={key}
+                                 label={key}
+                                 checked={formSubmit.form[key]}
+                                 update={formSubmit.updateCheck}
+                              />
+                           </div>
+                        )
+                     );
+                  })}
+            </div>
+         )}
       </>
    );
 };
