@@ -40,7 +40,6 @@ const SelectFormInput: React.FC<Props> = ({
                   value={value?.value}
                   onChange={(e) => updateSelect(name, e.currentTarget.value)}
                   disabled={disabled}
-                  placeholder={placeholder} // review this, likely not working
                >
                   {hasEmpty && <option></option>}
                   {selectOptions.map((option) => {
@@ -50,6 +49,11 @@ const SelectFormInput: React.FC<Props> = ({
                         </option>
                      );
                   })}
+                  {placeholder && (
+                     <option value={''} disabled selected hidden>
+                        {placeholder}
+                     </option>
+                  )}
                </select>
             </div>
          </div>

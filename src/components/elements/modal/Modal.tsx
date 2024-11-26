@@ -8,19 +8,18 @@ interface Props {
    onClose?: () => void;
    closeButtonName?: string;
    actions?: ReactElement;
-   ref: React.Ref<ModalHandler>;
    children: any;
 }
 
 export interface ModalHandler {
-   open: any;
-   close: any;
+   open: () => void;
+   close: () => void;
 }
 
-const Modal: React.FunctionComponent<Props> = React.forwardRef(
+const Modal = React.forwardRef<ModalHandler, Props>(
    (
       { title, isOpened = false, isLarge = false, onClose, closeButtonName = 'Close', actions = null, children },
-      ref: React.Ref<ModalHandler>
+      ref
    ) => {
       const [isActive, setIsActive] = useState(isOpened);
 

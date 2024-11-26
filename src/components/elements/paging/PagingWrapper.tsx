@@ -4,7 +4,6 @@ import { SingleValueFilterItem } from './model';
 
 interface Props {
    paging: any;
-   ref: React.Ref<FilterFormHandler>;
    children: any;
 }
 
@@ -15,7 +14,7 @@ export interface FilterFormHandler {
    findFilterValue: any;
 }
 
-const PagingWrapper: React.FC<Props> = React.forwardRef(({ paging, ref, children }) => {
+const PagingWrapper = React.forwardRef<FilterFormHandler, Props>(({ paging, children }, ref) => {
    const form = useForm();
    const formElement = useRef<any>();
 
