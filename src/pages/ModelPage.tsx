@@ -158,7 +158,6 @@ const ModelPage = () => {
       if (hasErrors) return Promise.reject();
       const submitForm = {
          uuid: modelStepFormSubmit.form.uuid,
-         url_model: modelStepFormSubmit.form.url_model,
          loader_model: {
             id: modelStepFormSubmit.form.model_loader_id,
             parameters_value: modelStepFormSubmit.form.model_loader_parameters_value
@@ -186,7 +185,6 @@ const ModelPage = () => {
       if (hasErrors) return Promise.reject();
       const submitForm = {
          uuid: dataStepFormSubmit.form.uuid,
-         url_data: dataStepFormSubmit.form.url_data,
          loader_data: {
             id: dataStepFormSubmit.form.data_loader_id,
             parameters_value: dataStepFormSubmit.form.data_loader_parameters_value

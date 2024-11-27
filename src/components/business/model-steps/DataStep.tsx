@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Data, WizardResponse } from './model';
 import { getSelectList, getSelectListValue, renderSwitchInputForm } from '../helper.tsx';
-// import TextFormInput from '../../elements/inputs/TextFormInput';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
@@ -37,7 +36,6 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
             if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
-               f.url_data = '';
                f.data_loader_id = '';
                f.data_loader_parameters_value = {};
                f.domain = '';
@@ -45,7 +43,6 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
             } else {
                formSubmit.setForm({
                   uuid: result.selections.uuid,
-                  url_data: result.selections.url_data,
                   data_loader_id: result.selections.loader_data!.id,
                   data_loader_parameters_value: result.selections.loader_data!.parameters_value,
                   domain: result.selections.domain,
@@ -79,17 +76,6 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
          {isLoading && <Loader />}
          {!isLoading && (
             <div className="columns is-multiline">
-               {/*<div className="column is-half">*/}
-               {/*   <TextFormInput*/}
-               {/*      name="url_data"*/}
-               {/*      label="Data Source Path"*/}
-               {/*      value={formSubmit.form.url_data}*/}
-               {/*      update={formSubmit.update}*/}
-               {/*      errors={formSubmit.errors}*/}
-               {/*      placeholder="Data Source Path"*/}
-               {/*      isRequired*/}
-               {/*   />*/}
-               {/*</div>*/}
                <div className="column is-half">
                   <SelectFormInput
                      name="domain"

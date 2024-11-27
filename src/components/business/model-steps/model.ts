@@ -4,8 +4,6 @@ export interface SelectionsForm {
    uuid: string;
    name?: string;
    group?: string;
-   url_data?: string;
-   url_model?: string;
    data_loader_id?: string;
    data_loader_parameters_value?: object;
    model_loader_id?: string;
@@ -44,24 +42,16 @@ export const RUN_STEP_VALIDATION: RunStepFormErrors = {
 
 export const MODEL_STEP_INITIAL_STATE = {
    uuid: '',
-   url_model: '',
    model_loader_id: '',
    model_loader_parameters_value: {},
    step: 2
 };
 
 export interface ModelStepFormErrors {
-   // url_model: Validation[];
    model_loader_id: Validation[];
 }
 
 export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
-   // url_model: [
-   //    {
-   //       isValid: (value: string) => !!value,
-   //       message: 'Is required'
-   //    }
-   // ],
    model_loader_id: [
       {
          isValid: (value: string) => !!value,
@@ -72,7 +62,6 @@ export const MODEL_STEP_VALIDATION: ModelStepFormErrors = {
 
 export const DATA_STEP_INITIAL_STATE = {
    uuid: '',
-   url_data: '',
    data_loader_id: '',
    data_loader_parameters_value: {},
    domain: '',
@@ -80,18 +69,11 @@ export const DATA_STEP_INITIAL_STATE = {
 };
 
 export interface DataStepFormErrors {
-   // url_data: Validation[];
    data_loader_id: Validation[];
    domain: Validation[];
 }
 
 export const DATA_STEP_VALIDATION: DataStepFormErrors = {
-   // url_data: [
-   //    {
-   //       isValid: (value: string) => !!value,
-   //       message: 'Is required'
-   //    }
-   // ],
    data_loader_id: [
       {
          isValid: (value: string) => !!value,
@@ -124,8 +106,6 @@ export interface Selections {
    uuid?: string;
    name?: string;
    group?: string;
-   url_data?: string;
-   url_model?: string;
    attributes?: string[];
    loader_data?: ComponentSelection;
    loader_model?: ComponentSelection;

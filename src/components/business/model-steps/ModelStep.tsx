@@ -36,14 +36,12 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
             if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
-               f.url_model = '';
                f.model_loader_id = '';
                f.model_loader_parameters_value = {};
                formSubmit.setForm(f);
             } else {
                formSubmit.setForm({
                   uuid: result.selections.uuid,
-                  url_model: result.selections.url_model,
                   model_loader_id: result.selections.loader_model!.id,
                   model_loader_parameters_value: result.selections.loader_model!.parameters_value,
                   step: result.selections.step
@@ -74,17 +72,6 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
          {isLoading && <Loader />}
          {!isLoading && (
             <div className="columns is-multiline">
-               {/*<div className="column is-half">*/}
-               {/*   <TextFormInput*/}
-               {/*      name="url_model"*/}
-               {/*      label="Model Source Path"*/}
-               {/*      value={formSubmit.form.url_model}*/}
-               {/*      update={formSubmit.update}*/}
-               {/*      errors={formSubmit.errors}*/}
-               {/*      placeholder="Model Source Path"*/}
-               {/*      isRequired*/}
-               {/*   />*/}
-               {/*</div>*/}
                <div className="column is-half">
                   <SelectFormInput
                      name="model_loader_id"
