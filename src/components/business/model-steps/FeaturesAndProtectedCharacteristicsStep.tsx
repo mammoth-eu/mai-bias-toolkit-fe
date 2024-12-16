@@ -5,6 +5,7 @@ import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import Loader from '../../elements/loader/Loader.tsx';
+import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput.tsx';
 
 interface Props {
    uuid: string;
@@ -21,7 +22,7 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
    isLoading,
    setIsLoading
 }) => {
-   const [formLength, setFormLength] = useState<number>(2);
+   const [formLength, setFormLength] = useState<number>(3);
 
    const { get } = useAxios<WizardResponse>();
 
@@ -59,44 +60,67 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
 
    const createInitForm = (attributes: string[], form: SelectionsForm) => {
       Object.keys(form).map((key) => {
-         key !== 'uuid' && key !== 'step' && delete form[key];
+         key !== 'uuid' && key !== 'step' && key !== 'addedFields' && delete form[key];
       });
       attributes.map((a) => {
          form[a] = false;
       });
+      form.addedFields = '';
    };
 
    const createValuesForm = (selectionAttributes: string[], attributes: string[], form: SelectionsForm) => {
       Object.keys(form).map((key) => {
-         key !== 'uuid' && key !== 'step' && delete form[key];
+         key !== 'uuid' && key !== 'step' && key !== 'addedFields' && delete form[key];
       });
+      form.addedFields = '';
       attributes.map((a) => {
          form[a] = selectionAttributes.indexOf(a) > -1;
       });
+      selectionAttributes.map((a) => {
+         if (attributes.indexOf(a) === -1) {
+            form.addedFields = form.addedFields + a + ', ';
+         }
+      });
+      form.addedFields = form.addedFields.replace(/[, ]+$/, '');
    };
 
    return (
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="columns is-multiline">
-               {formLength > 2 &&
-                  Object.keys(formSubmit.form).map((key) => {
-                     return (
-                        key !== 'uuid' &&
-                        key !== 'step' && (
-                           <div className="column is-half" key={key}>
-                              <BooleanFormInput
-                                 name={key}
-                                 label={key}
-                                 checked={formSubmit.form[key]}
-                                 update={formSubmit.updateCheck}
-                              />
-                           </div>
-                        )
-                     );
-                  })}
-            </div>
+            <>
+               <div className="columns is-multiline">
+                  {formLength > 3 &&
+                     Object.keys(formSubmit.form).map((key) => {
+                        return (
+                           key !== 'uuid' &&
+                           key !== 'step' &&
+                           key !== 'addedFields' && (
+                              <div className="column is-half" key={key}>
+                                 <BooleanFormInput
+                                    name={key}
+                                    label={key}
+                                    checked={formSubmit.form[key]}
+                                    update={formSubmit.updateCheck}
+                                 />
+                              </div>
+                           )
+                        );
+                     })}
+               </div>
+               <div>
+                  <div>
+                     <TextAreaFormInput
+                        name="addedFields"
+                        label="Custom Feilds"
+                        value={formSubmit.form.addedFields}
+                        update={formSubmit.update}
+                        errors={formSubmit.errors}
+                        placeholder="Custom Fields (comma separated)"
+                     />
+                  </div>
+               </div>
+            </>
          )}
       </>
    );

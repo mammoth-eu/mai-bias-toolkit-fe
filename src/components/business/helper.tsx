@@ -20,7 +20,7 @@ export const getSelectListValue = (res: SelectOption[], value: number | string):
 export const isAtLeastOneSelected = (form: SelectionsForm): boolean => {
    return (
       Object.keys(form).find((key) => {
-         return key !== 'uuid' && key !== 'step' && !key.endsWith('_parameters_value') && form[key];
+         return key !== 'uuid' && key !== 'step' && key !== 'addedFields' && !key.endsWith('_parameters_value') && form[key];
       }) !== undefined
    );
 };

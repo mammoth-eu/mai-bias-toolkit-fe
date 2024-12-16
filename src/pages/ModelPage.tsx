@@ -202,13 +202,13 @@ const ModelPage = () => {
          });
    };
 
-   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', step: 4 }, {});
+   const featureStepFormSubmit = useFormSubmit<SelectionsForm>({ uuid: '', addedFields: '', step: 4 }, {});
 
    const handleSubmitFeatureStep = (event: any) => {
       event.preventDefault();
       const atLeastOneSelected = isAtLeastOneSelected(featureStepFormSubmit.form as SelectionsForm);
-      if (!atLeastOneSelected) {
-         toaster.error('Please select at least one feature!');
+      if (!atLeastOneSelected && !featureStepFormSubmit.form.addedFields) {
+         toaster.error('Please select at least one feature or add a custom feature!');
          return Promise.reject();
       }
       const submitForm = {
@@ -217,9 +217,12 @@ const ModelPage = () => {
          step: featureStepFormSubmit.form.step
       };
       Object.keys(featureStepFormSubmit.form).forEach((key) => {
-         if (key !== 'uuid' && key !== 'step' && featureStepFormSubmit.form[key]) {
+         if (key !== 'uuid' && key !== 'step' && key !== 'addedFields' && featureStepFormSubmit.form[key]) {
             submitForm.attributes.push(key);
          }
+      });
+      featureStepFormSubmit.form.addedFields.split(',').forEach((f: string) => {
+         f && submitForm.attributes.push(f.trim());
       });
       return post(`/wizard/store/${submitForm.uuid}`, submitForm)
          .then(() => {
