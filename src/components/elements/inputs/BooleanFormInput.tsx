@@ -9,6 +9,7 @@ interface Props {
    disabled?: boolean;
    update?: (e: any) => void;
    isRequired?: boolean;
+   tooltip?: string;
 }
 
 const BooleanFormInput: React.FC<Props> = ({
@@ -18,22 +19,25 @@ const BooleanFormInput: React.FC<Props> = ({
    checked,
    disabled = false,
    update,
-   isRequired = false
+   isRequired = false,
+   tooltip = ''
 }) => {
    return (
       <div className="field">
          <div className="control">
-            <input
-               name={name}
-               onChange={update}
-               // className={"input " + renderFieldErrorClass(errors, name)}
-               type="checkbox"
-               disabled={disabled}
-               checked={checked}
-            />{' '}
-            <label className="label">
-               {label} {isRequired && <p>*</p>}
-            </label>
+            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+               <input
+                  name={name}
+                  onChange={update}
+                  // className={"input " + renderFieldErrorClass(errors, name)}
+                  type="checkbox"
+                  disabled={disabled}
+                  checked={checked}
+               />{' '}
+               <label className="label">
+                  {label} {isRequired && <p>*</p>}
+               </label>
+            </span>
          </div>
          {hasError(errors, name) && <p className="help is-danger">{renderFieldError(errors, name)}</p>}
       </div>

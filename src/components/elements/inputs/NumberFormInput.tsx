@@ -13,6 +13,7 @@ interface Props {
    max?: number;
    step?: number;
    isRequired?: boolean;
+   tooltip?: string;
 }
 
 const NumberFormInput: React.FC<Props> = ({
@@ -26,7 +27,8 @@ const NumberFormInput: React.FC<Props> = ({
    min = undefined,
    max = undefined,
    step = 1,
-   isRequired = false
+   isRequired = false,
+   tooltip = ''
 }) => {
    return (
       <div className="field">
@@ -34,18 +36,20 @@ const NumberFormInput: React.FC<Props> = ({
             {label} {isRequired && <p>*</p>}
          </label>
          <div className="control">
-            <input
-               name={name}
-               onChange={update}
-               className={'input ' + renderFieldErrorClass(errors, name)}
-               type="number"
-               disabled={disabled}
-               value={value ? value : ''}
-               placeholder={placeholder ? placeholder : label}
-               min={min}
-               max={max}
-               step={step}
-            />
+            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+               <input
+                  name={name}
+                  onChange={update}
+                  className={'input ' + renderFieldErrorClass(errors, name)}
+                  type="number"
+                  disabled={disabled}
+                  value={value ? value : ''}
+                  placeholder={placeholder ? placeholder : label}
+                  min={min}
+                  max={max}
+                  step={step}
+               />
+            </span>
          </div>
          {hasError(errors, name) && <p className="help is-danger">{renderFieldError(errors, name)}</p>}
       </div>

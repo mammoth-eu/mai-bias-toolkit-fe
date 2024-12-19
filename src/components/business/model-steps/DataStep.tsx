@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Data, WizardResponse } from './model';
-import { getSelectList, getSelectListValue, renderSwitchInputForm } from '../helper.tsx';
+import {
+   getDescription,
+   getAttributesDescription,
+   getParametersInfo,
+   getSelectList,
+   getSelectListValue,
+   renderSwitchInputForm
+} from '../helper.tsx';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import Loader from '../../elements/loader/Loader.tsx';
+import Box from '../../elements/box/Box.tsx';
 
 interface Props {
    uuid: string;
@@ -87,6 +95,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                      placeholder="Domain"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
+                     tooltip="The field or area where the model is being applied."
                   />
                </div>
                <div className="column is-half" />
@@ -101,30 +110,21 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                      placeholder="Data Loader"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
+                     tooltip="Collects and prepares data for bias detection."
                   />
                   {formSubmit.form.data_loader_id && data.loaders && (
-                     // <label className="label">Description:</label>
-                     <p style={{ whiteSpace: 'pre-line' }}>
-                        {data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.description}
-                     </p>
+                     <Box
+                        title="Description:"
+                        content={getDescription(
+                           data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.description
+                        )}
+                     />
                   )}
-                  <br />
                   {formSubmit.form.data_loader_id && data.loaders && (
-                     <div>
-                        <label>Parameters info:</label>
-                        <p style={{ whiteSpace: 'pre-line' }}>
-                           {data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.parameter_info}
-                        </p>
-                        <br />
-                        <label>Parameters default values:</label>
-                        <p style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
-                           {JSON.stringify(
-                              data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.parameter_default,
-                              null,
-                              2
-                           )}
-                        </p>
-                     </div>
+                     <Box
+                        title="Parameters info:"
+                        content={getParametersInfo(data.loaders, formSubmit.form.data_loader_id)}
+                     />
                   )}
                </div>
                <div className="column is-half">
@@ -137,7 +137,13 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                            'data_loader_parameters_value',
                            formSubmit,
                            typeof formSubmit.form.data_loader_parameters_value[key] === 'number' &&
-                              !Number.isInteger(formSubmit.form.data_loader_parameters_value[key])
+                              !Number.isInteger(formSubmit.form.data_loader_parameters_value[key]),
+                           getAttributesDescription(
+                              data.loaders!.find((l) => l.id === formSubmit.form.data_loader_id)!.description
+                           )[key] +
+                              ' (default: ' +
+                              formSubmit.form.data_loader_parameters_value[key] +
+                              ')'
                         );
                      })}
                </div>

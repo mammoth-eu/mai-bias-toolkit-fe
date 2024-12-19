@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { Data, WizardResponse } from './model';
-import { getSelectList, getSelectListValue, renderSwitchInputForm } from '../helper.tsx';
+import {
+   getAttributesDescription,
+   getDescription,
+   getParametersInfo,
+   getSelectList,
+   getSelectListValue,
+   renderSwitchInputForm
+} from '../helper.tsx';
 import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
 import Loader from '../../elements/loader/Loader.tsx';
+import Box from '../../elements/box/Box.tsx';
 
 interface Props {
    uuid: string;
@@ -83,30 +91,21 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                      placeholder="Model Loader"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
+                     tooltip="Loads pre-trained machine learning models to detect bias."
                   />
                   {formSubmit.form.model_loader_id && data.loaders && (
-                     // <label className="label">Description:</label>
-                     <p style={{ whiteSpace: 'pre-line' }}>
-                        {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.description}
-                     </p>
+                     <Box
+                        title="Description:"
+                        content={getDescription(
+                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.description
+                        )}
+                     />
                   )}
-                  <br />
                   {formSubmit.form.model_loader_id && data.loaders && (
-                     <div>
-                        <label>Parameters info:</label>
-                        <p style={{ whiteSpace: 'pre-line' }}>
-                           {data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_info}
-                        </p>
-                        <br />
-                        <label>Parameters default values:</label>
-                        <p style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
-                           {JSON.stringify(
-                              data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.parameter_default,
-                              null,
-                              2
-                           )}
-                        </p>
-                     </div>
+                     <Box
+                        title="Parameters info:"
+                        content={getParametersInfo(data.loaders, formSubmit.form.model_loader_id)}
+                     />
                   )}
                </div>
                <div className="column is-half">
@@ -118,7 +117,13 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                            'model_loader_parameters_value',
                            formSubmit,
                            typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
-                              !Number.isInteger(formSubmit.form.model_loader_parameters_value[key])
+                              !Number.isInteger(formSubmit.form.model_loader_parameters_value[key]),
+                           getAttributesDescription(
+                              data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id)!.description
+                           )[key] +
+                              ' (default: ' +
+                              formSubmit.form.model_loader_parameters_value[key] +
+                              ')'
                         );
                      })}
                </div>

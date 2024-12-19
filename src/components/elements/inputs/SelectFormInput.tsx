@@ -13,6 +13,7 @@ interface Props {
    hasEmpty?: boolean;
    disabled?: boolean;
    isRequired?: boolean;
+   tooltip?: string;
 }
 
 const SelectFormInput: React.FC<Props> = ({
@@ -25,7 +26,8 @@ const SelectFormInput: React.FC<Props> = ({
    updateSelect,
    hasEmpty = false,
    disabled = false,
-   isRequired = false
+   isRequired = false,
+   tooltip = ''
 }) => {
    return (
       <div className="field">
@@ -34,28 +36,30 @@ const SelectFormInput: React.FC<Props> = ({
          </label>
 
          <div className="control">
-            <div className={'select is-fullwidth' + (hasError(errors, name) ? ' is-danger ' : '')}>
-               <select
-                  name={name}
-                  value={value?.value}
-                  onChange={(e) => updateSelect(name, e.currentTarget.value)}
-                  disabled={disabled}
-               >
-                  {hasEmpty && <option></option>}
-                  {selectOptions.map((option) => {
-                     return (
-                        <option key={option.value} value={option.value}>
-                           {option.label}
+            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+               <div className={'select is-fullwidth' + (hasError(errors, name) ? ' is-danger ' : '')}>
+                  <select
+                     name={name}
+                     value={value?.value}
+                     onChange={(e) => updateSelect(name, e.currentTarget.value)}
+                     disabled={disabled}
+                  >
+                     {hasEmpty && <option></option>}
+                     {selectOptions.map((option) => {
+                        return (
+                           <option key={option.value} value={option.value}>
+                              {option.label}
+                           </option>
+                        );
+                     })}
+                     {placeholder && (
+                        <option value={''} disabled selected hidden>
+                           {placeholder}
                         </option>
-                     );
-                  })}
-                  {placeholder && (
-                     <option value={''} disabled selected hidden>
-                        {placeholder}
-                     </option>
-                  )}
-               </select>
-            </div>
+                     )}
+                  </select>
+               </div>
+            </span>
          </div>
          {hasError(errors, name) && <p className="help is-danger">{renderFieldError(errors, name)}</p>}
       </div>

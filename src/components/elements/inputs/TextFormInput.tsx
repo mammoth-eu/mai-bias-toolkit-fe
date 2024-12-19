@@ -10,6 +10,7 @@ interface Props {
    placeholder?: string;
    disabled?: boolean;
    update?: (e: any) => void;
+   tooltip?: string;
 }
 
 const TextFormInput: React.FC<Props> = ({
@@ -20,7 +21,8 @@ const TextFormInput: React.FC<Props> = ({
    placeholder,
    disabled = false,
    update,
-   isRequired = false
+   isRequired = false,
+   tooltip = ''
 }) => {
    return (
       <div className="field">
@@ -28,15 +30,17 @@ const TextFormInput: React.FC<Props> = ({
             {label} {isRequired && <p>*</p>}
          </label>
          <div className="control">
-            <input
-               name={name}
-               onChange={update}
-               className={'input ' + renderFieldErrorClass(errors, name)}
-               type="text"
-               disabled={disabled}
-               value={value}
-               placeholder={placeholder ? placeholder : label}
-            />
+            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+               <input
+                  name={name}
+                  onChange={update}
+                  className={'input ' + renderFieldErrorClass(errors, name)}
+                  type="text"
+                  disabled={disabled}
+                  value={value}
+                  placeholder={placeholder ? placeholder : label}
+               />
+            </span>
          </div>
          {hasError(errors, name) && <p className="help is-danger">{renderFieldError(errors, name)}</p>}
       </div>

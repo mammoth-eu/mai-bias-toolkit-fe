@@ -4,8 +4,9 @@ import BooleanFormInput from '../../elements/inputs/BooleanFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
-import { renderSwitchInputForm } from '../helper.tsx';
+import { getAttributesDescription, getDescription, getOptionsDescription, renderSwitchInputForm } from '../helper.tsx';
 import Loader from '../../elements/loader/Loader.tsx';
+import Box from '../../elements/box/Box.tsx';
 
 interface Props {
    uuid: string;
@@ -99,16 +100,8 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                     checked={formSubmit.form[metric.id]}
                                     update={formSubmit.updateCheck}
                                  />
-                                 {/*<label className="label">Description:</label>*/}
-                                 <p style={{ whiteSpace: 'pre-line' }}>{metric.description}</p>
-                                 <br />
-                                 <label>Parameters info:</label>
-                                 <p style={{ whiteSpace: 'pre-line' }}>{metric.parameter_info}</p>
-                                 <br />
-                                 <label>Parameters default values:</label>
-                                 <p style={{ whiteSpace: 'pre-line' }}>
-                                    {JSON.stringify(metric.parameter_default, null, 2)}
-                                 </p>
+                                 <Box title="Description:" content={getDescription(metric.description)} />
+                                 <Box title="Parameters info:" content={metric.parameter_info} />
                               </div>
                               <div className="column is-half">
                                  {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
@@ -119,7 +112,16 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                        formSubmit,
                                        typeof formSubmit.form[metric.id.concat('_parameters_value')][key] ===
                                           'number' &&
-                                          !Number.isInteger(formSubmit.form[metric.id.concat('_parameters_value')][key])
+                                          !Number.isInteger(
+                                             formSubmit.form[metric.id.concat('_parameters_value')][key]
+                                          ),
+                                       getAttributesDescription(metric.description)[key] +
+                                          ' (default: ' +
+                                          metric.parameter_default[key] +
+                                          ') ' +
+                                          (getOptionsDescription(metric.description)[key]
+                                             ? '(options: ' + getOptionsDescription(metric.description)[key] + ')'
+                                             : '')
                                     );
                                  })}
                               </div>

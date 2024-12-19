@@ -61,6 +61,7 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      errors={formSubmit.errors}
                      placeholder="Run Name"
                      isRequired
+                     tooltip="A custom name to identify a specific run."
                   />
                </div>
                <div className="column is-half">
@@ -72,6 +73,7 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      errors={formSubmit.errors}
                      placeholder="Run Group"
                      isRequired
+                     tooltip="A custom name to identify a group of related runs."
                   />
                </div>
             </div>
