@@ -38,7 +38,7 @@ const DashboardPage = () => {
                      <span className="icon is-medium">
                         <FontAwesomeIcon icon={faDiagramProject} />
                      </span>
-                     <span>Model Exploration</span>
+                     <span>Bias Exploration</span>
                   </button>
                </Link>
             </div>

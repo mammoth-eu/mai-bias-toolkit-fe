@@ -54,7 +54,7 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                            to="/model"
                            path={pathname}
                            icon={faDiagramProject}
-                           tooltip="Model Exploration"
+                           tooltip="Bias Exploration"
                            showFull={isTablet()}
                         />
                      </li>
