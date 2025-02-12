@@ -14,6 +14,7 @@ interface Props {
    step?: number;
    isRequired?: boolean;
    tooltip?: string;
+   formatTooltip?: boolean;
 }
 
 const NumberFormInput: React.FC<Props> = ({
@@ -28,7 +29,8 @@ const NumberFormInput: React.FC<Props> = ({
    max = undefined,
    step = 1,
    isRequired = false,
-   tooltip = ''
+   tooltip = '',
+   formatTooltip = false
 }) => {
    return (
       <div className="field">
@@ -36,7 +38,10 @@ const NumberFormInput: React.FC<Props> = ({
             {label} {isRequired && <p>*</p>}
          </label>
          <div className="control">
-            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+            <span
+               className={`has-tooltip has-tooltip-arrow ${formatTooltip ? 'has-tooltip-text-centered has-tooltip-multiline custom-tooltip-width' : ''}`}
+               {...(tooltip ? { 'data-tooltip': tooltip } : {})}
+            >
                <input
                   name={name}
                   onChange={update}

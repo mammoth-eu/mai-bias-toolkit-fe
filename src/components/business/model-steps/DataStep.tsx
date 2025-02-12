@@ -6,7 +6,8 @@ import {
    getParametersInfo,
    getSelectList,
    getSelectListValue,
-   renderSwitchInputForm
+   renderSwitchInputForm,
+   getOptionsDescription
 } from '../helper.tsx';
 import SelectFormInput from '../../elements/inputs/SelectFormInput';
 import { useAxios } from '../axios/useAxios';
@@ -131,19 +132,20 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                   {formSubmit.form.data_loader_id &&
                      formSubmit.form.data_loader_parameters_value &&
                      Object.keys(formSubmit.form.data_loader_parameters_value).map((key) => {
+                        const loader = data.loaders!.find((l) => l.id === formSubmit.form.data_loader_id);
+                        const options = getOptionsDescription(loader!.description)[key];
                         return renderSwitchInputForm(
-                           typeof formSubmit.form.data_loader_parameters_value[key],
+                           options?.length ? 'select' : typeof formSubmit.form.data_loader_parameters_value[key],
                            key,
                            'data_loader_parameters_value',
                            formSubmit,
                            typeof formSubmit.form.data_loader_parameters_value[key] === 'number' &&
                               !Number.isInteger(formSubmit.form.data_loader_parameters_value[key]),
-                           getAttributesDescription(
-                              data.loaders!.find((l) => l.id === formSubmit.form.data_loader_id)!.description
-                           )[key] +
+                           getAttributesDescription(loader!.description)[key] +
                               ' (default: ' +
                               formSubmit.form.data_loader_parameters_value[key] +
-                              ')'
+                              ')',
+                           options ? [...options, loader!.parameter_default[key]] : undefined
                         );
                      })}
                </div>

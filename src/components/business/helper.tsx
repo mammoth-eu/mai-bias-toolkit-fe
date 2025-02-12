@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import TextFormInput from '../elements/inputs/TextFormInput';
 import NumberFormInput from '../elements/inputs/NumberFormInput.tsx';
 import BooleanFormInput from '../elements/inputs/BooleanFormInput.tsx';
+import SelectFormInput from '../elements/inputs/SelectFormInput.tsx';
 
 export const getSelectList = (res: Component[] | Domain[]): SelectOption[] => {
    const o: SelectOption[] = [];
@@ -105,6 +106,7 @@ export function renderSwitchInputForm(
    formSubmit: any,
    isDecimal?: boolean,
    tooltip?: string,
+   options?: string[]
 ): ReactNode {
    switch (type) {
       case 'string':
@@ -118,6 +120,7 @@ export function renderSwitchInputForm(
                errors={formSubmit.errors}
                placeholder={name}
                tooltip={tooltip}
+               formatTooltip
             />
          );
       case 'number':
@@ -132,6 +135,7 @@ export function renderSwitchInputForm(
                placeholder={name}
                step={isDecimal ? 0.1 : 1}
                tooltip={tooltip}
+               formatTooltip
             />
          );
       case 'boolean':
@@ -144,8 +148,28 @@ export function renderSwitchInputForm(
                checked={!!formSubmit.form[field][name]}
                update={(event) => formSubmit.updateCheckField(field, event)}
                tooltip={tooltip}
+               formatTooltip
             />
          );
+      case 'select': {
+         const selectOptions: SelectOption[] = [];
+         options!.forEach((o) => selectOptions.push({ label: o, value: o }));
+         return (
+            <SelectFormInput
+               key={name}
+               name={name}
+               label={name}
+               selectOptions={selectOptions}
+               value={selectOptions.find((o) => o.value === formSubmit.form[field][name])}
+               errors={formSubmit.errors}
+               placeholder={name}
+               updateSelect={formSubmit.updateSimpleField}
+               tooltip={tooltip}
+               formatTooltip
+               field={field}
+            />
+         );
+      }
       default:
          return;
    }

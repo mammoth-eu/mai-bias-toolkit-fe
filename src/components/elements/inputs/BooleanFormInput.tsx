@@ -10,6 +10,7 @@ interface Props {
    update?: (e: any) => void;
    isRequired?: boolean;
    tooltip?: string;
+   formatTooltip?: boolean;
 }
 
 const BooleanFormInput: React.FC<Props> = ({
@@ -20,12 +21,16 @@ const BooleanFormInput: React.FC<Props> = ({
    disabled = false,
    update,
    isRequired = false,
-   tooltip = ''
+   tooltip = '',
+   formatTooltip = false
 }) => {
    return (
       <div className="field">
          <div className="control">
-            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+            <span
+               className={`has-tooltip has-tooltip-arrow ${formatTooltip ? 'has-tooltip-text-centered has-tooltip-multiline custom-tooltip-width' : ''}`}
+               {...(tooltip ? { 'data-tooltip': tooltip } : {})}
+            >
                <input
                   name={name}
                   onChange={update}

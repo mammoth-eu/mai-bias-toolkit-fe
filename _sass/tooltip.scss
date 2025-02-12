@@ -1,0 +1,6 @@
+.custom-tooltip-width[data-tooltip]:hover::before {
+  width: 18vw !important;  /* Adjust this value as needed */
+  max-width: 18vw !important;  /* Adjust this value as needed */
+  white-space: normal !important;
+  word-break: break-word !important;  /* Ensure long words break correctly */
+}

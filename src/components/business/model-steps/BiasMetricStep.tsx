@@ -105,8 +105,11 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                               </div>
                               <div className="column is-half">
                                  {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
+                                    const options = getOptionsDescription(metric.description)[key];
                                     return renderSwitchInputForm(
-                                       typeof formSubmit.form[metric.id.concat('_parameters_value')][key],
+                                       options?.length
+                                          ? 'select'
+                                          : typeof formSubmit.form[metric.id.concat('_parameters_value')][key],
                                        key,
                                        metric.id.concat('_parameters_value'),
                                        formSubmit,
@@ -118,10 +121,8 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                        getAttributesDescription(metric.description)[key] +
                                           ' (default: ' +
                                           metric.parameter_default[key] +
-                                          ') ' +
-                                          (getOptionsDescription(metric.description)[key]
-                                             ? '(options: ' + getOptionsDescription(metric.description)[key] + ')'
-                                             : '')
+                                          ') ',
+                                       options ? [...options, metric.parameter_default[key]] : undefined
                                     );
                                  })}
                               </div>

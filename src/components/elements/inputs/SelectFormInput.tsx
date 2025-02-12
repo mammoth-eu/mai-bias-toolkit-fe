@@ -9,11 +9,13 @@ interface Props {
    errors?: any;
    value?: SelectOption;
    placeholder?: string;
-   updateSelect: (name: string, value: any) => void;
+   updateSelect: (name: string, value: any, field?: string) => void;
    hasEmpty?: boolean;
    disabled?: boolean;
    isRequired?: boolean;
    tooltip?: string;
+   formatTooltip?: boolean;
+   field?: string;
 }
 
 const SelectFormInput: React.FC<Props> = ({
@@ -27,7 +29,9 @@ const SelectFormInput: React.FC<Props> = ({
    hasEmpty = false,
    disabled = false,
    isRequired = false,
-   tooltip = ''
+   tooltip = '',
+   formatTooltip = false,
+   field
 }) => {
    return (
       <div className="field">
@@ -36,12 +40,15 @@ const SelectFormInput: React.FC<Props> = ({
          </label>
 
          <div className="control">
-            <span className="has-tooltip-arrow" {...(tooltip ? { 'data-tooltip': tooltip } : {})}>
+            <span
+               className={`has-tooltip has-tooltip-arrow ${formatTooltip ? 'has-tooltip-text-centered has-tooltip-multiline custom-tooltip-width' : ''}`}
+               {...(tooltip && { 'data-tooltip': tooltip })}
+            >
                <div className={'select is-fullwidth' + (hasError(errors, name) ? ' is-danger ' : '')}>
                   <select
                      name={name}
                      value={value?.value}
-                     onChange={(e) => updateSelect(name, e.currentTarget.value)}
+                     onChange={(e) => updateSelect(name, e.currentTarget.value, field)}
                      disabled={disabled}
                   >
                      {hasEmpty && <option></option>}

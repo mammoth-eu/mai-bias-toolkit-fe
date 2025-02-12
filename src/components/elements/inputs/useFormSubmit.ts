@@ -54,6 +54,16 @@ export function useFormSubmit<T>(INITIAL_STATE: T, VALIDATION: any, UPDATED_STAT
       });
    };
 
+   const updateSimpleField = (name: string, value: any, field: string) => {
+      setForm({
+         ...form,
+         [field]: {
+            ...form[field],
+            [name]: value
+         }
+      });
+   };
+
    const updateSelect = (event: any, name: string) => {
       console.log(name);
       console.log(event);
@@ -108,6 +118,7 @@ export function useFormSubmit<T>(INITIAL_STATE: T, VALIDATION: any, UPDATED_STAT
       updateCheckField,
       bulkUpdate,
       updateSimple,
+      updateSimpleField,
       reset
    };
 }
