@@ -1,30 +1,35 @@
 import Modal from '../../elements/modal/Modal';
 import React from 'react';
+import { ResultLink } from '../model-steps/model.ts';
 
 interface Props {
    modal: any;
-   results: string[];
+   results: ResultLink[];
+   title: string;
 }
 
-const CreateUserModal: React.FC<Props> = ({ modal, results }) => {
+const RunResultsModal: React.FC<Props> = ({ modal, results, title }) => {
    return (
-      <Modal ref={modal.ref} title={'Results'} isLarge>
+      <Modal ref={modal.ref} title={title} isLarge>
          <br />
          {results.map((result, index) => {
+            const encodedResultUrl = encodeURIComponent(result.url);
             return (
                <>
                   <p key={index}>
-                     <b>
-                        <a href={result} target="_blank">
-                           {result}
-                        </a>
-                     </b>
+                     <button
+                        onClick={() =>
+                           window.open(`${window.location.origin}/result?resultUrl=${encodedResultUrl}`, '_blank')
+                        }
+                        className="button is-ghost has-text-weight-bold"
+                     >
+                        {result.name}
+                     </button>
                   </p>
-                  <br />
                </>
             );
          })}
       </Modal>
    );
 };
-export default CreateUserModal;
+export default RunResultsModal;

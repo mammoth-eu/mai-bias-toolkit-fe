@@ -115,6 +115,13 @@ export interface Selections {
    step: number;
    run_id?: string;
    run_artifacts?: string[];
+   result_links?: ResultLink[];
+}
+
+export interface ResultLink {
+   name: string;
+   url: string;
+   type: string;
 }
 
 export interface Data {
