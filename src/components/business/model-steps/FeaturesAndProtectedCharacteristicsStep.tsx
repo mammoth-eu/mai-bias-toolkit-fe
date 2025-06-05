@@ -40,7 +40,7 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
             if (result.selections.step < step) {
                const f = formSubmit.form;
                f.uuid = uuid;
-               createInitForm(result.data.attributes!, f);
+               createInitForm(result.data.attributes!, result.data.matching_attributes!, f);
                formSubmit.setForm(f);
                setFormLength(Object.keys(f).length);
             } else {
@@ -58,12 +58,12 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
          });
    };
 
-   const createInitForm = (attributes: string[], form: SelectionsForm) => {
+   const createInitForm = (attributes: string[], matchingAttributes: string[], form: SelectionsForm) => {
       Object.keys(form).map((key) => {
          key !== 'uuid' && key !== 'step' && key !== 'addedFields' && delete form[key];
       });
       attributes.map((a) => {
-         form[a] = false;
+         form[a] = matchingAttributes.indexOf(a) > -1;
       });
       form.addedFields = '';
    };

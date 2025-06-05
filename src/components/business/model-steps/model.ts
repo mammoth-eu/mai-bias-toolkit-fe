@@ -126,6 +126,7 @@ export interface ResultLink {
 
 export interface Data {
    attributes?: string[];
+   matching_attributes?: string[];
    loaders?: Component[];
    domains?: Domain[];
    metrics?: Component[];
