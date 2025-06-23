@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import AuthService from '../../../services/AuthService';
 
 const URL = import.meta.env.VITE_BACKEND_URL;
@@ -33,6 +33,14 @@ export function useAxios<T>() {
       });
    };
 
+   const getHTML = async (uri: string) => {
+      const config = await getAuthHeaders();
+      const mergedConfig: AxiosRequestConfig = { ...config, responseType: 'text' };
+      return axios.get<T>(URL + uri, mergedConfig).then((res: AxiosResponse<T>) => {
+         return res.data;
+      });
+   };
+
    const put = async (uri: string, data: any): Promise<T> => {
       const config = await getAuthHeaders();
       return axios.put<T>(URL + uri, data, config).then((res: AxiosResponse<T>) => {
@@ -50,6 +58,7 @@ export function useAxios<T>() {
    return {
       post,
       get,
+      getHTML,
       put,
       del
    };

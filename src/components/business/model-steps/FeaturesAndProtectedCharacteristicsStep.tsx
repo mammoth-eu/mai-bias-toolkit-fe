@@ -112,7 +112,7 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
                   <div>
                      <TextAreaFormInput
                         name="addedFields"
-                        label="Custom Feilds"
+                        label="Custom Fields"
                         value={formSubmit.form.addedFields}
                         update={formSubmit.update}
                         errors={formSubmit.errors}

@@ -4,6 +4,7 @@ import Portlet from '../components/elements/portlet/Portlet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileLines } from '@fortawesome/free-solid-svg-icons/faFileLines';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
 import { useAxios } from '../components/business/axios/useAxios';
 import { RunDetailsResponse } from '../components/business/model';
 import { useEffect, useState } from 'react';
@@ -13,17 +14,26 @@ import RunResultsModal from '../components/business/run/RunResultsModal.tsx';
 import useModal from '../components/elements/modal/useModal.ts';
 import Loader from '../components/elements/loader/Loader.tsx';
 import { ResultLink } from '../components/business/model-steps/model.ts';
+import RunStatusModal from '../components/business/run/RunStatusModal.tsx';
 
 const RunPage = () => {
-   const [isLoading, setIsLoading] = useState<boolean>(true);
+   const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(true);
+
+   const [status, setStatus] = useState<string>('');
+
+   const [isLoadingResult, setIsLoadingResult] = useState<boolean>(true);
 
    const [result, setResult] = useState<RunDetailsResponse>();
 
    const { uuid } = useParams<{ uuid: string }>();
 
+   const { getHTML } = useAxios<string>();
+
    const { get } = useAxios<RunDetailsResponse>();
 
    const toaster = useToaster();
+
+   const statusModal = useModal();
 
    const runResultModal = useModal();
 
@@ -33,22 +43,44 @@ const RunPage = () => {
       get(`/wizard/databias/resultlinks/${uuid}`)
          .then((result: RunDetailsResponse) => {
             setResult(result);
-            setIsLoading(false);
+            setIsLoadingResult(false);
          })
          .catch((e: AxiosError) => {
             toaster.error(e.message);
          });
    }, [uuid]);
 
+   useEffect(() => {
+      const interval = setInterval(() => {
+         getHTML(`/wizard/databias/status/${uuid}`)
+            .then((result: string) => {
+               setStatus(result);
+               setIsLoadingStatus(false);
+            })
+            .catch((e: AxiosError) => {
+               toaster.error(e.message);
+            });
+      }, 2000);
+      return () => clearInterval(interval);
+   }, [uuid]);
+
    const renderActions = () => {
-      const noArtifactResult = !!result && !filterOnType(result.selections.result_links!, 'artifact').length;
-      const noLogResult = !!result && !filterOnType(result.selections.result_links!, 'log').length;
+      //      const noArtifactResult = !!result && !filterOnType(result.selections.result_links!, 'artifact').length;
+      //      const noLogResult = !!result && !filterOnType(result.selections.result_links!, 'log').length;
       return (
          <div className="buttons">
             <button
                className="button is-primary is-outlined"
+               onClick={statusModal.open}
+               disabled={!status || isLoadingStatus}
+            >
+               <FontAwesomeIcon icon={faCircleInfo} />
+               &nbsp;Status
+            </button>
+            <button
+               className="button is-primary is-outlined"
                onClick={runResultModal.open}
-               disabled={!result || isLoading || noArtifactResult}
+               disabled={!result || isLoadingResult /*|| noArtifactResult*/}
             >
                <span>
                   <FontAwesomeIcon icon={faFileLines} />
@@ -58,7 +90,7 @@ const RunPage = () => {
             <button
                className="button is-primary is-outlined"
                onClick={runLogModal.open}
-               disabled={!result || isLoading || noLogResult}
+               disabled={!result || isLoadingResult /*|| noLogResult*/}
             >
                <span>
                   <FontAwesomeIcon icon={faBook} />
@@ -76,19 +108,25 @@ const RunPage = () => {
    return (
       <>
          <Portlet title="Run Overview" actions={renderActions()}>
-            {isLoading && <Loader />}
-            {!isLoading && uuid && result && (
-               <OverviewStep uuid={uuid} result={result} isLoading={isLoading} setIsLoading={setIsLoading} />
+            {isLoadingResult && <Loader />}
+            {!isLoadingResult && uuid && result && (
+               <OverviewStep
+                  uuid={uuid}
+                  result={result}
+                  isLoading={isLoadingResult}
+                  setIsLoading={setIsLoadingResult}
+               />
             )}
          </Portlet>
-         {!isLoading && result && (
+         {!isLoadingStatus && status && <RunStatusModal modal={statusModal} text={status} title="Run Status" />}
+         {!isLoadingResult && result && (
             <RunResultsModal
                modal={runResultModal}
                results={filterOnType(result.selections.result_links!, 'artifact')}
                title={'Results'}
             />
          )}
-         {!isLoading && result && (
+         {!isLoadingResult && result && (
             <RunResultsModal
                modal={runLogModal}
                results={filterOnType(result.selections.result_links!, 'log')}
