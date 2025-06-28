@@ -59,9 +59,9 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      value={formSubmit.form.name ?? 'mai-run'}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
-                     placeholder="Run Name"
+                     placeholder="Name"
                      isRequired
-                     tooltip="A custom name to identify a specific run."
+                     tooltip="A custom name to identify a specific run within a group."
                   />
                </div>
                <div className="column is-half">
@@ -71,7 +71,7 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      value={formSubmit.form.group ?? 'mai-group'}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
-                     placeholder="Run Group"
+                     placeholder="Group"
                      isRequired
                      tooltip="A custom name to identify a group of related runs."
                   />
