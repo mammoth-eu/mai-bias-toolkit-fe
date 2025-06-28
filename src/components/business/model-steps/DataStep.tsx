@@ -84,7 +84,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="columns is-multiline">
+            <div className="rows is-multiline">
                <div className="column is-half">
                   <SelectFormInput
                      name="domain"

@@ -58,7 +58,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
       <>
          {isLoading && !response && <Loader />}
          {!isLoading && response && (
-            <div className="columns is-multiline">
+            <div className="rows is-multiline">
                <React.Fragment>
                   <div className="column is-half">
                      <TextFormInput name="name" label="Run Name" value={response.selections.name!} disabled />

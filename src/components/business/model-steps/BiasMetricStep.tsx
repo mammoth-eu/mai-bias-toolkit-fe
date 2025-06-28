@@ -89,7 +89,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                   </div>
                )}
                {formLength > 2 && (
-                  <div className="columns is-multiline">
+                  <div className="rows is-multiline">
                      {data.metrics!.map((metric, i) => {
                         return (
                            <React.Fragment key={i}>

@@ -89,7 +89,7 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
          {isLoading && <Loader />}
          {!isLoading && (
             <>
-               <div className="columns is-multiline">
+               <div className="rows is-multiline">
                   {formLength > 3 &&
                      Object.keys(formSubmit.form).map((key) => {
                         return (

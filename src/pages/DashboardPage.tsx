@@ -38,7 +38,7 @@ const DashboardPage = () => {
       </div>
       <div className="columns is-centered mt-6">
          <div className="column is-narrow has-text-centered">
-            <img src={logo} alt="Official Mammoth Logo" width="300" />
+            <img src={logo} alt="Official ΜΑΜΜΟτη Logo" width="300" />
          </div>
       </div>
 

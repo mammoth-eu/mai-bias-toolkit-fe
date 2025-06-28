@@ -80,7 +80,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="columns is-multiline">
+            <div className="rows is-multiline">
                <div className="column is-half">
                   <SelectFormInput
                      name="model_loader_id"
