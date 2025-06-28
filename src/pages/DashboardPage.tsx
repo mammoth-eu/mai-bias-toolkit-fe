@@ -3,90 +3,46 @@ import { Link } from 'react-router-dom';
 // import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons/faDiagramProject';
 import { faList } from '@fortawesome/free-solid-svg-icons/faList';
-import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
-import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
-import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import logo from '../../public/trim-415585277-194ca892-0fd6-493b-8cf5-8ee70546f270.png';
+
 
 const DashboardPage = () => {
    return (
       <>
-         <div className="columns mx-6 my-6">
-            {/*<div className="column is-one-third has-text-centered">*/}
-            {/*   <Link to="/dataset">*/}
-            {/*      <button className="button is-large is-primary is-outlined">*/}
-            {/*         <span className="icon is-medium">*/}
-            {/*            <FontAwesomeIcon icon={faFile} />*/}
-            {/*         </span>*/}
-            {/*         <span>Dataset Bias Detection</span>*/}
-            {/*      </button>*/}
-            {/*   </Link>*/}
-            {/*</div>*/}
-            <div className="column is-half has-text-centered">
-               <Link to="/">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faHouse} />
-                     </span>
-                     <span>Dashboard</span>
-                  </button>
-               </Link>
-            </div>
-            <div className="column is-half has-text-centered">
-               <Link to="/model">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faDiagramProject} />
-                     </span>
-                     <span>Bias Exploration</span>
-                  </button>
-               </Link>
-            </div>
+
+      <div className="columns is-centered">
+         <div className="column is-narrow has-text-centered">
          </div>
-         <div className="columns mx-6 my-6">
-            <div className="column is-half has-text-centered">
-               <Link to="/runs">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faList} />
-                     </span>
-                     <span>Runs</span>
-                  </button>
-               </Link>
-            </div>
-            <div className="column is-half has-text-centered">
-               <Link to="/component">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faPuzzlePiece} />
-                     </span>
-                     <span>Import Component</span>
-                  </button>
-               </Link>
-            </div>
+      </div>
+      <div className="columns mx-2 my-2">
+         <div className="column is-half has-text-centered">
+            <Link to="/model">
+               <button className="button is-large is-primary is-outlined is-fullwidth">
+                  <span className="icon is-medium">
+                     <FontAwesomeIcon icon={faDiagramProject} />
+                  </span>
+                  <span><b>Explore</b></span>&nbsp;<span className="has-text-grey">bias</span>
+               </button>
+            </Link>
          </div>
-         <div className="columns mx-6 my-6">
-            <div className="column is-half has-text-centered">
-               <Link to="/users">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faUsers} />
-                     </span>
-                     <span>Users</span>
-                  </button>
-               </Link>
-            </div>
-            <div className="column is-half has-text-centered">
-               <Link to="/about">
-                  <button className="button is-large is-primary is-outlined">
-                     <span className="icon is-medium">
-                        <FontAwesomeIcon icon={faCircleInfo} />
-                     </span>
-                     <span>About</span>
-                  </button>
-               </Link>
-            </div>
+         <div className="column is-half has-text-centered">
+            <Link to="/runs">
+               <button className="button is-large is-primary is-outlined is-fullwidth">
+                  <span className="icon is-medium">
+                     <FontAwesomeIcon icon={faList} />
+                  </span>
+                  <span><b>Tasks</b></span>&nbsp;<span className="has-text-grey">& results</span>
+               </button>
+            </Link>
          </div>
+      </div>
+      <div className="columns is-centered mt-6">
+         <div className="column is-narrow has-text-centered">
+            <img src={logo} alt="Official Mammoth Logo" width="300" />
+         </div>
+      </div>
+
+
       </>
    );
 };

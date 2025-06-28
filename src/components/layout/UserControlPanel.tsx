@@ -3,12 +3,10 @@ import { useLocation } from 'react-router-dom';
 import SideNavigationItem from '../elements/menu/SideNavigationItem';
 import useWindowDimensions from '../elements/window-dimensions/useWindowDimensions';
 import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
-// import { faFile } from '@fortawesome/free-solid-svg-icons/faFile';
-import { faDiagramProject } from '@fortawesome/free-solid-svg-icons/faDiagramProject';
-import { faList } from '@fortawesome/free-solid-svg-icons/faList';
 import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons/faCircleQuestion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
    children: ReactElement;
@@ -16,17 +14,14 @@ interface Props {
 
 const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
    const { pathname } = useLocation();
-
    const { width } = useWindowDimensions();
-   const isTablet = () => {
-      return width <= 768;
-   };
+   const isTablet = () => width <= 768;
 
    return (
       <>
          <div className="columns is-centered mx-1">
             <div
-               className={'column is-narrow has-background-sidebar mb-3 px-0 has-text-centered'}
+               className="column is-narrow has-background-sidebar mb-0 px-0 has-text-centered"
                style={isTablet() ? {} : { minHeight: '85vh' }}
             >
                <aside className="menu mt-3">
@@ -40,39 +35,12 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                            showFull={isTablet()}
                         />
                      </li>
-                     {/*<li>*/}
-                     {/*   <SideNavigationItem*/}
-                     {/*      to="/dataset"*/}
-                     {/*      path={pathname}*/}
-                     {/*      icon={faFile}*/}
-                     {/*      tooltip="Dataset Bias Detection"*/}
-                     {/*      showFull={isTablet()}*/}
-                     {/*   />*/}
-                     {/*</li>*/}
-                     <li>
-                        <SideNavigationItem
-                           to="/model"
-                           path={pathname}
-                           icon={faDiagramProject}
-                           tooltip="Bias Exploration"
-                           showFull={isTablet()}
-                        />
-                     </li>
-                     <li>
-                        <SideNavigationItem
-                           to="/runs"
-                           path={pathname}
-                           icon={faList}
-                           tooltip="Runs"
-                           showFull={isTablet()}
-                        />
-                     </li>
                      <li>
                         <SideNavigationItem
                            to="/component"
                            path={pathname}
                            icon={faPuzzlePiece}
-                           tooltip="Import Component"
+                           tooltip="Modules"
                            showFull={isTablet()}
                         />
                      </li>
@@ -86,14 +54,41 @@ const UserControlPanel: React.FC<Props> = React.memo(({ children }) => {
                         />
                      </li>
                      <li>
-                        <SideNavigationItem
-                           to="/about"
-                           path={pathname}
-                           icon={faCircleInfo}
-                           tooltip="About"
-                           showFull={isTablet()}
-                        />
+                        <a
+                           href="https://mammoth-eu.github.io/mammoth-commons"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="Catalogue"
+                           className="button is-ghost is-fullwidth has-text-left mt-2"
+                        >
+                           <FontAwesomeIcon icon={faCircleQuestion} className={isTablet() ? "mr-2" : ""} />
+                           {isTablet() && "Modules"}
+                        </a>
                      </li>
+                     {/* <li>
+                        <a
+                           href="https://github.com/mammoth-eu/mammoth-toolkit-releases"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="Repository"
+                           className="button is-ghost is-fullwidth has-text-left mt-2"
+                        >
+                           <FontAwesomeIcon icon={faPenToSquare} className={isTablet() ? "mr-2" : ""} />
+                           {isTablet() && "Repository"}
+                        </a>
+                     </li>
+                     <li>
+                        <a
+                           href="https://mammoth-ai.eu/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="MAMMOth"
+                           className="button is-ghost is-fullwidth has-text-left mt-2"
+                        >
+                           <FontAwesomeIcon icon={faBookOpen} className={isTablet() ? "mr-2" : ""} />
+                           {isTablet() && "MAMMOth"}
+                        </a>
+                     </li> */}
                   </ul>
                </aside>
             </div>

@@ -25,13 +25,9 @@ interface User {
 
 const UsersPage = () => {
    const [isLoading, setIsLoading] = useState<boolean>(true);
-
    const [users, setUsers] = useState<User[]>([]);
-
    const { get } = useAxios<UsersResponse>();
-
    const toaster = useToaster();
-
    const newUserModal = useModal();
 
    const renderActions = () => {
