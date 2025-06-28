@@ -51,12 +51,12 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="columns is-multiline">
+            <div className="rows is-multiline">
                <div className="column is-half">
                   <TextFormInput
                      name="name"
                      label="Run Name"
-                     value={formSubmit.form.name}
+                     value={formSubmit.form.name ?? 'mai-run'}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
                      placeholder="Run Name"
@@ -68,7 +68,7 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                   <TextFormInput
                      name="group"
                      label="Run Group"
-                     value={formSubmit.form.group}
+                     value={formSubmit.form.group ?? 'mai-group'}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
                      placeholder="Run Group"
