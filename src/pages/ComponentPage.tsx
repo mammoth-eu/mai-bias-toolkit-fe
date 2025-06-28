@@ -22,7 +22,7 @@ interface ComponentFormErrors {
    meta_yaml_file_url: Validation[];
 }
 
-const DEFAULT_YAML_URL = 'https://github.com/mammoth-eu/mammoth-commons/releases/download/latest/module_yamls.tar.gz';
+const DEFAULT_YAML_URL = 'https://github.com/mammoth-eu/mammoth-commons/releases/latest/download/module_yamls.tar.gz';
 const COMPONENT_INITIAL_STATE: ComponentForm = { yaml_file_url: DEFAULT_YAML_URL, meta_yaml_file_url: DEFAULT_YAML_URL};
 
 const COMPONENT_VALIDATION: ComponentFormErrors = {
