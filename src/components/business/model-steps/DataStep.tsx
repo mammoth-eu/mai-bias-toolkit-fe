@@ -79,7 +79,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
    const dataLoaderSelectList = Object.keys(data).length ? getSelectList(data.loaders!) : [];
    const domainSelectList = Object.keys(data).length ? getSelectList(data.domains!) : [];
    formSubmit.form.domain ||= "unspecified" // so that the user can skip through domain selection if not applicable (assume that this is always present)
-
+   if(!formSubmit.form.data_loader_id) formSubmit.updateSimple("data_loader_id", dataLoaderSelectList[0]?.value);
    return (
       <>
          {isLoading && <Loader />}
@@ -89,7 +89,6 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                   <SelectFormInput
                      name="domain"
                      label="Domain"
-                     hasEmpty
                      selectOptions={domainSelectList}
                      value={getSelectListValue(domainSelectList, formSubmit.form.domain)}
                      errors={formSubmit.errors}
@@ -104,7 +103,6 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                   <SelectFormInput
                      name="data_loader_id"
                      label="Data loader"
-                     hasEmpty
                      selectOptions={dataLoaderSelectList}
                      value={getSelectListValue(dataLoaderSelectList, formSubmit.form.data_loader_id)}
                      errors={formSubmit.errors}
@@ -137,7 +135,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                            target="_blank"
                            rel="noopener noreferrer"
                            className="button is-primary is-outlined has-tooltip-bottom"
-                           data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123). You can use that to upload local data to the to the toolkit. Click on ... to get a url that you can paste in paths."
+                           data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123).\nUse that to upload local data to the to the toolkit.\nClick on the three dots (...) to get a url that serves as a path."
                         >
                            Open minio storage
                         </a>

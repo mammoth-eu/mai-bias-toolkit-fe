@@ -6,6 +6,7 @@ import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import Loader from '../../elements/loader/Loader.tsx';
 import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput.tsx';
+import Box from '../../elements/box/Box.tsx';
 
 interface Props {
    uuid: string;
@@ -89,14 +90,21 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
          {isLoading && <Loader />}
          {!isLoading && (
             <>
-               <div className="rows is-multiline">
+
+               <div className="columns is-multiline is-centered my-4">
+                  <div className="column is-half">
+                     <Box title="" content="At this step, designate protected characteristics from your dataset. These should be accounted during fairness analysis. Depending on the domain, some options may be initially selected based on co-creation activities of the <a href='https://mammoth-ai.eu/'>MAMMOth</a> project." />
+                  </div>
+               </div>
+
+               <div className="columns is-multiline my-4">
                   {formLength > 3 &&
                      Object.keys(formSubmit.form).map((key) => {
                         return (
                            key !== 'uuid' &&
                            key !== 'step' &&
                            key !== 'addedFields' && (
-                              <div className="column is-half" key={key}>
+                              <div className="column is-one-quarter" key={key}>
                                  <BooleanFormInput
                                     name={key}
                                     label={key}
@@ -108,18 +116,20 @@ const FeaturesAndProtectedCharacteristicsStep: React.FC<Props> = ({
                         );
                      })}
                </div>
-               <div>
+               {formLength<= 3 &&
                   <div>
-                     <TextAreaFormInput
-                        name="addedFields"
-                        label="Custom Fields"
-                        value={formSubmit.form.addedFields}
-                        update={formSubmit.update}
-                        errors={formSubmit.errors}
-                        placeholder="Custom Fields (comma separated)"
-                     />
+                     <div>
+                        <TextAreaFormInput
+                           name="addedFields"
+                           label="Custom Fields"
+                           value={formSubmit.form.addedFields}
+                           update={formSubmit.update}
+                           errors={formSubmit.errors}
+                           placeholder="We could not automatically identify dataset fields. Please write comma-separated sensitive attributes by hand."
+                        />
+                     </div>
                   </div>
-               </div>
+               }
             </>
          )}
       </>

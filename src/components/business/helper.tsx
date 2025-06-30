@@ -45,7 +45,7 @@ export const getDescription = (description: string) => {
    }
    const index = description.indexOf('Args:');
    if (index !== -1) description = description.slice(0, index);
-   return description.trim().replace(/\n\n/g, "<br><br>").replace(/\n/g, " ");
+   return description.trim().replace(/\n\n/g, "<br>").replace(/\n/g, " ");
 };
 
 export const getAttributesDescription = (description: string) => {
@@ -78,13 +78,9 @@ export const getAttributesDescription = (description: string) => {
 
 export const getOptionsDescription = (description: string) => {
    const result: { [key: string]: string[] } = {};
-   if (!description) {
-      return result;
-   }
+   if (!description) return result;
    const index = description.indexOf('Options:');
-   if (index === -1) {
-      return result;
-   }
+   if (index === -1) return result;
    const optionsSection = description.slice(index + 'Options:'.length).trim();
    const lines = optionsSection.split('\n');
    for (const line of lines) {
@@ -161,6 +157,7 @@ export function renderSwitchInputForm(
       case 'select': {
          const selectOptions: SelectOption[] = [];
          options!.forEach((o) => selectOptions.push({ label: o, value: o }));
+         if(!formSubmit.form[field][name]) formSubmit.updateSimpleField(label_name, selectOptions[0]?.value);
          return (
             <SelectFormInput
                key={name}

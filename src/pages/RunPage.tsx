@@ -104,10 +104,10 @@ const RunPage = () => {
    const filterOnType = (resultLinks: ResultLink[], type: string) => {
       return resultLinks.filter((item) => item.type === type);
    };
-
+   const [title, setTitle] = useState("Run overview");
    return (
       <>
-         <Portlet title="Run Overview" actions={renderActions()}>
+         <Portlet title={title} actions={renderActions()}>
             {isLoadingResult && <Loader />}
             {!isLoadingResult && uuid && result && (
                <OverviewStep
@@ -115,10 +115,11 @@ const RunPage = () => {
                   result={result}
                   isLoading={isLoadingResult}
                   setIsLoading={setIsLoadingResult}
+                  setTitle={setTitle}
                />
             )}
          </Portlet>
-         {!isLoadingStatus && status && <RunStatusModal modal={statusModal} text={status} title="Run Status" />}
+         {!isLoadingStatus && status && <RunStatusModal modal={statusModal} text={status} title="Run status" />}
          {!isLoadingResult && result && (
             <RunResultsModal
                modal={runResultModal}

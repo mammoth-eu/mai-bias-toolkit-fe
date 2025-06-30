@@ -59,7 +59,7 @@ const SelectFormInput: React.FC<Props> = ({
                            </option>
                         );
                      })}
-                     {placeholder && (
+                     {placeholder && !hasEmpty && (
                         <option value={''} disabled selected hidden>
                            {placeholder}
                         </option>

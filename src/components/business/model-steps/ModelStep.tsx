@@ -75,7 +75,10 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
    }, [uuid, formSubmit, data, formSubmit.form.model_loader_id]);
 
    const modelLoaderSelectList = Object.keys(data).length ? getSelectList(data.loaders!) : [];
-
+   // The next option should always be the first option to start with, 
+   // as it's the easier to run and helps bootstrap new users. COnventiently,
+   // this is also the first step, so it guaranteed that we will have it available.
+   if(!formSubmit.form.model_loader_id) formSubmit.updateSimple("model_loader_id", "no_model");
    return (
       <>
          {isLoading && <Loader />}
@@ -85,7 +88,6 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                   <SelectFormInput
                      name="model_loader_id"
                      label="Model loader"
-                     hasEmpty
                      selectOptions={modelLoaderSelectList}
                      value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
                      errors={formSubmit.errors}
@@ -97,9 +99,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                   {formSubmit.form.model_loader_id && data.loaders && (
                      <Box
                         title=""
-                        content={getDescription(
-                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)?.description ?? ""
-                        )}
+                        content={getDescription(data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)?.description ?? "")}
                      />
                   )}
                   {/* {formSubmit.form.model_loader_id && data.loaders && (

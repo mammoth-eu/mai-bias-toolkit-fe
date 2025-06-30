@@ -56,10 +56,12 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions, stepL
                      );
                   })}
                <div className="steps-content">
+               <div className="mb-4">&nbsp;</div>
                   <div className="step-content is-active">{step}</div>
+               <div className="mb-2">&nbsp;</div>
                </div>
                {stepLoadings && !stepLoadings[currentStepIndex][0] && (
-                  <div className="steps-actions">
+                  <div className="steps-actions mt-6 mb-2">
                      <div className="steps-action">
                         {!isFirstStep && (
                            <button
@@ -68,14 +70,14 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions, stepL
                                  back();
                                  stepLoadings[currentStepIndex][1](true);
                               }}
-                              className={'button is-secondary ' + (isProcessing ? 'is-loading' : '')}
+                              className={'column button is-secondary is-outlined is-medium ' + (isProcessing ? 'is-loading' : '')}
                            >
                               Back
                            </button>
                         )}
                      </div>
                      <div className="steps-action">
-                        <button type="submit" className={'button is-primary ' + (isProcessing ? 'is-loading' : '')}>
+                        <button type="submit" className={'column button is-primary is-outlined is-medium ' + (isProcessing ? 'is-loading' : '')}>
                            {isLastStep ? 'Start' : 'Next'}
                         </button>
                      </div>

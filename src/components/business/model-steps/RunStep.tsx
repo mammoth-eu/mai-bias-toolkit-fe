@@ -49,13 +49,10 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
          });
    };
 
-   formSubmit.form.name ||= 'analysis';
-
-
-   if(!formSubmit.form.group && keycloak.authenticated)
+   if(!formSubmit.form.group && !formSubmit.form.name && keycloak.authenticated) {
+      formSubmit.form.name = 'analysis';
       formSubmit.form.group ||= "created by "+AuthService.getCurrentUser();
-   else
-      formSubmit.form.group ||= 'mai-bias';
+   }
 
    return (
       <>

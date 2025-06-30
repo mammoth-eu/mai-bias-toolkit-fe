@@ -13,13 +13,12 @@ interface Props {
    result?: RunDetailsResponse;
    isLoading: boolean;
    setIsLoading: (isLoading: boolean) => void;
+   setTitle: (text: string) => void;
 }
 
-const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }) => {
+const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, setTitle }) => {
    const [response, setResponse] = useState<WizardResponse | RunDetailsResponse>();
-
    const { get } = useAxios<WizardResponse>();
-
    const toaster = useToaster();
 
    useEffect(() => {
@@ -53,6 +52,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
       });
       return value;
    };
+   if(response) setTitle(response.selections.name!+", "+response.selections.group!);
 
    return (
       <>
@@ -60,84 +60,72 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
          {!isLoading && response && (
             <div className="rows is-multiline">
                <React.Fragment>
-                  <div className="column is-half">
-                     <TextFormInput name="name" label="Run name" value={response.selections.name!} disabled />
+                  <div className="column mb-0">
+                     <p className="is-half is-size-3 has-text-primary">{response.selections.loader_model!.id.replace(/_/g, ' ')}</p>
+                     {response.selections.loader_model?.parameters_value &&
+                        Object.keys(response.selections.loader_model.parameters_value).length > 0 ? (
+                        <table>
+                           <tbody>
+                              {Object.entries(response.selections.loader_model.parameters_value).map(([key, value]) => (
+                              <tr key={key}>
+                                 <td className="border pr-4 py-0 font-mono">{key.replace(/_/g, ' ')}</td>
+                                 <td className="border pl-4 py-0 font-mono">{value.toString()}</td>
+                              </tr>
+                              ))}
+                           </tbody>
+                        </table>
+                        ) : (
+                        <p className="text-gray-500 italic">No parameters</p>
+                        )}
                   </div>
-                  <div className="column is-half">
-                     <TextFormInput name="group" label="Run group" value={response.selections.group!} disabled />
+                  <div className="column mb-0">
+                     <p className="is-half is-size-3 has-text-primary">
+                        {response.selections.loader_data!.id.replace(/_/g, ' ')}
+                     </p>
+                     {response.selections.loader_data?.parameters_value &&
+                        Object.keys(response.selections.loader_data.parameters_value).length > 0 ? (
+                        <table>
+                           <tbody>
+                              <tr key="domain">
+                                 <td className="border pr-4 py-0 font-mono">doman</td>
+                                 <td className="border pl-4 py-0 font-mono">{response.selections.domain!}</td>
+                              </tr>
+                              <tr key="attributes">
+                                 <td className="border pr-4 py-0 font-mono">protected charcateristics</td>
+                                 <td className="border pl-4 py-0 font-mono">{createAttributesValue(response.selections.attributes!)}</td>
+                              </tr>
+                              {Object.entries(response.selections.loader_data.parameters_value).map(([key, value]) => (
+                                 <tr key={key}>
+                                    <td className="border pr-4 py-0 font-mono">{key.replace(/_/g, ' ')}</td>
+                                    <td className="border pl-4 py-0 font-mono">{value.toString()}</td>
+                                 </tr>
+                              ))}
+                           </tbody>
+                        </table>
+                     ) : (
+                        <p className="text-gray-500 italic">No parameters</p>
+                     )}
                   </div>
-                  <div className="column is-half">
-                     <TextFormInput
-                        name="model_loader_id"
-                        label="Model loader"
-                        value={response.selections.loader_model!.id}
-                        disabled
-                     />
-                  </div>
-                  <div className="column is-half">
-                     <TextAreaFormInput
-                        name="model_loader_parameters_value"
-                        label="Model parameters"
-                        value={
-                           JSON.stringify(response.selections.loader_model!.parameters_value) === '{}'
-                              ? ''
-                              : JSON.stringify(response.selections.loader_model!.parameters_value, null, 2)
-                        }
-                        disabled
-                     />
-                  </div>
-                  <div className="column is-half">
-                     <TextFormInput
-                        name="data_loader_id"
-                        label="Data loader"
-                        value={response.selections.loader_data!.id}
-                        disabled
-                     />
-                  </div>
-                  <div className="column is-half">
-                     <TextAreaFormInput
-                        name="data_loader_parameters_value"
-                        label="Data parameters"
-                        value={
-                           JSON.stringify(response.selections.loader_data!.parameters_value) === '{}'
-                              ? ''
-                              : JSON.stringify(response.selections.loader_data!.parameters_value, null, 2)
-                        }
-                        disabled
-                     />
-                  </div>
-                  <div className="column is-half">
-                     <TextFormInput name="domain" label="Domain" value={response.selections.domain!} disabled />
-                  </div>
-                  <div className="column is-half">
-                     <TextFormInput
-                        name="attributes"
-                        label="Protected characteristics"
-                        value={createAttributesValue(response.selections.attributes!)}
-                        disabled
-                     />
-                  </div>
-                  {response.selections.metrics!.map((m, i) => {
-                     return (
-                        <React.Fragment key={i + 1}>
-                           <div className="column is-half">
-                              <TextFormInput name="metric_id" label={`Metric ${i + 1}`} value={m.id} disabled />
-                           </div>
-                           <div className="column is-half">
-                              <TextAreaFormInput
-                                 name="metric_parameters_value"
-                                 label={`Analysis ${i + 1} parameters`}
-                                 value={
-                                    JSON.stringify(m.parameters_value) === '{}'
-                                       ? ''
-                                       : JSON.stringify(m.parameters_value, null, 2)
-                                 }
-                                 disabled
-                              />
-                           </div>
-                        </React.Fragment>
-                     );
-                  })}
+                  {response.selections.metrics!.map((m, i) => (
+                     <div className="column mb-0" key={i}>
+                        <p className="is-half is-size-3 has-text-primary">{m.id.replace(/_/g, ' ')}</p>
+                        {m.parameters_value && Object.keys(m.parameters_value).length > 0 ? (
+                           <table>
+                              <tbody>
+                                 {Object.entries(m.parameters_value).map(([key, value]) => (
+                                    <tr key={key}>
+                                       <td className="border pr-4 py-0 font-mono">{key.replace(/_/g, ' ')}</td>
+                                       <td className="border pl-4 py-0 font-mono">{value.toString()}</td>
+                                    </tr>
+                                 ))}
+                              </tbody>
+                           </table>
+                        ) : (
+                           <p className="text-gray-500 italic">No parameters</p>
+                        )}
+                     </div>
+                  ))}
+
                </React.Fragment>
             </div>
          )}

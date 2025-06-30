@@ -83,7 +83,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                {formLength == 2 && (
                   <div>
                      <p style={{ fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' }}>
-                        No metrics available. Please review the selected options.
+                        No available types of analysis. Please review the selected options.
                      </p>
                      <br />
                   </div>
@@ -94,16 +94,20 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                         return (
                            <React.Fragment key={i}>
                               <div className="column is-half">
+                                 <label className="label is-size-3 has-text-primary">{metric.name}</label>
+
                                  <BooleanFormInput
                                     name={metric.id}
-                                    label={metric.name}
+                                    label="include in analysis"
                                     checked={formSubmit.form[metric.id]}
                                     update={formSubmit.updateCheck}
                                  />
                                  <Box title="" content={getDescription(metric.description)} />
                                  {/* <Box title="Parameters info:" content={metric.parameter_info} /> */} {/*We are parsing parameter info as tooltips now*/}
                               </div>
-                              <div className="column is-half mt-5">
+                              <div className="column is-half mt-4">
+                                 <div className="my-4">&nbsp;</div>
+                                 <div className="my-1">&nbsp;</div>
                                  {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
                                     const options = getOptionsDescription(metric.description)[key];
                                     return renderSwitchInputForm(
@@ -119,9 +123,9 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                              formSubmit.form[metric.id.concat('_parameters_value')][key]
                                           ),
                                        getAttributesDescription(metric.description)[key] +
-                                          ' (default: ' +
+                                          (metric.parameter_default[key]?(' (default: ' +
                                           metric.parameter_default[key] +
-                                          ') ',
+                                          ') '):''),
                                        options ? [...options, metric.parameter_default[key]] : undefined
                                     );
                                  })}

@@ -48,4 +48,4 @@ const BooleanFormInput: React.FC<Props> = ({
       </div>
    );
 };
-export default BooleanFormInput;
+export default BooleanFormInput
