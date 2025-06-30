@@ -52,7 +52,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
       });
       return value;
    };
-   if(response) setTitle(response.selections.name!+", "+response.selections.group!);
+   if(response && setTitle) setTitle(response.selections.name!+", "+response.selections.group!);
 
    return (
       <>
@@ -60,6 +60,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
          {!isLoading && response && (
             <div className="rows is-multiline">
                <React.Fragment>
+                  <div className="is-medium is-size-3 has-text-bold ml-2">{response.selections.name!}, {response.selections.group!}</div>
                   <div className="column mb-0">
                      <p className="is-half is-size-3 has-text-primary">{response.selections.loader_model!.id.replace(/_/g, ' ')}</p>
                      {response.selections.loader_model?.parameters_value &&

@@ -78,7 +78,7 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions, stepL
                      </div>
                      <div className="steps-action">
                         <button type="submit" className={'column button is-primary is-outlined is-medium ' + (isProcessing ? 'is-loading' : '')}>
-                           {isLastStep ? 'Start' : 'Next'}
+                           {isLastStep ? 'Run' : 'Next'}
                         </button>
                      </div>
                   </div>
