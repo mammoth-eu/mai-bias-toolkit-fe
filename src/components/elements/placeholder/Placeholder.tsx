@@ -79,7 +79,7 @@ const Placeholder: React.FC<Props> = ({ format = tableTemplate() }) => {
       const lines = expression.split(',');
       return (
          <React.Fragment>
-            <div className="panel columns is-multiline is-8-widescreen">
+            <div className="panel rows is-multiline is-8-widescreen">
                {lines.map((line, lindex) => {
                   const elements = line.split('|');
                   const className =

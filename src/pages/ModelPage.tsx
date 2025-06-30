@@ -49,12 +49,12 @@ const ModelPage = () => {
    const stepMarkers = () => {
       const markers = [];
       let index = 1;
-      markers.push(<MultistepMarker step={index++} title="Run" />);
+      markers.push(<MultistepMarker step={index++} title="Name" />);
       markers.push(<MultistepMarker step={index++} title="Model" />);
       markers.push(<MultistepMarker step={index++} title="Data" />);
-      markers.push(<MultistepMarker step={index++} title="Features & Protected Characteristics" />);
-      markers.push(<MultistepMarker step={index++} title="Bias Metric" />);
-      markers.push(<MultistepMarker step={index++} title="Overview" />);
+      markers.push(<MultistepMarker step={index++} title="Protected characteristics" />);
+      markers.push(<MultistepMarker step={index++} title="Analysis type" />);
+      markers.push(<MultistepMarker step={index++} title="Run" />);
       return markers;
    };
 
@@ -240,7 +240,7 @@ const ModelPage = () => {
       event.preventDefault();
       const atLeastOneSelected = isAtLeastOneSelected(biasStepFormSubmit.form as SelectionsForm);
       if (!atLeastOneSelected) {
-         toaster.error('Please select at least one bias metric!');
+         toaster.error('Please select at least one type of analysis!');
          return Promise.reject();
       }
       const biasStepErrorFields = getErrorFields(biasStepFormSubmit.form, biasStepFormSubmit.validation);

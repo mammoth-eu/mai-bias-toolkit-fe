@@ -14,8 +14,8 @@ const DatasetPage = () => {
       const markers = [];
       let index = 1;
       markers.push(<MultistepMarker step={index++} title="Data" />);
-      markers.push(<MultistepMarker step={index++} title="Features & Protected Characteristics" />);
-      markers.push(<MultistepMarker step={index++} title="Bias Metric" />);
+      markers.push(<MultistepMarker step={index++} title="Protected characteristics" />);
+      markers.push(<MultistepMarker step={index++} title="Analysis type" />);
       markers.push(<MultistepMarker step={index++} title="Overview" />);
       return markers;
    };

@@ -89,7 +89,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                   </div>
                )}
                {formLength > 2 && (
-                  <div className="rows is-multiline">
+                  <div className="columns is-multiline">
                      {data.metrics!.map((metric, i) => {
                         return (
                            <React.Fragment key={i}>
@@ -101,7 +101,7 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                     update={formSubmit.updateCheck}
                                  />
                                  <Box title="Description:" content={getDescription(metric.description)} />
-                                 <Box title="Parameters info:" content={metric.parameter_info} />
+                                 {/* <Box title="Parameters info:" content={metric.parameter_info} /> */} {/*We are parsing parameter info as tooltips now*/}
                               </div>
                               <div className="column is-half">
                                  {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {

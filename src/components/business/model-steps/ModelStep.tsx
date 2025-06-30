@@ -102,12 +102,12 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                         )}
                      />
                   )}
-                  {formSubmit.form.model_loader_id && data.loaders && (
+                  {/* {formSubmit.form.model_loader_id && data.loaders && (
                      <Box
                         title="Parameters info:"
                         content={getParametersInfo(data.loaders, formSubmit.form.model_loader_id)}
                      />
-                  )}
+                  )} */} {/*We are parsing parameter info as tooltips now*/}
                </div>
                <div className="column is-half">
                   {formSubmit.form.model_loader_parameters_value &&

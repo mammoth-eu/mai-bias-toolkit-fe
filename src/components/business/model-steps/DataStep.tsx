@@ -77,8 +77,8 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
    }, [uuid, formSubmit, data, formSubmit.form.data_loader_id]);
 
    const dataLoaderSelectList = Object.keys(data).length ? getSelectList(data.loaders!) : [];
-
    const domainSelectList = Object.keys(data).length ? getSelectList(data.domains!) : [];
+   formSubmit.form.domain ||= "unspecified" // so that the user can skip through domain selection if not applicable (assume that this is always present)
 
    return (
       <>
@@ -93,7 +93,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                      selectOptions={domainSelectList}
                      value={getSelectListValue(domainSelectList, formSubmit.form.domain)}
                      errors={formSubmit.errors}
-                     placeholder="Domain"
+                     placeholder="Select a domain"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
                      tooltip="The field or area where the model is being applied."
@@ -121,12 +121,12 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                         )}
                      />
                   )}
-                  {formSubmit.form.data_loader_id && data.loaders && (
+                  {/* {formSubmit.form.data_loader_id && data.loaders && (
                      <Box
                         title="Parameters info:"
                         content={getParametersInfo(data.loaders, formSubmit.form.data_loader_id)}
                      />
-                  )}
+                  )} */}{/*We are parsing parameter info as tooltips now*/}
                </div>
                <div className="column is-half">
                   {formSubmit.form.data_loader_id &&

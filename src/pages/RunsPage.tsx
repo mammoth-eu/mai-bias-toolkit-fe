@@ -46,24 +46,38 @@ const RunsPage = () => {
                               <th style={{ width: '300px' }}>Name</th>
                               <th>Group</th>
                               <th style={{ width: '200px' }}>Status</th>
-                              <th style={{ width: '200px' }}>Type</th>
-                              <th style={{ minWidth: '100px' }}>Start Time</th>
-                              <th style={{ minWidth: '100px' }}>End Time</th>
+                              {/* <th style={{ width: '200px' }}>Type</th> */} {/* All pipelines are currently of the same type */}
+                              {/* <th style={{ minWidth: '100px' }}>Started</th>
+                              <th style={{ minWidth: '100px' }}>Ended</th> */}
+                              <th style={{ minWidth: '100px' }}>Duration</th> {/* Moved to one column for simplicity (it is not that important information) */}
                               <th style={{ width: '10%' }}>&nbsp;</th>
                            </tr>
                         </thead>
                         <tbody>
-                           <NoDataFound colspan={7} data={result.runs} label="runs" />
+                           <NoDataFound colspan={6} data={result.runs} label="runs" />
                            {!!result &&
                               result.runs.map((r: Run) => {
                                  return (
                                     <tr key={r.run_id}>
-                                       <td>{r.name}</td>
-                                       <td>{r.group}</td>
-                                       <td>{r.run_status}</td>
-                                       <td>{r.run_type}</td>
-                                       <td>{printIsoDate(r.run_start_time)}</td>
-                                       <td>{printIsoDate(r.run_end_time)}</td>
+                                       <td><i>{r.name}</i></td>
+                                       <td><i>{r.group}</i></td>
+                                       <td className={
+                                          r.run_status === 'Failed' ? 'has-text-danger' :
+                                          r.run_status === 'Succeeded' ? 'has-text-success' :
+                                          'has-text-warning'
+                                          }>
+                                          {r.run_status === 'Succeeded' ? 'Done' : r.run_status}
+                                       </td>
+                                       {/* <td>{r.run_type}</td> */} {/* All pipelines are currently of the same type */}
+                                       {/* <td>{printIsoDate(r.run_start_time)}</td>
+                                       <td>{printIsoDate(r.run_end_time)}</td> */}
+                                       <td>
+                                          <small>
+                                             {r.run_start_time ? printIsoDate(r.run_start_time)+' ' : ''}
+                                             ---
+                                             {r.run_end_time ? ' '+printIsoDate(r.run_end_time) : ''}
+                                          </small>
+                                       </td>
                                        <td>
                                           <div
                                              className="buttons has-addons is-pulled-right"

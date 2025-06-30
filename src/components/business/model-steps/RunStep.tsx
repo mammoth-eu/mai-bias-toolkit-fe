@@ -47,6 +47,9 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
          });
    };
 
+   formSubmit.form.name ||= 'analysis'
+   formSubmit.form.group ||= 'mai-bias'
+
    return (
       <>
          {isLoading && <Loader />}
@@ -55,11 +58,11 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                <div className="column is-half">
                   <TextFormInput
                      name="name"
-                     label="Run Name"
-                     value={formSubmit.form.name ?? 'mai-run'}
+                     label="Run name"
+                     value={formSubmit.form.name}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
-                     placeholder="Name"
+                     placeholder="The name of your run"
                      isRequired
                      tooltip="A custom name to identify a specific run within a group."
                   />
@@ -67,11 +70,11 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                <div className="column is-half">
                   <TextFormInput
                      name="group"
-                     label="Run Group"
-                     value={formSubmit.form.group ?? 'mai-group'}
+                     label="Run group"
+                     value={formSubmit.form.group}
                      update={formSubmit.update}
                      errors={formSubmit.errors}
-                     placeholder="Group"
+                     placeholder="The broader group of your run"
                      isRequired
                      tooltip="A custom name to identify a group of related runs."
                   />
