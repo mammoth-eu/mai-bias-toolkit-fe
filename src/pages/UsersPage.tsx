@@ -36,7 +36,7 @@ const UsersPage = () => {
             <button className="button is-primary is-outlined" onClick={newUserModal.open}>
                <span>
                   <FontAwesomeIcon icon={faPlus} />
-                  &nbsp;New User
+                  &nbsp;New user
                </span>
             </button>
          </div>

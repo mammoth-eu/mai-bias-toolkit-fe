@@ -61,15 +61,15 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
             <div className="rows is-multiline">
                <React.Fragment>
                   <div className="column is-half">
-                     <TextFormInput name="name" label="Run Name" value={response.selections.name!} disabled />
+                     <TextFormInput name="name" label="Run name" value={response.selections.name!} disabled />
                   </div>
                   <div className="column is-half">
-                     <TextFormInput name="group" label="Run Group" value={response.selections.group!} disabled />
+                     <TextFormInput name="group" label="Run group" value={response.selections.group!} disabled />
                   </div>
                   <div className="column is-half">
                      <TextFormInput
                         name="model_loader_id"
-                        label="Model Loader"
+                        label="Model loader"
                         value={response.selections.loader_model!.id}
                         disabled
                      />
@@ -77,7 +77,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
                   <div className="column is-half">
                      <TextAreaFormInput
                         name="model_loader_parameters_value"
-                        label="Model Loader Parameters Value"
+                        label="Model parameters"
                         value={
                            JSON.stringify(response.selections.loader_model!.parameters_value) === '{}'
                               ? ''
@@ -89,7 +89,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
                   <div className="column is-half">
                      <TextFormInput
                         name="data_loader_id"
-                        label="Data Loader"
+                        label="Data loader"
                         value={response.selections.loader_data!.id}
                         disabled
                      />
@@ -97,7 +97,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
                   <div className="column is-half">
                      <TextAreaFormInput
                         name="data_loader_parameters_value"
-                        label="Data Loader Parameters Value"
+                        label="Data parameters"
                         value={
                            JSON.stringify(response.selections.loader_data!.parameters_value) === '{}'
                               ? ''
@@ -112,7 +112,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
                   <div className="column is-half">
                      <TextFormInput
                         name="attributes"
-                        label="Features and Protected Characteristics"
+                        label="Protected characteristics"
                         value={createAttributesValue(response.selections.attributes!)}
                         disabled
                      />
@@ -126,7 +126,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading }
                            <div className="column is-half">
                               <TextAreaFormInput
                                  name="metric_parameters_value"
-                                 label={`Metric ${i + 1} Parameters Value`}
+                                 label={`Analysis ${i + 1} parameters`}
                                  value={
                                     JSON.stringify(m.parameters_value) === '{}'
                                        ? ''

@@ -100,10 +100,10 @@ const BiasMetricStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, se
                                     checked={formSubmit.form[metric.id]}
                                     update={formSubmit.updateCheck}
                                  />
-                                 <Box title="Description:" content={getDescription(metric.description)} />
+                                 <Box title="" content={getDescription(metric.description)} />
                                  {/* <Box title="Parameters info:" content={metric.parameter_info} /> */} {/*We are parsing parameter info as tooltips now*/}
                               </div>
-                              <div className="column is-half">
+                              <div className="column is-half mt-5">
                                  {Object.keys(formSubmit.form[metric.id.concat('_parameters_value')]).map((key) => {
                                     const options = getOptionsDescription(metric.description)[key];
                                     return renderSwitchInputForm(

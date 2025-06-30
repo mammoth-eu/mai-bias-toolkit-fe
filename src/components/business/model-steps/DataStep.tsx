@@ -84,7 +84,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="rows is-multiline">
+            <div className="columns is-multiline">
                <div className="column is-half">
                   <SelectFormInput
                      name="domain"
@@ -103,19 +103,19 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                <div className="column is-half">
                   <SelectFormInput
                      name="data_loader_id"
-                     label="Data Loader"
+                     label="Data loader"
                      hasEmpty
                      selectOptions={dataLoaderSelectList}
                      value={getSelectListValue(dataLoaderSelectList, formSubmit.form.data_loader_id)}
                      errors={formSubmit.errors}
-                     placeholder="Data Loader"
+                     placeholder="Please select a dataset loader"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
                      tooltip="Collects and prepares data for bias detection."
                   />
                   {formSubmit.form.data_loader_id && data.loaders && (
                      <Box
-                        title="Description:"
+                        title=""
                         content={getDescription(
                            data.loaders.find((l) => l.id === formSubmit.form.data_loader_id)!.description
                         )}
@@ -128,7 +128,21 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                      />
                   )} */}{/*We are parsing parameter info as tooltips now*/}
                </div>
-               <div className="column is-half">
+               
+               <div className="column is-half mt-5">
+                  {formSubmit.form.data_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.data_loader_id)?.description.includes("path") ?? "") &&
+                     <div className="mb-2">
+                        <a
+                           href="http://kfp-minio.local.exus.ai:8082/minio/data/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="button is-primary is-outlined has-tooltip-bottom"
+                           data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123). You can use that to upload local data to the to the toolkit. Click on ... to get a url that you can paste in paths."
+                        >
+                           Open minio storage
+                        </a>
+                     </div>
+                  }
                   {formSubmit.form.data_loader_id &&
                      formSubmit.form.data_loader_parameters_value &&
                      Object.keys(formSubmit.form.data_loader_parameters_value).map((key) => {
@@ -141,10 +155,8 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                            formSubmit,
                            typeof formSubmit.form.data_loader_parameters_value[key] === 'number' &&
                               !Number.isInteger(formSubmit.form.data_loader_parameters_value[key]),
-                           getAttributesDescription(loader!.description)[key] +
-                              ' (default: ' +
-                              formSubmit.form.data_loader_parameters_value[key] +
-                              ')',
+                           getAttributesDescription(loader!.description)[key] + (loader!.parameter_default[key]? (
+                              ' (default: ' +loader!.parameter_default[key] + ')'):''),
                            options ? [...options, loader!.parameter_default[key]] : undefined
                         );
                      })}

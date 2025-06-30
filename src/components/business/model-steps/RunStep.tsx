@@ -5,6 +5,8 @@ import { useAxios } from '../axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../../elements/toast/useToaster';
 import Loader from '../../elements/loader/Loader.tsx';
+import { keycloak } from '../../../main';
+import AuthService from '../../../services/AuthService';
 
 interface Props {
    uuid: string;
@@ -47,8 +49,13 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
          });
    };
 
-   formSubmit.form.name ||= 'analysis'
-   formSubmit.form.group ||= 'mai-bias'
+   formSubmit.form.name ||= 'analysis';
+
+
+   if(!formSubmit.form.group && keycloak.authenticated)
+      formSubmit.form.group ||= "created by "+AuthService.getCurrentUser();
+   else
+      formSubmit.form.group ||= 'mai-bias';
 
    return (
       <>

@@ -80,25 +80,25 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="rows is-multiline">
+            <div className="columns is-multiline">
                <div className="column is-half">
                   <SelectFormInput
                      name="model_loader_id"
-                     label="Model Loader"
+                     label="Model loader"
                      hasEmpty
                      selectOptions={modelLoaderSelectList}
                      value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
                      errors={formSubmit.errors}
-                     placeholder="Model Loader"
+                     placeholder="Please select a model loader"
                      updateSelect={formSubmit.updateSimple}
                      isRequired
                      tooltip="Loads pre-trained machine learning models to detect bias."
                   />
                   {formSubmit.form.model_loader_id && data.loaders && (
                      <Box
-                        title="Description:"
+                        title=""
                         content={getDescription(
-                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)!.description
+                           data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)?.description ?? ""
                         )}
                      />
                   )}
@@ -109,10 +109,26 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                      />
                   )} */} {/*We are parsing parameter info as tooltips now*/}
                </div>
-               <div className="column is-half">
+               <div className="column is-half mt-5">
+                  {formSubmit.form.model_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id)?.description.includes("path") ?? "") &&
+                     <div className="mb-2">
+                        <a
+                           href="http://kfp-minio.local.exus.ai:8082/minio/data/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="button is-primary is-outlined has-tooltip-bottom"
+                           data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123). You can use that to upload local data to the to the toolkit. Click on ... to get a url that you can paste in paths."
+                        >
+                           Open minio storage
+                        </a>
+                     </div>
+
+                  }
+
                   {formSubmit.form.model_loader_parameters_value &&
                      Object.keys(formSubmit.form.model_loader_parameters_value).map((key) => {
                         const loader = data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id);
+                        if(!loader) return "";
                         const options = getOptionsDescription(loader!.description)[key];
                         return renderSwitchInputForm(
                            options?.length ? 'select' : typeof formSubmit.form.model_loader_parameters_value[key],
@@ -121,10 +137,8 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                            formSubmit,
                            typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
                               !Number.isInteger(formSubmit.form.model_loader_parameters_value[key]),
-                           getAttributesDescription(loader!.description)[key] +
-                              ' (default: ' +
-                              formSubmit.form.model_loader_parameters_value[key] +
-                              ')',
+                           getAttributesDescription(loader!.description)[key] + (loader!.parameter_default[key] ? (
+                              ' (default: ' +loader!.parameter_default[key] + ')'):''),
                            options ? [...options, loader!.parameter_default[key]] : undefined
                         );
                      })}

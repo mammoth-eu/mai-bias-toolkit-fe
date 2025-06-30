@@ -6,9 +6,15 @@ import NumberFormInput from '../elements/inputs/NumberFormInput.tsx';
 import BooleanFormInput from '../elements/inputs/BooleanFormInput.tsx';
 import SelectFormInput from '../elements/inputs/SelectFormInput.tsx';
 
+export const getSimplifiedName = (name: string) => {
+   //if(name.startsWith("model ")) name = name.substring(6);
+   //if(name.startsWith("data ")) name = name.substring(5);
+   return name;
+}
+
 export const getSelectList = (res: Component[] | Domain[]): SelectOption[] => {
    const o: SelectOption[] = [];
-   res.forEach((r) => o.push({ label: r.name, value: r.id }));
+   res.forEach((r) => o.push({ label: getSimplifiedName(r.name), value: r.id }));
    return o;
 };
 
@@ -38,10 +44,8 @@ export const getDescription = (description: string) => {
       return description;
    }
    const index = description.indexOf('Args:');
-   if (index === -1) {
-      return description;
-   }
-   return description.slice(0, index).trim();
+   if (index !== -1) description = description.slice(0, index);
+   return description.trim().replace(/\n\n/g, "<br><br>").replace(/\n/g, " ");
 };
 
 export const getAttributesDescription = (description: string) => {
@@ -108,17 +112,20 @@ export function renderSwitchInputForm(
    tooltip?: string,
    options?: string[]
 ): ReactNode {
+   let label_name = name.replace(/_/g, ' ');
+   if(label_name.startsWith("model ")) label_name = label_name.slice(6);
+   if(label_name.startsWith("data ")) label_name = label_name.slice(5);
    switch (type) {
       case 'string':
          return (
             <TextFormInput
                key={name}
                name={name}
-               label={name}
+               label={label_name}
                value={formSubmit.form[field][name]}
                update={(event) => formSubmit.updateField(field, event)}
                errors={formSubmit.errors}
-               placeholder={name}
+               placeholder={label_name}
                tooltip={tooltip}
                formatTooltip
             />
@@ -128,11 +135,11 @@ export function renderSwitchInputForm(
             <NumberFormInput
                key={name}
                name={name}
-               label={name}
+               label={label_name}
                value={formSubmit.form[field][name]}
                update={(event) => formSubmit.updateNumberField(field, event)}
                errors={formSubmit.errors}
-               placeholder={name}
+               placeholder={label_name}
                step={isDecimal ? 0.1 : 1}
                tooltip={tooltip}
                formatTooltip
@@ -143,7 +150,7 @@ export function renderSwitchInputForm(
             <BooleanFormInput
                key={name}
                name={name}
-               label={name}
+               label={label_name}
                errors={formSubmit.errors}
                checked={!!formSubmit.form[field][name]}
                update={(event) => formSubmit.updateCheckField(field, event)}
@@ -158,11 +165,11 @@ export function renderSwitchInputForm(
             <SelectFormInput
                key={name}
                name={name}
-               label={name}
+               label={label_name}
                selectOptions={selectOptions}
                value={selectOptions.find((o) => o.value === formSubmit.form[field][name])}
                errors={formSubmit.errors}
-               placeholder={name}
+               placeholder={label_name}
                updateSelect={formSubmit.updateSimpleField}
                tooltip={tooltip}
                formatTooltip
