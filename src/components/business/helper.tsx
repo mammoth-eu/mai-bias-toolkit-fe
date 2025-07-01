@@ -158,7 +158,7 @@ export function renderSwitchInputForm(
          );
       case 'select': {
          const selectOptions: SelectOption[] = [];
-         options!.forEach((o) => selectOptions.push({ label: o, value: o }));
+         options!.filter(o => o !== 'None').forEach((o) => selectOptions.push({ label: o, value: o }));
          if(!formSubmit.form[field][name]) formSubmit.updateSimpleField(label_name, selectOptions[0]?.value);
          return (
             <SelectFormInput
@@ -168,7 +168,7 @@ export function renderSwitchInputForm(
                selectOptions={selectOptions}
                value={selectOptions.find((o) => o.value === formSubmit.form[field][name])}
                errors={formSubmit.errors}
-               placeholder={label_name}
+               placeholder={selectOptions[0]?.label}
                updateSelect={formSubmit.updateSimpleField}
                tooltip={tooltip}
                formatTooltip
