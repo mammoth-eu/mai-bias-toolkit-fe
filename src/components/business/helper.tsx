@@ -5,6 +5,8 @@ import TextFormInput from '../elements/inputs/TextFormInput';
 import NumberFormInput from '../elements/inputs/NumberFormInput.tsx';
 import BooleanFormInput from '../elements/inputs/BooleanFormInput.tsx';
 import SelectFormInput from '../elements/inputs/SelectFormInput.tsx';
+import { marked } from 'marked';
+marked.setOptions({ async: false });
 
 export const getSimplifiedName = (name: string) => {
    //if(name.startsWith("model ")) name = name.substring(6);
@@ -39,17 +41,13 @@ export const printIsoDate = (date: string): string => {
    return d.toDateString() + ' ' + d.toLocaleTimeString();
 };
 
-import { marked } from 'marked';
 
 export const getDescription = (description: string) => {
   if (!description) return description;
-
-  // Trim out anything after "Args:"
   const index = description.indexOf('Args:');
   if (index !== -1) description = description.slice(0, index);
-
-  // Convert markdown (with embedded HTML) to HTML
-  return marked(description.trim());
+  let ret : string = marked(description.trim());  // this is assignable because we removed marked async above
+  return ret;
 };
 
 export const getAttributesDescription = (description: string) => {

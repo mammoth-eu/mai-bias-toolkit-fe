@@ -5,7 +5,6 @@ import {
    getAttributesDescription,
    getDescription,
    getOptionsDescription,
-   getParametersInfo,
    getSelectList,
    getSelectListValue,
    renderSwitchInputForm
