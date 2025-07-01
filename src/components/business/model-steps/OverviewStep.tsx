@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { WizardResponse } from './model';
+import { ResultLink, WizardResponse } from './model';
 import TextFormInput from '../../elements/inputs/TextFormInput';
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
@@ -7,6 +7,9 @@ import { AxiosError } from 'axios';
 import { RunDetailsResponse } from '../model';
 import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
 import Loader from '../../elements/loader/Loader.tsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
+import { faFileLines } from '@fortawesome/free-solid-svg-icons/faFileLines';
 
 interface Props {
    uuid: string;
@@ -14,9 +17,11 @@ interface Props {
    isLoading: boolean;
    setIsLoading: (isLoading: boolean) => void;
    setTitle: (text: string) => void;
+   artifacts: ResultLink[];
+   logs: ResultLink[];
 }
 
-const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, setTitle }) => {
+const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, setTitle, artifacts, logs }) => {
    const [response, setResponse] = useState<WizardResponse | RunDetailsResponse>();
    const { get } = useAxios<WizardResponse>();
    const toaster = useToaster();
@@ -52,6 +57,8 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
       });
       return value;
    };
+   const normalizeName = (str: string) => str.replace(/[-_]/g, ' ').toLowerCase();
+
    if(response && setTitle) setTitle(response.selections.name!+", "+response.selections.group!);
 
    return (
@@ -60,9 +67,9 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
          {!isLoading && response && (
             <div className="rows is-multiline">
                <React.Fragment>
-                  <div className="is-medium is-size-3 has-text-bold ml-2">{response.selections.name!}, {response.selections.group!}</div>
+                  {!setTitle && <div className="is-medium is-size-3 has-text-bold ml-2">{response.selections.name!}, {response.selections.group!}</div>}
                   <div className="column mb-0">
-                     <p className="is-half is-size-3 has-text-primary">{response.selections.loader_model!.id.replace(/_/g, ' ')}</p>
+                     <p className="is-half is-size-3 has-text-primary">{normalizeName(response.selections.loader_model!.id)}</p>
                      {response.selections.loader_model?.parameters_value &&
                         Object.keys(response.selections.loader_model.parameters_value).length > 0 ? (
                         <table>
@@ -77,8 +84,27 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                         </table>
                         ) : (
                         <p className="text-gray-500 italic">No parameters</p>
-                        )}
+                     )}
+                     {artifacts && artifacts.find(a => normalizeName(a.name).includes(normalizeName(response.selections.loader_model!.id))) && (
+                        <a
+                           className="button is-secondary is-outlined"
+                           href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                        ><FontAwesomeIcon icon={faFileLines} />&nbsp;Artifact</a>
+                     )}
+                     {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_model!.id))) && (
+                        <a
+                           className="button is-secondary is-outlined"
+                           href={logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
+                     )}
                   </div>
+
+
+
                   <div className="column mb-0">
                      <p className="is-half is-size-3 has-text-primary">
                         {response.selections.loader_data!.id.replace(/_/g, ' ')}
@@ -88,7 +114,7 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                         <table>
                            <tbody>
                               <tr key="domain">
-                                 <td className="border pr-4 py-0 font-mono">doman</td>
+                                 <td className="border pr-4 py-0 font-mono">domain</td>
                                  <td className="border pl-4 py-0 font-mono">{response.selections.domain!}</td>
                               </tr>
                               <tr key="attributes">
@@ -103,8 +129,23 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                               ))}
                            </tbody>
                         </table>
-                     ) : (
-                        <p className="text-gray-500 italic">No parameters</p>
+                     ) : (<p className="text-gray-500 italic">No parameters</p>)}
+
+                     {artifacts && artifacts.find(a => normalizeName(a.name).includes(normalizeName(response.selections.loader_data!.id))) && (
+                        <a
+                           className="button is-secondary is-outlined"
+                           href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                        ><FontAwesomeIcon icon={faFileLines} />&nbsp;Artifact</a>
+                     )}
+                     {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_data!.id))) && (
+                        <a
+                           className="button is-secondary is-outlined"
+                           href={logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
                      )}
                   </div>
                   {response.selections.metrics!.map((m, i) => (
@@ -121,8 +162,22 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                                  ))}
                               </tbody>
                            </table>
-                        ) : (
-                           <p className="text-gray-500 italic">No parameters</p>
+                        ) : (<p className="text-gray-500 italic">No parameters</p>)}
+                        {artifacts &&artifacts.find(a => normalizeName(a.name).includes(normalizeName(m!.id))) && (
+                           <a
+                              className="button is-primary is-outlined"
+                              href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(m!.id)))!.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                           ><FontAwesomeIcon icon={faFileLines} />&nbsp;Results</a>
+                        )}
+                        {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(m!.id))) && (
+                           <a
+                              className="button is-secondary is-outlined"
+                              href={logs.find(l => normalizeName(l.name).includes(normalizeName(m!.id)))!.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                           ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
                         )}
                      </div>
                   ))}

@@ -45,7 +45,7 @@ const DashboardPage = () => {
                >
                   <img src={logo} alt="Official ΜΑΜΜΟτη Logo" width="300"/>
                </a>
-               <div className="is-small has-text-grey">Open source repository</div>
+               <div className="is-small has-text-grey">Open source repository & toolkit</div>
             </div>
       </div>
 

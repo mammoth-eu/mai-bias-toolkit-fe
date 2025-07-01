@@ -39,13 +39,17 @@ export const printIsoDate = (date: string): string => {
    return d.toDateString() + ' ' + d.toLocaleTimeString();
 };
 
+import { marked } from 'marked';
+
 export const getDescription = (description: string) => {
-   if (!description) {
-      return description;
-   }
-   const index = description.indexOf('Args:');
-   if (index !== -1) description = description.slice(0, index);
-   return description.trim().replace(/\n\n/g, "<br>").replace(/\n/g, " ");
+  if (!description) return description;
+
+  // Trim out anything after "Args:"
+  const index = description.indexOf('Args:');
+  if (index !== -1) description = description.slice(0, index);
+
+  // Convert markdown (with embedded HTML) to HTML
+  return marked(description.trim());
 };
 
 export const getAttributesDescription = (description: string) => {
