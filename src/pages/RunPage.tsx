@@ -40,14 +40,17 @@ const RunPage = () => {
    const runLogModal = useModal();
 
    useEffect(() => {
-      get(`/wizard/databias/resultlinks/${uuid}`)
-         .then((result: RunDetailsResponse) => {
-            setResult(result);
-            setIsLoadingResult(false);
-         })
-         .catch((e: AxiosError) => {
-            toaster.error(e.message);
-         });
+      const interval = setInterval(() => {
+         get(`/wizard/databias/resultlinks/${uuid}`)
+            .then((result: RunDetailsResponse) => {
+               setResult(result);
+               setIsLoadingResult(false);
+            })
+            .catch((e: AxiosError) => {
+               toaster.error(e.message);
+            });
+      }, 2000);
+      return () => clearInterval(interval);
    }, [uuid]);
 
    useEffect(() => {
