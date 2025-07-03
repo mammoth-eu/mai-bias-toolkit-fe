@@ -58,7 +58,9 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="rows is-multiline">
+            <div>
+            <div className="columns is-multiline">
+               <div className="column is-half"></div>
                <div className="column is-half">
                   <TextFormInput
                      name="name"
@@ -71,6 +73,9 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      tooltip="A custom name to identify a specific run within a group."
                   />
                </div>
+            </div>
+            <div className="columns is-multiline">
+               <div className="column is-half"></div>
                <div className="column is-half">
                   <TextFormInput
                      name="group"
@@ -83,6 +88,7 @@ const RunStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoad
                      tooltip="A custom name to identify a group of related runs."
                   />
                </div>
+            </div>
             </div>
          )}
       </>

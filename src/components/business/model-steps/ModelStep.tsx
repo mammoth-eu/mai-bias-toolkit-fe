@@ -82,65 +82,95 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
       <>
          {isLoading && <Loader />}
          {!isLoading && (
-            <div className="columns is-multiline">
-               <div className="column is-half">
-                  <SelectFormInput
-                     name="model_loader_id"
-                     label="Model loader"
-                     selectOptions={modelLoaderSelectList}
-                     value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
-                     errors={formSubmit.errors}
-                     placeholder="Please select a model loader"
-                     updateSelect={formSubmit.updateSimple}
-                     isRequired
-                     tooltip="Loads pre-trained machine learning models to detect bias."
-                  />
-                  {formSubmit.form.model_loader_id && data.loaders && (
-                     <Box
-                        title=""
-                        content={getDescription(data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)?.description ?? "")}
+            <div>
+                  
+               <div className="columns is-multiline is-centered">
+                  <div className="column">
+                     <SelectFormInput
+                        name="model_loader_id"
+                        label="Model loader"
+                        selectOptions={modelLoaderSelectList}
+                        value={getSelectListValue(modelLoaderSelectList, formSubmit.form.model_loader_id)}
+                        errors={formSubmit.errors}
+                        placeholder="Please select a model loader"
+                        updateSelect={formSubmit.updateSimple}
+                        isRequired
+                        tooltip="Loads pre-trained machine learning models to detect bias."
                      />
-                  )}
-                  {/* {formSubmit.form.model_loader_id && data.loaders && (
-                     <Box
-                        title="Parameters info:"
-                        content={getParametersInfo(data.loaders, formSubmit.form.model_loader_id)}
-                     />
-                  )} */} {/*We are parsing parameter info as tooltips now*/}
-               </div>
-               <div className="column is-half mt-5">
-                  {formSubmit.form.model_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id)?.description.includes("path") ?? "") &&
-                     <div className="mb-2">
-                        <a
-                           href="http://kfp-minio.local.exus.ai:8082/minio/data/"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           className="button is-primary is-outlined has-tooltip-bottom"
-                           data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123). You can use that to upload local data to the to the toolkit. Click on ... to get a url that you can paste in paths."
-                        >
-                           Open minio storage
-                        </a>
+                     {formSubmit.form.model_loader_id && data.loaders && (
+                        <Box
+                           title=""
+                           content={getDescription(data.loaders.find((l) => l.id === formSubmit.form.model_loader_id)?.description ?? "")}
+                        />
+                     )}
+                     {/* {formSubmit.form.model_loader_id && data.loaders && (
+                        <Box
+                           title="Parameters info:"
+                           content={getParametersInfo(data.loaders, formSubmit.form.model_loader_id)}
+                        />
+                     )} */} {/*We are parsing parameter info as tooltips now*/}
+                     <div className="box">
+                        Fairness is a consideration at each step during the lifecycle of an AI system; it spans fair design, development interventions,
+                        and ongoing practices to maintain quality. Starting from the design phase, 
+                        determine a desired outcome and build or investigate your system with that in mind:<br/><br/>
+                        💡 Weak fairness passively debiases predictions.<br/>
+                        💡 Strong fairness actively participates in societal&nbsp;
+                        <span className="has-tooltip-top has-text-info" tooltip-data="Improvements include bringing more access, opportunities, and life chances to all people.">improvements</span>.
+                        <br/>
+                        <br/>
+                        <details>
+                        <summary>Example</summary>
+                        Consider an AI system that regulates university admissions [1]. 
+                        Weak fairness aims to correct biases related to several intersecting protected attributes,
+                        such as ethnicity, gender, disability, or national origin.
+
+                        Forms of strong fairness could include correcting the underadmission of
+                        certain groups in previous years, or placing equal importance on both more and less
+                        affordable extracurricular activities that influence the access to universities, given
+                        that some groups struggle to pay for expensive ones [2].
+
+                        <br/><br/><i>[1] Costanza-Chock, Sasha. “Design Justice. Community-led practices to
+                        build the worlds we need”, Cambridge, MA: The MIT Press (2020)</i> 
+                        <br/><i>[2] Giovanola, Benedetta, and Simona Tiribelli. "Weapons of moral
+                        construction? On the value of fairness in algorithmic decision-making.""
+                        Ethics and Information Technology 24, no. 1: 3 (2022)</i> 
+                        </details>
                      </div>
+                  </div>
+                  <div className="column is-half mt-5">
+                     {formSubmit.form.model_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id)?.description.includes("path") ?? "") &&
+                        <div className="mb-2">
+                           <a
+                              href="http://kfp-minio.local.exus.ai:8082/minio/data/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="button is-primary is-outlined has-tooltip-bottom"
+                              data-tooltip="Open the MinIO browser interface (default credentials: minio,minio123). You can use that to upload local data to the to the toolkit. Click on ... to get a url that you can paste in paths."
+                           >
+                              Open minio storage
+                           </a>
+                        </div>
 
-                  }
+                     }
 
-                  {formSubmit.form.model_loader_parameters_value &&
-                     Object.keys(formSubmit.form.model_loader_parameters_value).map((key) => {
-                        const loader = data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id);
-                        if(!loader) return "";
-                        const options = getOptionsDescription(loader!.description)[key];
-                        return renderSwitchInputForm(
-                           options?.length ? 'select' : typeof formSubmit.form.model_loader_parameters_value[key],
-                           key,
-                           'model_loader_parameters_value',
-                           formSubmit,
-                           typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
-                              !Number.isInteger(formSubmit.form.model_loader_parameters_value[key]),
-                           getAttributesDescription(loader!.description)[key] + (loader!.parameter_default[key] ? (
-                              ' (default: ' +loader!.parameter_default[key] + ')'):''),
-                           options ? [...options, loader!.parameter_default[key]] : undefined
-                        );
-                     })}
+                     {formSubmit.form.model_loader_parameters_value &&
+                        Object.keys(formSubmit.form.model_loader_parameters_value).map((key) => {
+                           const loader = data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id);
+                           if(!loader) return "";
+                           const options = getOptionsDescription(loader!.description)[key];
+                           return renderSwitchInputForm(
+                              options?.length ? 'select' : typeof formSubmit.form.model_loader_parameters_value[key],
+                              key,
+                              'model_loader_parameters_value',
+                              formSubmit,
+                              typeof formSubmit.form.model_loader_parameters_value[key] === 'number' &&
+                                 !Number.isInteger(formSubmit.form.model_loader_parameters_value[key]),
+                              getAttributesDescription(loader!.description)[key] + (loader!.parameter_default[key] ? (
+                                 ' (default: ' +loader!.parameter_default[key] + ')'):''),
+                              options ? [...options, loader!.parameter_default[key]] : undefined
+                           );
+                        })}
+                  </div>
                </div>
             </div>
          )}

@@ -61,7 +61,7 @@ const MultistepForm: React.FC<Props> = ({ steps, markerSteps, stepActions, stepL
                <div className="mb-2">&nbsp;</div>
                </div>
                {stepLoadings && !stepLoadings[currentStepIndex][0] && (
-                  <div className="steps-actions mt-6 mb-2">
+                  <div className="steps-actions mt-2 mb-2">
                      <div className="steps-action">
                         {!isFirstStep && (
                            <button

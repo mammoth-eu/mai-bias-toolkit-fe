@@ -86,20 +86,18 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                         <p className="text-gray-500 italic">No parameters</p>
                      )}
                      {artifacts && artifacts.find(a => normalizeName(a.name).includes(normalizeName(response.selections.loader_model!.id))) && (
-                        <a
+                        <button
                            className="button is-secondary is-outlined"
-                           href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}
-                           target="_blank"
+                           onClick={() => window.open(`${window.location.origin}/result?resultUrl=${artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}`, '_blank')}
                            rel="noopener noreferrer"
-                        ><FontAwesomeIcon icon={faFileLines} />&nbsp;Artifact</a>
+                        ><FontAwesomeIcon icon={faFileLines} />&nbsp; Artifact</button>
                      )}
                      {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_model!.id))) && (
-                        <a
+                        <button
                            className="button is-secondary is-outlined"
-                           href={logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}
-                           target="_blank"
+                           onClick={() => window.open(`${window.location.origin}/result?resultUrl=${logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_model!.id)))!.url}`, '_blank')}
                            rel="noopener noreferrer"
-                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
+                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</button>
                      )}
                   </div>
 
@@ -132,20 +130,18 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                      ) : (<p className="text-gray-500 italic">No parameters</p>)}
 
                      {artifacts && artifacts.find(a => normalizeName(a.name).includes(normalizeName(response.selections.loader_data!.id))) && (
-                        <a
+                        <button
                            className="button is-secondary is-outlined"
-                           href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}
-                           target="_blank"
+                           onClick={() => window.open(`${window.location.origin}/result?resultUrl=${artifacts.find(a =>normalizeName(a.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}`, '_blank')}
                            rel="noopener noreferrer"
-                        ><FontAwesomeIcon icon={faFileLines} />&nbsp;Artifact</a>
+                        ><FontAwesomeIcon icon={faFileLines} />&nbsp; Artifact</button>
                      )}
                      {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_data!.id))) && (
-                        <a
+                        <button
                            className="button is-secondary is-outlined"
-                           href={logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}
-                           target="_blank"
+                           onClick={() => window.open(`${window.location.origin}/result?resultUrl=${logs.find(l => normalizeName(l.name).includes(normalizeName(response.selections.loader_data!.id)))!.url}`, '_blank')}
                            rel="noopener noreferrer"
-                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
+                        ><FontAwesomeIcon icon={faBook} />&nbsp; Log</button>
                      )}
                   </div>
                   {response.selections.metrics!.map((m, i) => (
@@ -164,20 +160,18 @@ const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, 
                            </table>
                         ) : (<p className="text-gray-500 italic">No parameters</p>)}
                         {artifacts &&artifacts.find(a => normalizeName(a.name).includes(normalizeName(m!.id))) && (
-                           <a
+                           <button
                               className="button is-primary is-outlined"
-                              href={artifacts.find(a =>normalizeName(a.name).includes(normalizeName(m!.id)))!.url}
-                              target="_blank"
+                              onClick={() => window.open(`${window.location.origin}/result?resultUrl=${artifacts.find(l => normalizeName(l.name).includes(normalizeName(m!.id)))!.url}`, '_blank')}
                               rel="noopener noreferrer"
-                           ><FontAwesomeIcon icon={faFileLines} />&nbsp;Results</a>
+                           ><FontAwesomeIcon icon={faFileLines} />&nbsp; Results</button>
                         )}
                         {logs && logs.find(l => normalizeName(l.name).includes(normalizeName(m!.id))) && (
-                           <a
+                           <button
                               className="button is-secondary is-outlined"
-                              href={logs.find(l => normalizeName(l.name).includes(normalizeName(m!.id)))!.url}
-                              target="_blank"
+                              onClick={() => window.open(`${window.location.origin}/result?resultUrl=${logs.find(l => normalizeName(l.name).includes(normalizeName(m!.id)))!.url}`, '_blank')}
                               rel="noopener noreferrer"
-                           ><FontAwesomeIcon icon={faBook} />&nbsp; Log</a>
+                           ><FontAwesomeIcon icon={faBook} />&nbsp; Log</button>
                         )}
                      </div>
                   ))}

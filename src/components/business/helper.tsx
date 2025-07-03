@@ -38,6 +38,7 @@ export const isAtLeastOneSelected = (form: SelectionsForm): boolean => {
 
 export const printIsoDate = (date: string): string => {
    const d: Date = new Date(date);
+   if(d.getFullYear()<2000) return '';
    return d.toDateString() + ' ' + d.toLocaleTimeString();
 };
 
@@ -120,7 +121,7 @@ export function renderSwitchInputForm(
                key={name}
                name={name}
                label={label_name}
-               value={formSubmit.form[field][name]}
+               value={formSubmit.form[field][name]=="None"?"":formSubmit.form[field][name]}
                update={(event) => formSubmit.updateField(field, event)}
                errors={formSubmit.errors}
                placeholder={label_name}
@@ -159,7 +160,7 @@ export function renderSwitchInputForm(
       case 'select': {
          const selectOptions: SelectOption[] = [];
          options!.filter(o => o !== 'None').forEach((o) => selectOptions.push({ label: o, value: o }));
-         if(!formSubmit.form[field][name]) formSubmit.updateSimpleField(label_name, selectOptions[0]?.value);
+         if(!formSubmit.form[field][name] && selectOptions[0]?.label!='None') formSubmit.updateSimpleField(label_name, selectOptions[0]?.label);
          return (
             <SelectFormInput
                key={name}
