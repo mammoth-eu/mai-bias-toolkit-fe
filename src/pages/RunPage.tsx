@@ -75,7 +75,7 @@ const RunPage = () => {
       //      const noArtifactResult = !!result && !filterOnType(result.selections.result_links!, 'artifact').length;
       //      const noLogResult = !!result && !filterOnType(result.selections.result_links!, 'log').length;
       return (
-
+         <div>
          <button
                className="button is-primary is-outlined"
                onClick={statusModal.open}
@@ -84,6 +84,16 @@ const RunPage = () => {
                <FontAwesomeIcon icon={faCircleInfo} />
                &nbsp;Runner status
          </button>
+         {/* &nbsp;
+         <a
+               className="button is-primary is-outlined"
+               href="http://kfp.local.exus.ai:8082/#/runs"
+               target="_blank"
+            >
+               <FontAwesomeIcon icon={faCircleInfo} />
+               &nbsp;KubeFlow pipelines
+         </a> */}
+         </div>
          // <div className="buttons">
          //    <button
          //       className="button is-primary is-outlined"

@@ -114,8 +114,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                         and ongoing practices to maintain quality. Starting from the design phase, 
                         determine a desired outcome and build or investigate your system with that in mind:<br/><br/>
                         💡 Weak fairness passively debiases predictions.<br/>
-                        💡 Strong fairness actively participates in societal&nbsp;
-                        <span className="has-tooltip-top has-text-info" tooltip-data="Improvements include bringing more access, opportunities, and life chances to all people.">improvements</span>.
+                        💡 Strong fairness actively participates in societal improvement (more access, opportunities, life chances to all people, etc.).
                         <br/>
                         <br/>
                         <details>

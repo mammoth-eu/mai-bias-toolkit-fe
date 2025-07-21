@@ -2284,6 +2284,10 @@ div.icon-text {
 a.tag:hover {
   text-decoration: underline; }
 
+p {
+  margin-bottom: 0.5em;
+}
+
 .title,
 .subtitle {
   word-break: break-word; }

@@ -58,8 +58,7 @@ const DashboardPage = () => {
             with other disciplines to properly address the issue of fairness.
             <br/><br/>
             <ul>
-               <li>💡 <a className="has-tooltip-right has-text-info" data-tooltip="To learn more about an interdisciplinary approach to fairnes, 
-click here to refer to the MAMMOth project's AI fairness definition guide." href='https://github.com/mammoth-eu/FairnessDefinitionGuide'>Consult</a> with legal experts to ensure compliance with laws and regulations.</li>
+               <li>💡 Consult with legal experts to ensure compliance with laws and regulations.</li>
                <li>💡 Work with social scientists to gather interests of <span className="has-tooltip-top has-text-info" data-tooltip="Stakeholders refer to individuals or social groups who might be positively or negatively affected by the use of AI. 
 They include, for example, developers, users, profiting organizations, policymakers, and vulnerable groups who might be discriminated against by its use. 
 They may also include product owners, such as parent or funding organizations, that drive the system’s main technical specifications. ">
@@ -67,6 +66,21 @@ They may also include product owners, such as parent or funding organizations, t
                </span> and ensure that they are adequately represented and integrated.</li>
                <li>💡 Combine research principles with fairness concerns. This requires co-designing AI systems with said stakeholders.</li>
             </ul>
+         </div>
+      </div>
+
+
+      <div className="columns is-multiline is-centered my-4">
+         <div className="column is-half box">
+            <a className="has-text-info" target="_blank" href='https://github.com/mammoth-eu/FairnessDefinitionGuide'>AI fairness definition guide</a><br/>
+            <span>Learn more about an interdisciplinary approach to fairness in this guide by the MAMMOth project.</span>
+         </div>
+      </div>
+
+      <div className="columns is-multiline is-centered my-4">
+         <div className="column is-half box">
+            <a className="has-text-info" target="_blank" href="https://www.trail-ml.com/eu-ai-act-compliance-checker">Am I affected by the EU AI Act?</a><br/>
+            <span>Visit this self-assessment checklist by the third-party European AI Alliance.</span>
          </div>
       </div>
 
