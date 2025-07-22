@@ -140,7 +140,7 @@ const ModelStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLo
                      {formSubmit.form.model_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.model_loader_id)?.description.includes("path") ?? "") &&
                         <div className="mb-2">
                            <a
-                              href="http://kfp-minio.local.exus.ai:8082/minio/data/"
+                              href="https://minio.mammoth-demo.com/minio/data/"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="button is-primary is-outlined has-tooltip-bottom"

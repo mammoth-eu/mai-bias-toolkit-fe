@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ResultLink, WizardResponse } from './model';
-import TextFormInput from '../../elements/inputs/TextFormInput';
+
 import { useAxios } from '../axios/useAxios';
 import { useToaster } from '../../elements/toast/useToaster';
 import { AxiosError } from 'axios';
 import { RunDetailsResponse } from '../model';
-import TextAreaFormInput from '../../elements/inputs/TextAreaFormInput';
+
 import Loader from '../../elements/loader/Loader.tsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
@@ -16,9 +16,9 @@ interface Props {
    result?: RunDetailsResponse;
    isLoading: boolean;
    setIsLoading: (isLoading: boolean) => void;
-   setTitle: (text: string) => void;
-   artifacts: ResultLink[];
-   logs: ResultLink[];
+   setTitle?: (text: string) => void;
+   artifacts?: ResultLink[];
+   logs?: ResultLink[];
 }
 
 const OverviewStep: React.FC<Props> = ({ uuid, result, isLoading, setIsLoading, setTitle, artifacts, logs }) => {

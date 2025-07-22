@@ -12,7 +12,7 @@ import { useAxios } from '../components/business/axios/useAxios';
 import { AxiosError } from 'axios';
 import { useToaster } from '../components/elements/toast/useToaster';
 import Loader from '../components/elements/loader/Loader.tsx';
-import Box from '../components/elements/box/Box.tsx';
+
 
 const RunsPage = () => {
    const [isLoading, setIsLoading] = useState<boolean>(true);

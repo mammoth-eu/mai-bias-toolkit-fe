@@ -47,7 +47,7 @@ export const getDescription = (description: string) => {
   if (!description) return description;
   const index = description.indexOf('Args:');
   if (index !== -1) description = description.slice(0, index);
-  let ret : string = marked(description.trim());  // this is assignable because we removed marked async above
+  let ret : string = marked(description.trim()) as string;  // this is assignable because we removed marked async above
   return ret;
 };
 

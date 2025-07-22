@@ -2,34 +2,34 @@ import { useParams } from 'react-router-dom';
 import OverviewStep from '../components/business/model-steps/OverviewStep';
 import Portlet from '../components/elements/portlet/Portlet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileLines } from '@fortawesome/free-solid-svg-icons/faFileLines';
-import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
+
+
 import { useAxios } from '../components/business/axios/useAxios';
 import { RunDetailsResponse } from '../components/business/model';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useToaster } from '../components/elements/toast/useToaster';
-import RunResultsModal from '../components/business/run/RunResultsModal.tsx';
+
 import useModal from '../components/elements/modal/useModal.ts';
 import Loader from '../components/elements/loader/Loader.tsx';
 import { ResultLink } from '../components/business/model-steps/model.ts';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import RunStatusModal from '../components/business/run/RunStatusModal.tsx';
 
-function ShadowHtml({ html }: { html: string }) {
-   // we can use this if we want to place ste status directly within results
-   const containerRef = useRef<HTMLDivElement>(null);
-   useEffect(() => {
-      if (!containerRef.current) return;
-      const shadowRoot = containerRef.current.attachShadow({ mode: 'open' });
-      shadowRoot.innerHTML = `
-         <div style="all: initial;">
-            ${html.replace("Run Status", "")} 
-         </div>
-      `;
-   }, [html]);
-   return <div ref={containerRef} style={{ width: '50%', height: '100%' }} />;
-}
+// function ShadowHtml({ html }: { html: string }) {
+//    // we can use this if we want to place ste status directly within results
+//    const containerRef = useRef<HTMLDivElement>(null);
+//    useEffect(() => {
+//       if (!containerRef.current) return;
+//       const shadowRoot = containerRef.current.attachShadow({ mode: 'open' });
+//       shadowRoot.innerHTML = `
+//          <div style="all: initial;">
+//             ${html.replace("Run Status", "")} 
+//          </div>
+//       `;
+//    }, [html]);
+//    return <div ref={containerRef} style={{ width: '50%', height: '100%' }} />;
+// }
 
 
 
