@@ -1,6 +1,6 @@
 import React from 'react';
 import exus from '../../assets/exus.png';
-import europe from '../../assets/flag_yellow_low.jpg';
+import europe from '../../assets/flag_yellow_low.png';
 import { footer } from '../../assets/constants';
 
 const Footer = React.memo(() => {
@@ -12,9 +12,9 @@ const Footer = React.memo(() => {
                <img src={exus} width={80} className="exus " alt="Exus logo" />
                <p className="ml-2 is-size-7">&copy; {new Date().getFullYear()}</p>
             </div>
-            <div className="column is-centered has-text-centered has-text-primary-dark">{footer['mammoth']}</div>
+            <div className="column is-centered has-text-centered has-text-primary-dark is-size-7">{footer['mammoth']}</div>
             <div className="column has-text-right is-one-fifth">
-               <img src={europe} width="100" alt="EU flag" />
+               <img src={europe} width={90} alt="EU flag" />
             </div>
          </div>
       </footer>
