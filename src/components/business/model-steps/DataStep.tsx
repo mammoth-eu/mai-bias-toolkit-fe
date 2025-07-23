@@ -130,7 +130,7 @@ const DataStep: React.FC<Props> = ({ uuid, formSubmit, step, isLoading, setIsLoa
                   {formSubmit.form.data_loader_parameters_value && (data.loaders!.find((l) => l.id === formSubmit.form.data_loader_id)?.description.includes("path") ?? "") &&
                      <div className="mb-2">
                         <a
-                           href="https://minio.mammoth-demo.com/minio/data/"
+                           href={`${import.meta.env.VITE_MINIO_URL}/minio/data/`}
                            target="_blank"
                            rel="noopener noreferrer"
                            className="button is-primary is-outlined has-tooltip-bottom"
